@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace Project.UI
 {
+
+	// TODO: Create an IUserService and encapsulate all the AuthProvider methods to what I will use
 	internal class FirebaseUserService
 	{
 		// Constants for firebase

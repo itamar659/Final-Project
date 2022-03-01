@@ -12,18 +12,27 @@ namespace Project.UI
         {
             InitializeComponent();
 
+            //FirebaseUserService.SessionToken = ""; // TODO: For testing. Remove.
+
             SignInCommand = new Command(async () => await Navigation.PushAsync(new LoginPage()));
             GuestLoginCommand = new Command(async () => await Navigation.PushAsync(new GuestLoginPage()));
 
             BindingContext = this;
 		}
-		protected override void OnNavigatedTo(NavigatedToEventArgs args)
-		{
-			base.OnNavigatedTo(args);
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
 
 			// Try login via token.
 			if (FirebaseUserService.IsTokenValid())
-				App.Current.MainPage = new NavigationPage(new FindHostPage());
-		}
+            {
+
+                Navigation.InsertPageBefore(new FindHostPage(), Navigation.NavigationStack[0]);
+                Navigation.PopToRootAsync();
+
+				//App.Current.MainPage = new NavigationPage(new FindHostPage());
+            }
+        }
 	}
 }

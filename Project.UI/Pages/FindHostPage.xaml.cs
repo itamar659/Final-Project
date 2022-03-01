@@ -6,4 +6,11 @@ public partial class FindHostPage : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        Navigation.PushAsync(new PlayerPage());
+    }
 }

@@ -1,4 +1,6 @@
-﻿namespace Project.UI
+﻿using Project.UI.Platforms;
+
+namespace Project.UI
 {
     public static class MauiProgram
     {
@@ -16,6 +18,8 @@
                     fonts.AddFont("Roboto-Medium.ttf", "RobotoMedium");
                     fonts.AddFont("Roboto-Bold.ttf", "RobotoBold");
                 });
+
+            builder.Services.AddTransient<IAudioPlayer, AudioPlayer>();
 
             return builder.Build();
         }

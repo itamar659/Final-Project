@@ -5,8 +5,10 @@
              Title="PlayerPage"
              BackgroundColor="White">
     <StackLayout>
-        <Label Text="Welcome to .NET MAUI!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <Label Text="{Binding CurrentPosition}" />
+        <Label Text="{Binding Duration}" />
+        <Label Text="{Binding IsPlaying}" />
+        <Button x:Name="PlayBtn" Text="Play" Clicked="PlayBtn_Clicked" />
+        <Button x:Name="StopBtn" Text="Pause" Clicked="StopBtn_Clicked" />
     </StackLayout>
 </ContentPage>
