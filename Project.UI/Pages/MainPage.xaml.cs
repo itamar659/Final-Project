@@ -12,8 +12,6 @@ namespace Project.UI
         {
             InitializeComponent();
 
-			FirebaseUserService.SessionToken = "";
-
             SignInCommand = new Command(async () => await Navigation.PushAsync(new LoginPage()));
             GuestLoginCommand = new Command(async () => await Navigation.PushAsync(new GuestLoginPage()));
 

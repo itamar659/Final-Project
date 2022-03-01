@@ -25,7 +25,7 @@ public partial class SignUpPage : ContentPage
 			FirebaseUserService.SessionToken = res.FirebaseToken;
 			FirebaseUserService.SessionUser = res.User;
 
-			await Navigation.PopAsync();
+			await Navigation.PopToRootAsync();
 		}
 		catch (FirebaseAuthException ex)
         {
