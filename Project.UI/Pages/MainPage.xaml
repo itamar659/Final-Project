@@ -1,0 +1,23 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Project.UI"
+             x:Class="Project.UI.MainPage"
+             BackgroundColor="{DynamicResource SecondaryColor}">
+    <local:MainTemplate PageTitle="Enjoy Music Your Way">
+        <local:MainTemplate.PageContent>
+            <StackLayout Spacing="20">
+                <BoxView BackgroundColor="Gray"
+                         HeightRequest="200"
+                         Margin="0 0 30 0" />
+
+                <Button Text="Member"
+                        Style="{StaticResource RedButton}"
+                        Command="{Binding SignInCommand}" />
+
+                <Button Text="Guest"
+                        Style="{StaticResource RedButton}"
+                        Command="{Binding GuestLoginCommand}" />
+            </StackLayout>
+        </local:MainTemplate.PageContent>
+    </local:MainTemplate>
+</ContentPage>

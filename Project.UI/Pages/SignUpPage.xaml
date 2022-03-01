@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Project.UI"
+             x:Class="Project.UI.SignUpPage"
+             Title="SignUpPage"
+             BackgroundColor="White">
+    <local:MainTemplate>
+        <local:MainTemplate.PageContent>
+            <StackLayout Spacing="20">
+                <!-- Title -->
+                <Label Text="Sign Up"
+                       FontFamily="RobotoMedium"
+                       FontSize="Large"
+                       Margin="0 0 20 0" />
+
+                <!-- Sign up Form -->
+                <StackLayout>
+                    <Label Text="Username"
+                           Style="{StaticResource RedLabel}"
+                           Margin="0 0 5 0 " />
+                    <Entry x:Name="UsernameEntry"
+                           Placeholder="Username"
+                           Margin="0 0 10 0" />
+
+                    <Label Text="Password"
+                           Style="{StaticResource RedLabel}"
+                           Margin="0 0 5 0 " />
+                    <Entry x:Name="PasswordEntry"
+                           IsPassword="True"
+                           Placeholder="Password" />
+
+                    <HorizontalStackLayout
+                        Padding="20 0 10 0">
+                        <CheckBox Color="{StaticResource LightRedColor}" />
+                        <Label Text="I Agree to the Privacy Poilicy" 
+                               VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <Button x:Name="SignUpBtn"
+                            Text="Continue"
+                            Style="{StaticResource RedButton}"
+                            Margin="20 0 10 0"
+                            Clicked="SignUpBtn_Clicked" />
+                </StackLayout>
+
+                <!-- Back to sign in page -->
+                <StackLayout Orientation="Horizontal"
+                             Padding="10"
+                             HorizontalOptions="Center">
+                    <Label Text="Have an Account?"
+                           TextColor="{StaticResource LightGreyColor}"
+                           FontFamily="RobotoMedium"
+                           Margin="0 8 0 0" />
+                    <Label Text="Sign in"
+                           Style="{StaticResource RedLabel}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{x:Binding LoginCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </StackLayout>
+            </StackLayout>
+        </local:MainTemplate.PageContent>
+    </local:MainTemplate>
+</ContentPage>

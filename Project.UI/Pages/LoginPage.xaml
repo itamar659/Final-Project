@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Project.UI"
+             x:Class="Project.UI.LoginPage"
+             Title="Login"
+             BackgroundColor="White">
+    <local:MainTemplate>
+        <local:MainTemplate.PageContent>
+            <StackLayout Spacing="20">
+
+                <!-- sign in welcoming message -->
+                <Label Text="Sign in"
+                   FontFamily="RobotoMedium"
+                   FontSize="Large"
+                   Margin="0 0 5 0 " />
+                <Label Text="Hi there! Nice to see you!"
+                   TextColor="{StaticResource LightGreyColor}" />
+
+                <!-- Sign in Form -->
+                <StackLayout>
+                    <Label Text="Username"
+                           Style="{StaticResource RedLabel}"
+                           Margin="0 0 5 0 " />
+                    <Entry x:Name="UsernameEntry"
+                           Placeholder="Username"
+                           Margin="0 0 10 0" />
+
+                    <Label Text="Password"
+                           Style="{StaticResource RedLabel}" />
+                    <Entry x:Name="PasswordEntry"
+                           IsPassword="True"
+                           Placeholder="Password" />
+
+                    <Button x:Name="LoginBtn"
+                            Text="Sign in"
+                            Style="{StaticResource RedButton}"
+                            Margin="20 0 0 0"
+                            Clicked="LoginBtn_Clicked" />
+                </StackLayout>
+
+                <!-- Additional logins -->
+                <Label Text="or use one of your social profiles"
+                       TextColor="{StaticResource LightGreyColor}"
+                       HorizontalOptions="Center" />
+                <Grid Padding="0 15"
+                      ColumnSpacing="15"
+                      ColumnDefinitions="*, *">
+                    <Button Grid.Column="0"
+                            Text="Twitter"
+                            Background="#20AAFF"
+                            FontFamily="RobotoBold" />
+
+                    <Button Grid.Column="1"
+                            Text="Facebook"
+                            Background="#203070"
+                            FontFamily="RobotoBold" />
+                </Grid>
+
+                <!-- Signup/ forget password -->
+                <Grid Padding="10"
+                      ColumnSpacing="5"
+                      ColumnDefinitions="*, *">
+                    <Label Grid.Column="0"
+                           Text="Forgot Password?"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource LightGreyColor}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{x:Binding ForgotPasswordCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+
+                    <Label Grid.Column="1"
+                           Text="Sign up"
+                           HorizontalTextAlignment="End"
+                           Style="{StaticResource RedLabel}">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{x:Binding SignUpCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+            </StackLayout>
+        </local:MainTemplate.PageContent>
+    </local:MainTemplate>
+</ContentPage>
