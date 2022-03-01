@@ -28,7 +28,9 @@ namespace Project.UI
 			set { Preferences.Set(TokenKey, value); }
 		}
 
-		// Static constructor
+		/// <summary>
+		/// Static Constructor
+		/// </summary>
 		static FirebaseUserService()
 		{
 			FirebaseClient = new FirebaseClient(FirebaseDatabaseUrl);
@@ -36,5 +38,36 @@ namespace Project.UI
 			AuthProvider = new FirebaseAuthProvider(
 				new FirebaseConfig(FirebaseAPIKey));
 		}
-    }
+
+		/// <summary>
+		/// Check if there is a valid token
+		/// </summary>
+		public static bool IsTokenValid()
+		{
+			if (string.IsNullOrEmpty(SessionToken))
+				return false;
+
+			return Task.Run(isValidateToken).Result;
+		}
+
+		/// <summary>
+		/// check if the latest token is valid
+		/// </summary>
+		private static async Task<bool> isValidateToken()
+		{
+			try
+			{
+				var user = await AuthProvider.GetUserAsync(SessionToken);
+				SessionUser = user;
+				return true;
+			}
+			catch (Exception)
+			{
+				SessionToken = string.Empty;
+				SessionUser = null;
+			}
+
+			return false;
+		}
+	}
 }

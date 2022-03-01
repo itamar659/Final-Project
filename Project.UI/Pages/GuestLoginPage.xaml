@@ -15,7 +15,6 @@
                             Text="Join"
                             Style="{StaticResource RedButton}"
                             Clicked="Button_Clicked" />
-                    <Grid.RowDefinitions
                 </Grid>
             </StackLayout>
         </local:MainTemplate.PageContent>

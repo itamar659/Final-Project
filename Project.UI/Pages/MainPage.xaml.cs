@@ -12,6 +12,8 @@ namespace Project.UI
         {
             InitializeComponent();
 
+			FirebaseUserService.SessionToken = "";
+
             SignInCommand = new Command(async () => await Navigation.PushAsync(new LoginPage()));
             GuestLoginCommand = new Command(async () => await Navigation.PushAsync(new GuestLoginPage()));
 
@@ -22,34 +24,8 @@ namespace Project.UI
 			base.OnNavigatedTo(args);
 
 			// Try login via token.
-			FirebaseUserService.SessionUser = null;
-			if (tryTokenLogin())
+			if (FirebaseUserService.IsTokenValid())
 				App.Current.MainPage = new NavigationPage(new FindHostPage());
 		}
-
-		private bool tryTokenLogin()
-		{
-			if (string.IsNullOrEmpty(FirebaseUserService.SessionToken))
-				return false;
-
-			return Task.Run(isTokenValid).Result;
-		}
-
-		private async Task<bool> isTokenValid()
-		{
-			try
-			{
-				var user = await FirebaseUserService.AuthProvider.GetUserAsync(FirebaseUserService.SessionToken);
-				FirebaseUserService.SessionUser = user;
-				return true;
-			}
-			catch (Exception)
-			{
-				FirebaseUserService.SessionToken = string.Empty;
-			}
-
-			return false;
-		}
-
 	}
 }
