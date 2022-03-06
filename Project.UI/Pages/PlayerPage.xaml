@@ -5,7 +5,7 @@
              Title="PlayerPage"
              BackgroundColor="White">
     <StackLayout>
-        <Label Text="{Binding CurrentPosition}" />
+        <Label Text="{Binding Position}" />
         <Label Text="{Binding Duration}" />
         <Label Text="{Binding IsPlaying}" />
         <Button x:Name="PlayBtn" Text="Play" Clicked="PlayBtn_Clicked" />

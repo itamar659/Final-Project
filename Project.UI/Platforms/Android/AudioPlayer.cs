@@ -9,30 +9,35 @@ namespace Project.UI.Platforms
 {
     internal class AudioPlayer : IAudioPlayer
     {
-        private MediaPlayer _mediaPlayer;
+        private MediaPlayer mediaPlayer_and = null;
 
-        [Obsolete]
-        public AudioPlayer()
-        {
-            _mediaPlayer = new MediaPlayer();
-            _mediaPlayer.SetDataSource("https://soundbible.com/mp3/heavy-rain-daniel_simon.mp3");
-            _mediaPlayer.Prepare();
-        }
+        #region Interface Properties
+        public double CurrentPosition => mediaPlayer_and?.CurrentPosition ?? 0;
 
-        public double CurrentPosition => _mediaPlayer?.CurrentPosition/1000.0 ?? 0;
+        public double Duration => mediaPlayer_and?.Duration ?? 0;
 
-        public double Duration => _mediaPlayer?.Duration/1000.0 ?? 0;
-
-        public bool IsPlaying => _mediaPlayer?.IsPlaying ?? false;
+        public bool IsPlaying => mediaPlayer_and?.IsPlaying ?? false;
+        #endregion
 
         public void Play()
         {
-            _mediaPlayer.Start();
+            mediaPlayer_and.Start();
+        }
+
+        public void SetSong(string path)
+        {
+            mediaPlayer_and = new MediaPlayer();
+            mediaPlayer_and.SetDataSource(path);
+            mediaPlayer_and.Prepare();
         }
 
         public void Stop()
         {
-            _mediaPlayer.Stop();
+            if (mediaPlayer_and.IsPlaying)
+                mediaPlayer_and.Stop();
+
+            mediaPlayer_and.Release();
+            mediaPlayer_and = null;
         }
     }
 }
