@@ -1,12 +1,6 @@
+using HostUserShare;
+
 namespace Project.UI;
-
-public class Song
-{
-    public double Duration { get; set; }
-    public double Position { get; set; }
-    public bool IsPlaying { get; set; }
-
-}
 
 public partial class PlayerPage : ContentPage
 {

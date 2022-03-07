@@ -1,3 +1,5 @@
+using HostUserShare;
+
 namespace Project.UI;
 
 public partial class GuestLoginPage : ContentPage

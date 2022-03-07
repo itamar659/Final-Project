@@ -1,15 +1,7 @@
 using Firebase.Database.Query;
-using HostApp.Platforms;
+using HostUserShare;
 
 namespace HostApp;
-
-public class Song
-{
-    public double Duration { get; set; }
-    public double Position { get; set; }
-    public bool IsPlaying { get; set; }
-
-}
 
 public partial class PlayerPage : ContentPage
 {
@@ -46,7 +38,7 @@ public partial class PlayerPage : ContentPage
 
         FirebaseUserService.FirebaseClient
             .Child("PlayingSong")
-            .PostAsync(new
+            .PostAsync(new Song
             {
                 Duration = Duration,
                 Position = Position,

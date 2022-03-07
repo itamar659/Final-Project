@@ -1,16 +1,10 @@
 ﻿using Firebase.Auth;
 using Firebase.Database;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Project.UI
+namespace HostUserShare
 {
-
 	// TODO: Create an IUserService and encapsulate all the AuthProvider methods to what I will use
-	internal class FirebaseUserService
+	public class FirebaseUserService
 	{
 		// Constants for firebase
 		private static readonly string FirebaseAPIKey = "AIzaSyCoFlvXjEzrtKKcy9KC-49SFglJq2-9LiU";
@@ -23,11 +17,11 @@ namespace Project.UI
 		// Application properties to save data
 		public static User SessionUser { get; set; }
 
-		private const string TokenKey = "TokenKey";
+		private static string sessionToken = string.Empty;
 		public static string SessionToken
 		{
-			get => Preferences.Get(TokenKey, string.Empty);
-			set { Preferences.Set(TokenKey, value); }
+			get => sessionToken;
+			set { sessionToken = value; }
 		}
 
 		/// <summary>
