@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Project.UI.PlayerPage"
+             x:Class="HostApp.PlayerPage"
              Title="PlayerPage"
              BackgroundColor="White">
     <StackLayout>
         <Label Text="{Binding Position}" />
         <Label Text="{Binding Duration}" />
         <Label Text="{Binding IsPlaying}" />
+        <Button x:Name="openBtn" Text="Open" Clicked="openBtn_Clicked" />
+        <Button x:Name="PlayBtn" Text="Play" Clicked="PlayBtn_Clicked" />
+        <Button x:Name="StopBtn" Text="Pause" Clicked="StopBtn_Clicked" />
     </StackLayout>
 </ContentPage>

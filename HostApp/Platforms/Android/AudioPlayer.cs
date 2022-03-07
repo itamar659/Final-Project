@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project.UI.Platforms
+namespace HostApp.Platforms
 {
     internal class AudioPlayer : IAudioPlayer
     {

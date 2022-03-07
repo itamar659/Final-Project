@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Media.Playback;
 
-namespace Project.UI.Platforms
+namespace HostApp.Platforms
 {
     internal class AudioPlayer : IAudioPlayer
     {

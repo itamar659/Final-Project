@@ -1,11 +1,15 @@
-using Project.UI.Platforms;
-
 namespace Project.UI;
+
+public class Song
+{
+    public double Duration { get; set; }
+    public double Position { get; set; }
+    public bool IsPlaying { get; set; }
+
+}
 
 public partial class PlayerPage : ContentPage
 {
-    private IAudioPlayer _audioPlayer;
-
     public double Duration { get; set; }
     public double Position { get; set; }
     public bool IsPlaying { get; set; }
@@ -15,38 +19,22 @@ public partial class PlayerPage : ContentPage
 		InitializeComponent();
 
         BindingContext = this;
-    }
 
-    protected override void OnHandlerChanged()
-    {
-        base.OnHandlerChanged();
+        FirebaseUserService.FirebaseClient
+            .Child("PlayingSong")
+            .AsObservable<Song>()
+            .Subscribe((dbevent) =>
+            {
+                if (dbevent.Object != null)
+                {
+                    Duration = dbevent.Object.Duration;
+                    Position = dbevent.Object.Position;
+                    IsPlaying = dbevent.Object.IsPlaying;
 
-        _audioPlayer = Handler.MauiContext.Services.GetService<IAudioPlayer>();
-        Device.StartTimer(TimeSpan.FromMilliseconds(1000), updateUI);
-    }
-
-    private bool updateUI()
-    {
-        Duration = _audioPlayer.Duration;
-        Position = _audioPlayer.CurrentPosition;
-        IsPlaying = _audioPlayer.IsPlaying;
-
-        OnPropertyChanged(nameof(Duration));
-        OnPropertyChanged(nameof(Position));
-        OnPropertyChanged(nameof(IsPlaying));
-
-        return true;
-    }
-
-    private void PlayBtn_Clicked(object sender, EventArgs e)
-    {
-        _audioPlayer.SetSong("https://soundbible.com/mp3/heavy-rain-daniel_simon.mp3");
-
-        _audioPlayer.Play();
-    }
-
-    private void StopBtn_Clicked(object sender, EventArgs e)
-    {
-        _audioPlayer.Stop();
+                    OnPropertyChanged(nameof(Duration));
+                    OnPropertyChanged(nameof(Position));
+                    OnPropertyChanged(nameof(IsPlaying));
+                }
+            });
     }
 }

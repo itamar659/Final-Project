@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32210.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project.UI", "Project.UI\Project.UI.csproj", "{B6F0C514-A224-489A-A957-8129F6035195}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project.UI", "Project.UI\Project.UI.csproj", "{B6F0C514-A224-489A-A957-8129F6035195}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HostApp", "HostApp\HostApp.csproj", "{4325C8AC-77A3-412B-A537-B92CFF560549}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,6 +19,12 @@ Global
 		{B6F0C514-A224-489A-A957-8129F6035195}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6F0C514-A224-489A-A957-8129F6035195}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B6F0C514-A224-489A-A957-8129F6035195}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{4325C8AC-77A3-412B-A537-B92CFF560549}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4325C8AC-77A3-412B-A537-B92CFF560549}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4325C8AC-77A3-412B-A537-B92CFF560549}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{4325C8AC-77A3-412B-A537-B92CFF560549}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4325C8AC-77A3-412B-A537-B92CFF560549}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4325C8AC-77A3-412B-A537-B92CFF560549}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

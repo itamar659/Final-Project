@@ -1,4 +1,6 @@
-﻿namespace Project.UI
+﻿using HostApp.Platforms;
+
+namespace HostApp
 {
     public static class MauiProgram
     {
@@ -10,12 +12,9 @@
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-
-                    fonts.AddFont("Roboto-Light.ttf", "RobotoLight");
-                    fonts.AddFont("Roboto-Regular.ttf", "RobotoRegular");
-                    fonts.AddFont("Roboto-Medium.ttf", "RobotoMedium");
-                    fonts.AddFont("Roboto-Bold.ttf", "RobotoBold");
                 });
+
+            builder.Services.AddTransient<IAudioPlayer, AudioPlayer>();
 
             return builder.Build();
         }
