@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace Project.UI.Pages.Host
 {
-    internal class HostViewModel : INotifyPropertyChanged
+    public class HostViewModel : INotifyPropertyChanged
     {
         private string _host;
         public string Host

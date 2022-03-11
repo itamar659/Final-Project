@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Project.UI"
+             x:Class="Project.UI.HostHomePage"
+             Title="HostHomePage"
+             BackgroundColor="White">
+
+    <ContentPage.Resources>
+        <Color x:Key="SilderColor">#ff8000</Color>
+        <Color x:Key="TitleColor">#0080ff</Color>
+        <Color x:Key="LabelColor">#00161f</Color>
+        <Color x:Key="LightLabelColor">#44461f</Color>
+
+        <Style x:Key="StyleLabel" TargetType="Label">
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="TextColor" Value="{StaticResource LabelColor}"/>
+        </Style>
+
+        <Style x:Key="TitleStyle" TargetType="Label" BasedOn="{StaticResource StyleLabel}">
+            <Setter Property="FontSize" Value="Large"/>
+            <Setter Property="Margin" Value="0 0 20 0"/>
+        </Style>
+
+        <Style x:Key="ValueStyle" TargetType="Label" BasedOn="{StaticResource StyleLabel}">
+            <Setter Property="FontSize" Value="Small"/>
+            <Setter Property="TextColor" Value="{StaticResource LabelColor}"/>
+        </Style>
+
+        <Style x:Key="LightValueStyle" TargetType="Label" BasedOn="{StaticResource StyleLabel}">
+            <Setter Property="FontSize" Value="Small"/>
+            <Setter Property="TextColor" Value="{StaticResource LightGreyColor}"/>
+            <Setter Property="HorizontalTextAlignment" Value="Start"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="Slider">
+            <Setter Property="ThumbColor" Value="{StaticResource SilderColor}"/>
+            <Setter Property="MinimumTrackColor" Value="{StaticResource SilderColor}"/>
+            <Setter Property="MaximumTrackColor" Value="{StaticResource SilderColor}"/>
+            <Setter Property="Margin" Value="10 0 0 0" />
+        </Style>
+
+        <Style x:Key="Marger" TargetType="Grid">
+            <Setter Property="Margin" Value="10 0 0 0" />
+        </Style>
+    </ContentPage.Resources>
+
+    <local:SecondTemplate>
+        <local:SecondTemplate.PageContent>
+
+            <StackLayout>
+                <Label Style="{StaticResource TitleStyle}" Text="{Binding Host}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0"
+                        Style="{StaticResource ValueStyle}" 
+                        Text="{Binding Song}"/>
+                    <Label Grid.Column="1"
+                        Style="{StaticResource ValueStyle}" 
+                        Text="{Binding Source={x:Reference SliderAudioPlayer},
+                        Path=Value,
+                        StringFormat='Time left: {0:F0}' 
+                    }"/>
+                </Grid>
+                <Slider
+                        x:Name="SliderAudioPlayer"
+                        Maximum="240"
+                        Minimum="35"/>
+                
+                <Label Style="{StaticResource TitleStyle}" 
+                       Text="Choose Your Next Song"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="30"/>
+                        <ColumnDefinition Width="250"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Column="1" 
+                           Grid.Row="0"
+                           Style="{StaticResource LightValueStyle}" 
+                           Text="Kendrick Lamar: Good Kid MaaD city"/>
+                    <CheckBox Grid.Column="0"
+                              Grid.Row="0"
+                              x:Name="firstCheckBox" 
+                               Color="{StaticResource SilderColor}"/>
+                      
+                    <Label Grid.Column="1" 
+                           Grid.Row="1"
+                           Style="{StaticResource LightValueStyle}" 
+                           Text="50 cent: CandyShop"/>
+                    <CheckBox Grid.Column="0"
+                              Grid.Row="1"
+                              x:Name="secondCheckBox" 
+                              Color="{StaticResource SilderColor}"/>
+                             
+                    <Label Grid.Column="1" 
+                           Grid.Row="2"
+                           Style="{StaticResource LightValueStyle}" 
+                           Text="Snoop Dog: Doggy Style"/>
+                    <CheckBox Grid.Column="0"
+                              Grid.Row="2"
+                              x:Name="thirdCheckBox" 
+                              Color="{StaticResource SilderColor}"/>
+                </Grid>
+                <Grid ColumnDefinitions="*, *">
+                    <Button Grid.Column="0"
+                            Text="Vote"
+                            Style="{StaticResource voteButton}"
+                            Clicked="Button_Clicked" />
+                </Grid>
+            </StackLayout>
+            
+        </local:SecondTemplate.PageContent>
+    </local:SecondTemplate>
+</ContentPage>
