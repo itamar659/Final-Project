@@ -8,7 +8,7 @@
     <local:MainTemplate PageTitle="Enjoy Music Your Way">
         <local:MainTemplate.PageContent>
             <StackLayout Spacing="20">
-                <Entry Placeholder="Username"
+                <Entry Placeholder="Username" x:Name="entry"
                        Margin="30 0 0 0"/>
                 <Grid ColumnDefinitions="*, *">
                     <Button Grid.Column="1"

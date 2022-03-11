@@ -32,7 +32,7 @@ public partial class LoginPage : ContentPage
 			FirebaseUserService.SessionToken = res.FirebaseToken;
 			FirebaseUserService.SessionUser = res.User;
 
-			App.Current.MainPage = new NavigationPage(new FindHostPage());
+			App.Current.MainPage = new NavigationPage(new FindHostPage(res.User.FirstName));
 		}
 		catch (FirebaseAuthException ex)
 		{

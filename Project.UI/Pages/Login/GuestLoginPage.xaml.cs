@@ -15,7 +15,7 @@ public partial class GuestLoginPage : ContentPage
 		FirebaseUserService.SessionToken = res.FirebaseToken;
 		FirebaseUserService.SessionUser = res.User;
 
-		Navigation.InsertPageBefore(new FindHostPage(), Navigation.NavigationStack[0]);
+		Navigation.InsertPageBefore(new FindHostPage(entry.Text), Navigation.NavigationStack[0]);
 		await Navigation.PopToRootAsync();
         //App.Current.MainPage = new NavigationPage(new FindHostPage());
 	}

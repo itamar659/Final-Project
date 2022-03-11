@@ -53,14 +53,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Remove="Pages\HostFound.xaml" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="Resources\Images\App_Logo.png" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <PackageReference Include="FirebaseAuthentication.net" Version="3.7.2" />
 	  <PackageReference Include="FirebaseDatabase.net" Version="4.0.7" />
 	</ItemGroup>
@@ -70,34 +62,30 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Pages\LoginPages\LoginPage.xaml.cs">
+	  <Compile Update="Pages\LoginPage.xaml.cs">
 	    <DependentUpon>LoginPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\HostFindAndConnect\FindHostPage.xaml">
+	  <MauiXaml Update="Pages\FindHostPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Host\HostPage.xaml">
+	  <MauiXaml Update="Pages\GuestLoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\LoginPages\GuestLoginPage.xaml">
+	  <MauiXaml Update="Pages\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\LoginPages\LoginPage.xaml">
+	  <MauiXaml Update="Pages\PlayerPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\HostFindAndConnect\PlayerPage.xaml">
+	  <MauiXaml Update="Pages\SignUpPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\LoginPages\SignUpPage.xaml">
+	  <MauiXaml Update="Pages\Template\MainTemplate.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Pages\Template\" />
 	</ItemGroup>
 
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">

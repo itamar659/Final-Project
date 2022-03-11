@@ -8,13 +8,13 @@
     <local:MainTemplate>
         <local:MainTemplate.PageContent>
             <StackLayout Spacing="20">
-                <Label Text="{Binding WelcomingMessage}"
+                <Label Text="{Binding WelcomeMessage}"
                        FontFamily="RobotoBold"
                        FontSize="22"
                        HorizontalOptions="Center"
                        Margin="0 0 20 0"/>
                 <Label Text="Find a Host:" />
-                <Entry Placeholder="Host Name" />
+                <Entry Placeholder="Host Name" x:Name="entry"/>
                 <CollectionView ItemsSource="{Binding AvailableHosts}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -24,6 +24,12 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
+                <Grid ColumnDefinitions="*, *">
+                    <Button Grid.Column="1"
+                            Text="Join"
+                            Style="{StaticResource RedButton}"
+                            Clicked="Button_Clicked" />
+                </Grid>
             </StackLayout>
         </local:MainTemplate.PageContent>
     </local:MainTemplate>

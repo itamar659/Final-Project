@@ -7,7 +7,7 @@
             <StackLayout Orientation="Vertical"
                          Margin="50">
                 <!-- Logo display -->
-                <Image Source="/Resources/Images/logo.png"
+                <Image Source="Images/app_logo.png"
                        WidthRequest="100"
                        HeightRequest="100"
                        HorizontalOptions="Center" />

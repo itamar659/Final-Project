@@ -29,7 +29,7 @@ namespace Project.UI
 			if (FirebaseUserService.IsTokenValid())
             {
 
-                Navigation.InsertPageBefore(new FindHostPage(), Navigation.NavigationStack[0]);
+                Navigation.InsertPageBefore(new FindHostPage(FirebaseUserService.SessionUser.DisplayName), Navigation.NavigationStack[0]);
                 Navigation.PopToRootAsync();
 
 				//App.Current.MainPage = new NavigationPage(new FindHostPage());
