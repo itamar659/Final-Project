@@ -27,6 +27,15 @@
                 </Setter>
             </Style>
 
+            <Style x:Key="NormaButton" TargetType="Button">
+                <Setter Property="Background" Value="#ff8000" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="CornerRadius" Value="6" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="BorderColor" Value="Grey"/>
+                <Setter Property="Margin" Value="70 0 0 0"/>
+            </Style>
+
             <!-- Default styles -->
             <Color x:Key="PrimaryColor">Black</Color>
             <Color x:Key="SecondaryColor">White</Color>

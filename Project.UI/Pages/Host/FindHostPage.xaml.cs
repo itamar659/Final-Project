@@ -24,6 +24,10 @@ public partial class FindHostPage : ContentPage
         {
             await Navigation.PushAsync(new HostPage("bruni"));
         }
+        else
+        {
+            await Navigation.PushAsync(new HostNotFoundPage());
+        }
 
         //Navigation.InsertPageBefore(new FindHostPage(entry.Text), Navigation.NavigationStack[0]);
         //await Navigation.PopToRootAsync();

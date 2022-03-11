@@ -9,6 +9,7 @@
         <Color x:Key="SilderColor">#ff8000</Color>
         <Color x:Key="TitleColor">#0080ff</Color>
         <Color x:Key="LabelColor">#00161f</Color>
+        <Color x:Key="LightLabelColor">#44461f</Color>
 
         <Style x:Key="StyleLabel" TargetType="Label">
             <Setter Property="HorizontalOptions" Value="Center"/>
@@ -22,6 +23,12 @@
         <Style x:Key="ValueStyle" TargetType="Label" BasedOn="{StaticResource StyleLabel}">
             <Setter Property="FontSize" Value="Small"/>
             <Setter Property="TextColor" Value="{StaticResource LabelColor}"/>
+        </Style>
+
+        <Style x:Key="LightValueStyle" TargetType="Label" BasedOn="{StaticResource StyleLabel}">
+            <Setter Property="FontSize" Value="Small"/>
+            <Setter Property="TextColor" Value="{StaticResource LightGreyColor}"/>
+            <Setter Property="HorizontalTextAlignment" Value="End"/>
         </Style>
 
         <Style TargetType="Slider">
@@ -58,6 +65,51 @@
                         x:Name="SliderAudioPlayer"
                         Maximum="240"
                         Minimum="35"/>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="220"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition Height="30"/>
+                    </Grid.RowDefinitions>
+                    <Label Grid.Column="0"
+                           Grid.Row="0"
+                           Style="{StaticResource ValueStyle}" 
+                           Text="Active Users:"/>
+                    <Label Grid.Column="1"
+                           Grid.Row="0"
+                           Style="{StaticResource LightValueStyle}" 
+                           Text="{Binding ActiveUsers}"
+                    />
+                    <Label Grid.Column="0"
+                           Grid.Row="1"
+                           Style="{StaticResource ValueStyle}" 
+                           Text="Genre:"/>
+                    <Label Grid.Column="1"
+                           Grid.Row="1"
+                           Style="{StaticResource LightValueStyle}" 
+                           Text="{Binding Genre}"
+                    />
+                    <Label Grid.Column="0"
+                           Grid.Row="2"
+                           Style="{StaticResource ValueStyle}" 
+                           Text="Session Time:"/>
+                    <Label Grid.Column="1"
+                           Grid.Row="2"
+                           Style="{StaticResource LightValueStyle}" 
+                           Text="{Binding SessionTime}"
+                    />
+                </Grid>
+                <Grid ColumnDefinitions="*, *">
+                    <Button Grid.Column="1"
+                            Text="Enter the Party"
+                            Style="{StaticResource NormaButton}"
+                            Clicked="Button_Clicked" />
+                </Grid>
             </StackLayout>
         </local:MainTemplate.PageContent>
     </local:MainTemplate>

@@ -80,6 +80,9 @@
 	  <MauiXaml Update="Pages\HostFindAndConnect\FindHostPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Pages\Host\HostNotFoundPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Pages\Host\HostPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

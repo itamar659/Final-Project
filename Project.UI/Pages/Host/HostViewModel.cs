@@ -19,18 +19,28 @@ namespace Project.UI.Pages.Host
         public string ImageUrl
         {
             get { return _imgUrl; }
+            set => _imgUrl = value;
         }
 
-        private int _players;
-        public string Players
+        private string _genre;
+        public string Genre
         {
-            get { return _players + ": players";}
+            get { return _genre.ToString();}
+            set => _genre = value;
         }
 
-        private int _activePlayers;
-        public string ActivePlayers
+        private string _activeUsers;
+        public string ActiveUsers
         {
-            get { return _activePlayers + ": active"; }
+            get { return _activeUsers + ": users"; }
+            set => _activeUsers = value;
+        }
+
+        private DateTime _sessionTime;
+        public string SessionTime
+        {
+            //Todo: Format the DateTime
+            get { return "2:54:49 Hours"; }
         }
 
 
