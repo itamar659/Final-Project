@@ -58,6 +58,7 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Images\App_Logo.png" />
+	  <None Remove="Resources\Images\image_holder.png" />
 	</ItemGroup>
 
 	<ItemGroup>

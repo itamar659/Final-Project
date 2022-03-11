@@ -22,7 +22,7 @@ public partial class FindHostPage : ContentPage
     {
         if(entry.Text.ToLower() == "bruni")
         {
-            await Navigation.PushAsync(new HostPage());
+            await Navigation.PushAsync(new HostPage("bruni"));
         }
 
         //Navigation.InsertPageBefore(new FindHostPage(entry.Text), Navigation.NavigationStack[0]);

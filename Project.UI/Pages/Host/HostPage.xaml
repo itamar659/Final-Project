@@ -5,17 +5,60 @@
              x:Class="Project.UI.HostPage"
              Title="HostPage"
              BackgroundColor="White">
+    <ContentPage.Resources>
+        <Color x:Key="SilderColor">#ff8000</Color>
+        <Color x:Key="TitleColor">#0080ff</Color>
+        <Color x:Key="LabelColor">#00161f</Color>
+
+        <Style x:Key="StyleLabel" TargetType="Label">
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="TextColor" Value="{StaticResource LabelColor}"/>
+        </Style>
+
+        <Style x:Key="TitleStyle" TargetType="Label" BasedOn="{StaticResource StyleLabel}">
+            <Setter Property="FontSize" Value="Large"/>
+        </Style>
+
+        <Style x:Key="ValueStyle" TargetType="Label" BasedOn="{StaticResource StyleLabel}">
+            <Setter Property="FontSize" Value="Small"/>
+            <Setter Property="TextColor" Value="{StaticResource LabelColor}"/>
+        </Style>
+
+        <Style TargetType="Slider">
+            <Setter Property="ThumbColor" Value="{StaticResource SilderColor}"/>
+            <Setter Property="MinimumTrackColor" Value="{StaticResource SilderColor}"/>
+            <Setter Property="MaximumTrackColor" Value="{StaticResource SilderColor}"/>
+        </Style>
+    </ContentPage.Resources>
+    
     <local:MainTemplate>
         <local:MainTemplate.PageContent>
-
-
-
-            <StackLayout Spacing="20">
-
+            <StackLayout>
+                <Label Style="{StaticResource TitleStyle}" Text="{Binding Host}"/>
+                <Image Source="Images/image_holder.png"
+                       WidthRequest="265"
+                       HeightRequest="200"
+                       HorizontalOptions="Center" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="100"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0"
+                        Style="{StaticResource ValueStyle}" 
+                        Text="{Binding Song}"/>
+                    <Label Grid.Column="1"
+                        Style="{StaticResource ValueStyle}" 
+                        Text="{Binding Source={x:Reference SliderAudioPlayer},
+                        Path=Value,
+                        StringFormat='{0:F0} :Time Left' 
+                    }"/>
+                </Grid>
+                <Slider
+                        x:Name="SliderAudioPlayer"
+                        Maximum="240"
+                        Minimum="35"/>
             </StackLayout>
-
-
-
         </local:MainTemplate.PageContent>
     </local:MainTemplate>
 </ContentPage>
