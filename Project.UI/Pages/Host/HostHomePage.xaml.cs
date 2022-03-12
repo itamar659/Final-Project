@@ -12,9 +12,9 @@ public partial class HostHomePage : ContentPage
 		BindingContext = hostViewModel;
 	}
 
-	private  void Button_Clicked(object sender, EventArgs e)
+	private async void Button_Clicked(object sender, EventArgs e)
 	{
-		
+		await Navigation.PushAsync(new HostLastPage());
 	}
 
 	private async void Left_Button_Clicked(object sender, EventArgs e)
