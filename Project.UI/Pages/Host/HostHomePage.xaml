@@ -19,7 +19,7 @@
 
         <Style x:Key="TitleStyle" TargetType="Label" BasedOn="{StaticResource StyleLabel}">
             <Setter Property="FontSize" Value="Large"/>
-            <Setter Property="Margin" Value="0 0 20 0"/>
+            <Setter Property="Margin" Value="20 0 10 0"/>
         </Style>
 
         <Style x:Key="ValueStyle" TargetType="Label" BasedOn="{StaticResource StyleLabel}">
@@ -38,7 +38,7 @@
             <Setter Property="ThumbColor" Value="{StaticResource SilderColor}"/>
             <Setter Property="MinimumTrackColor" Value="{StaticResource SilderColor}"/>
             <Setter Property="MaximumTrackColor" Value="{StaticResource SilderColor}"/>
-            <Setter Property="Margin" Value="10 0 0 0" />
+            <Setter Property="Margin" Value="10 0 10 0" />
         </Style>
 
         <Style x:Key="Marger" TargetType="Grid">
@@ -83,6 +83,7 @@
                         <RowDefinition Height="40"/>
                         <RowDefinition Height="40"/>
                         <RowDefinition Height="40"/>
+                        <RowDefinition Height="40"/>
                     </Grid.RowDefinitions>
 
                     <Label Grid.Column="1" 
@@ -111,12 +112,27 @@
                               Grid.Row="2"
                               x:Name="thirdCheckBox" 
                               Color="{StaticResource SilderColor}"/>
+
+                    <Label Grid.Column="1" 
+                           Grid.Row="3"
+                           Style="{StaticResource LightValueStyle}" 
+                           Text="Noa Killer: Kill me"/>
+                    <CheckBox Grid.Column="0"
+                              Grid.Row="3"
+                              x:Name="fourthCheckBox" 
+                              Color="{StaticResource SilderColor}"/>
                 </Grid>
-                <Grid ColumnDefinitions="*, *">
+                <Grid ColumnDefinitions="*">
                     <Button Grid.Column="0"
                             Text="Vote"
                             Style="{StaticResource voteButton}"
                             Clicked="Button_Clicked" />
+                </Grid>
+                <Grid ColumnDefinitions="*, *, *">
+                    <Button Grid.Column="1"
+                            Text="Leave"
+                            Style="{StaticResource leaveButton}"
+                            Clicked="Left_Button_Clicked" />
                 </Grid>
             </StackLayout>
             
