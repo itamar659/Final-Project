@@ -27,7 +27,7 @@ public partial class HostPage : ContentPage
 		// TODO: make it dynamic password inside of the host object.
 		if(result == "1234")
         {
-
+			ServerApi.StartClient();
 			Navigation.InsertPageBefore(new HostHomePage(vm), Navigation.NavigationStack[0]);
 			await Navigation.PopToRootAsync();
         }

@@ -14,7 +14,7 @@ namespace Server
     {
         // for httpServer attempt using websockets
         private Socket httpServer;
-        private int serverPort = 8085;
+        private int serverPort = 11000;
         private Thread listenerThread;
 
         public Server()
