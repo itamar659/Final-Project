@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Host"
+             x:DataType="local:AudioPlayerViewModel"
+             x:Class="Host.AudioPlayerControl">
+
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <local:BooleanToStringConverter x:Key="booleanToStopPlayConverter" />
+            <local:DoubleMSToTimeStrConverter x:Key="millisecondsToTimeConverter" />
+            <Style x:Key="CircleButton"
+                   TargetType="Button">
+                <Setter Property="CornerRadius"
+                        Value="90" />
+            </Style>
+        </ResourceDictionary>
+    </ContentView.Resources>
+
+    <ContentView.Content>
+        <Grid RowDefinitions="auto, auto, auto, auto, *"
+              RowSpacing="5">
+
+            <!-- Selected Song Name -->
+            <Label Grid.Row="0"
+                   FontSize="20"
+                   HorizontalTextAlignment="Center"
+                   Text="{Binding SongName}" />
+
+            <!-- Time Line -->
+            <StackLayout Grid.Row="1"
+                         Padding="50, 0">
+                <Grid ColumnSpacing="10"
+                      ColumnDefinitions="auto, *, auto">
+                    <Label Grid.Column="0"
+                           Text="{Binding Position, Converter={StaticResource millisecondsToTimeConverter}}"
+                           VerticalOptions="Center" />
+                    <Slider Grid.Column="1"
+                            x:Name="timeSlider"
+                            Value="{Binding Position}"
+                            Minimum="0"
+                            Maximum="{Binding Duration}"
+                            IsEnabled="{Binding IsPlaying}" />
+                    <Label Grid.Column="2"
+                           Text="{Binding Duration, Converter={StaticResource millisecondsToTimeConverter}}"
+                           VerticalOptions="Center" />
+                </Grid>
+            </StackLayout>
+
+            <!-- Play Stop Skip -->
+            <VerticalStackLayout Grid.Row="2"
+                                 HorizontalOptions="Center">
+                <HorizontalStackLayout Spacing="10">
+                    <Button Text="{Binding IsPlaying, Converter={StaticResource booleanToStopPlayConverter}}"
+                            Command="{Binding PlayStopCommand}"
+                            WidthRequest="100"
+                            HeightRequest="100"
+                            CornerRadius="50"
+                            BorderColor="Grey"
+                            BorderWidth="4" />
+                    <Button Text="Skip"
+                            Command="{Binding SkipCommand}"
+                            WidthRequest="80"
+                            HeightRequest="80"
+                            CornerRadius="50"
+                            BorderColor="Grey"
+                            BorderWidth="4" />
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+            <!-- Add Song -->
+            <VerticalStackLayout Grid.Row="3">
+                <Button Text="Add Songs"
+                        Clicked="openSongBtn_Clicked" />
+            </VerticalStackLayout>
+
+            <!-- Songs List -->
+            <CollectionView Grid.Row="4"
+                            ItemsSource="{Binding Songs}"
+                            HorizontalOptions="Center">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="local:Song">
+                        <Grid>
+                            <Label Text="{Binding Name}"
+                                   HorizontalOptions="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+    </ContentView.Content>
+</ContentView>

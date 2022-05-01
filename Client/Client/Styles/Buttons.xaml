@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+
+    <!-- Main styles -->
+    <Color x:Key="LightRedColor">#F05F6A</Color>
+    <Color x:Key="LightGreyColor">#AAA</Color>
+
+    <Style x:Key="RedLabel" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource LightRedColor}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+    </Style>
+
+    <Style x:Key="RedButton" TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource LightRedColor}" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="Shadow">
+            <Shadow Brush="red"
+                Offset="0,0"
+                Radius="3"
+                Opacity="1" />
+        </Setter>
+    </Style>
+
+    <Style x:Key="NormaButton" TargetType="Button">
+        <Setter Property="Background" Value="#ff8000" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="BorderColor" Value="Grey"/>
+        <Setter Property="Margin" Value="70, 0, 0, 0"/>
+    </Style>
+
+    <Style x:Key="voteButton" TargetType="Button">
+        <Setter Property="Background" Value="#ffb000" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="BorderColor" Value="Grey"/>
+        <Setter Property="Margin" Value="20, 0, 0, 0"/>
+        <Setter Property="WidthRequest" Value="290"/>
+    </Style>
+
+    <Style x:Key="leaveButton" TargetType="Button">
+        <Setter Property="Background" Value="#223333" />
+        <Setter Property="TextColor" Value="White" />
+        <Setter Property="CornerRadius" Value="6" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="BorderColor" Value="Grey"/>
+        <Setter Property="Margin" Value="60, 0, 0, 0"/>
+        <Setter Property="WidthRequest" Value="100"/>
+    </Style>
+
+    <!-- Default styles -->
+    <Color x:Key="PrimaryColor">Black</Color>
+    <Color x:Key="SecondaryColor">White</Color>
+
+    <Style TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource PrimaryColor}" />
+        <Setter Property="FontFamily" Value="RobotoRegular" />
+    </Style>
+
+    <Style TargetType="Button">
+        <Setter Property="TextColor" Value="{DynamicResource SecondaryColor}" />
+        <Setter Property="FontFamily" Value="RobotoRegular" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryColor}" />
+        <Setter Property="Padding" Value="14,10" />
+    </Style>
+    
+</ResourceDictionary>
