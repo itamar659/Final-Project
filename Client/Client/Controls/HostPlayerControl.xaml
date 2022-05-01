@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Client"
+             x:DataType="local:HostPlayerControl"
+             x:Class="Client.HostPlayerControl">
+    <ContentView.Content>
+        <VerticalStackLayout>
+            <Label Text="{Binding Name}" FontSize="30" />
+
+            <StackLayout Grid.Row="1"
+                         Padding="50, 0">
+                <Grid ColumnSpacing="10"
+                      ColumnDefinitions="auto, *, auto">
+                    <Label Grid.Column="0"
+                           Text="{Binding Position}"
+                           VerticalOptions="Center" />
+                    <Slider Grid.Column="1"
+                            x:Name="timeSlider"
+                            Value="{Binding Position}"
+                            Minimum="0"
+                            Maximum="{Binding Duration}"
+                            IsEnabled="False" />
+                    <Label Grid.Column="2"
+                           Text="{Binding Duration}"
+                           VerticalOptions="Center" />
+                </Grid>
+            </StackLayout>
+        </VerticalStackLayout>
+    </ContentView.Content>
+</ContentView>

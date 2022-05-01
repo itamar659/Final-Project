@@ -7,7 +7,7 @@ public partial class GuestLoginPage : ContentPage
 		InitializeComponent();
 	}
 
-    private async void Button_Clicked(object sender, EventArgs e)
+    private void Button_Clicked(object sender, EventArgs e)
     {
 		//Navigation.InsertPageBefore(new FindHostPage(entry.Text), Navigation.NavigationStack[0]);
 		//await Navigation.PopToRootAsync();

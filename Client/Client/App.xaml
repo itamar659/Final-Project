@@ -5,6 +5,6 @@
              x:Class="Client.App">
     <Application.Resources>
         <ResourceDictionary Source="Resources/Styles.xaml" />
-        <ResourceDictionary Source="Styles/Buttons.xaml" />
+        <ResourceDictionary Source="Styles/CustomStyles.xaml" />
     </Application.Resources>
 </Application>
