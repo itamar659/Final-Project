@@ -49,6 +49,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Fonts\Roboto-Bold - Copy.ttf" />
+	  <None Remove="Resources\Fonts\Roboto-Light - Copy.ttf" />
+	  <None Remove="Resources\Fonts\Roboto-Medium - Copy.ttf" />
+	  <None Remove="Resources\Fonts\Roboto-Regular - Copy.ttf" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Styles\Buttons.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
