@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Host.MainPage"
+             xmlns:local="clr-namespace:Host">
+
+    <Grid RowDefinitions="*, *">
+        <HorizontalStackLayout Grid.Row="0"
+                               HorizontalOptions="Center" >
+            <local:AudioPlayerControl />
+        </HorizontalStackLayout>
+
+        <VerticalStackLayout Grid.Row="1">
+            <Label Text="Total users" />
+            <Label Text="Active users" />
+            <Label Text="Session time" />
+            <Label Text="is session live" />
+            <Entry Text="session pin code" />
+            
+            <!-- Create a control that can be used for x number of votes -->
+            <VerticalStackLayout>
+                <Label Text="Last vote statistics:" />
+                <Label Text="A" />
+                <Label Text="B" />
+                <Label Text="C" />
+                <Label Text="D" />
+            </VerticalStackLayout>
+            
+            <Button Text="Start Session" />
+        </VerticalStackLayout>
+    </Grid>
+
+
+
+</ContentPage>
