@@ -61,7 +61,7 @@ public class JukeboxHostsController : ControllerBase
             return BadRequest();
         }
 
-        if (!JukeboxHostExists(host.Token))
+        if (JukeboxHostExists(host.Token))
         {
             return NoContent();
         }
