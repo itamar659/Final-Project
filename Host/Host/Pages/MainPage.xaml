@@ -2,21 +2,27 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Host.MainPage"
-             xmlns:local="clr-namespace:Host">
+             xmlns:local="clr-namespace:Host"
+             x:DataType="local:MainPageViewModel">
 
     <Grid RowDefinitions="*, *">
         <HorizontalStackLayout Grid.Row="0"
-                               HorizontalOptions="Center" >
+                               HorizontalOptions="Center">
             <local:AudioPlayerControl />
         </HorizontalStackLayout>
 
         <VerticalStackLayout Grid.Row="1">
-            <Label Text="Total users" />
-            <Label Text="Active users" />
-            <Label Text="Session time" />
-            <Label Text="is session live" />
-            <Entry Text="session pin code" />
-            
+            <Label Text="{Binding TotalUsers}" />
+            <Label Text="{Binding ActiveUsers}" />
+            <Label Text="{Binding SessionTime}" />
+            <Label Text="{Binding IsSessionLive}" />
+
+            <HorizontalStackLayout>
+                <Label Text="{Binding SessionPinCode}" />
+                <Button Text="Generate Pin Code"
+                        Command="{Binding GenerateSessionPinCodeCommand}" />
+            </HorizontalStackLayout>
+
             <!-- Create a control that can be used for x number of votes -->
             <VerticalStackLayout>
                 <Label Text="Last vote statistics:" />
@@ -25,11 +31,8 @@
                 <Label Text="C" />
                 <Label Text="D" />
             </VerticalStackLayout>
-            
-            <Button Text="Start Session" />
+
+            <Button Text="Start/Stop Session" Command="{Binding StartStopSessionCommand}" />
         </VerticalStackLayout>
     </Grid>
-
-
-
 </ContentPage>

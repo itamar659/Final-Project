@@ -3,7 +3,7 @@
 namespace Host;
 public class MainPageViewModel : BaseViewModel
 {
-    private static readonly TimeSpan SERVER_UPDATE_DELAY = TimeSpan.FromMilliseconds(1000);
+    public static readonly TimeSpan SERVER_UPDATE_DELAY = TimeSpan.FromMilliseconds(1000);
     private IServerAPI _serverAPI;
 
     public int TotalUsers { get; set; }
@@ -12,13 +12,15 @@ public class MainPageViewModel : BaseViewModel
 
     public bool IsSessionLive { get; set; }
 
+    public int SessionPinCode { get; set; }
+
     public TimeSpan SessionTime { get; set; }
 
     public ICommand StartStopSessionCommand { get; set; }
 
     public ICommand UpdateSongCommand { get; set; }
 
-    public ICommand SetSessionPinCodeCommand { get; set; }
+    public ICommand GenerateSessionPinCodeCommand { get; set; }
 
     public MainPageViewModel(IServerAPI serverAPI)
     {
@@ -32,26 +34,36 @@ public class MainPageViewModel : BaseViewModel
                 _serverAPI.StopSession();
 
             IsSessionLive = !IsSessionLive;
+            OnPropertyChanged(nameof(IsSessionLive));
         });
+
         UpdateSongCommand = new Command(() =>
         {
             _serverAPI.UpdateSong(new { });
         });
-        SetSessionPinCodeCommand = new Command(value =>
-        {
-            if (value is int intval)
-                _serverAPI.SetSessionPinCode(intval);
-        });
 
-        Device.StartTimer(SERVER_UPDATE_DELAY, fetchUpdate);
+        GenerateSessionPinCodeCommand = new Command(() =>
+        {
+            int code = generateCode();
+            SessionPinCode = code;
+            OnPropertyChanged(nameof(SessionPinCode));
+            _serverAPI.SetSessionPinCode(code);
+        });
     }
 
-    private bool fetchUpdate()
+    public void FetchViewUpdate()
     {
         TotalUsers = _serverAPI.FetchTotalUsers();
         ActiveUsers = _serverAPI.FetchActiveUsers();
         SessionTime = _serverAPI.FetchSessionTime();
 
-        return true;
+        OnPropertyChanged(nameof(TotalUsers));
+        OnPropertyChanged(nameof(ActiveUsers));
+        OnPropertyChanged(nameof(SessionTime));
+    }
+
+    private int generateCode()
+    {
+        return 1234;
     }
 }
