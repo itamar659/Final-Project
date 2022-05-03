@@ -6,15 +6,14 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Server.Models;
 
-namespace Server.Data
-{
-    public class ServerContext : DbContext
-    {
-        public ServerContext (DbContextOptions<ServerContext> options)
-            : base(options)
-        {
-        }
+namespace Server.Data;
 
-        public DbSet<Server.Models.JukeboxHost> JukeboxHost { get; set; }
+public class ServerContext : DbContext
+{
+    public ServerContext (DbContextOptions<ServerContext> options)
+        : base(options)
+    {
     }
+
+    public DbSet<Server.Models.JukeboxHost> JukeboxHost { get; set; }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Server.Models;
 
-public class JukeboxHost
+public record JukeboxHost
 {
     public int Id { get; set; }
     public string? Token { get; set; }
