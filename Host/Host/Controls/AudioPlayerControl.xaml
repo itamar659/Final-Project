@@ -2,7 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Host"
-             x:DataType="local:AudioPlayerViewModel"
+             x:DataType="local:AudioPlayerControl"
              x:Class="Host.AudioPlayerControl">
 
     <ContentView.Resources>
@@ -21,9 +21,9 @@
 
             <!-- Selected Song Name -->
             <Label Grid.Row="0"
+                   x:Name="songName"
                    FontSize="20"
-                   HorizontalTextAlignment="Center"
-                   Text="{Binding SongName}" />
+                   HorizontalTextAlignment="Center" />
 
             <!-- Time Line -->
             <StackLayout Grid.Row="1"
@@ -31,17 +31,16 @@
                 <Grid ColumnSpacing="10"
                       ColumnDefinitions="auto, *, auto">
                     <Label Grid.Column="0"
-                           Text="{Binding Position, Converter={StaticResource millisecondsToTimeConverter}}"
+                           Text="{Binding Path=Value, Source={x:Reference timeSlider},
+                                  Converter={StaticResource millisecondsToTimeConverter}}"
                            VerticalOptions="Center" />
                     <Slider Grid.Column="1"
                             x:Name="timeSlider"
-                            Value="{Binding Position}"
                             Minimum="0"
-                            Maximum="{Binding Duration}"
-                            IsEnabled="{Binding IsPlaying}"
                             MinimumWidthRequest="150" />
                     <Label Grid.Column="2"
-                           Text="{Binding Duration, Converter={StaticResource millisecondsToTimeConverter}}"
+                           Text="{Binding Path=Maximum, Source={x:Reference timeSlider},
+                                  Converter={StaticResource millisecondsToTimeConverter}}"
                            VerticalOptions="Center" />
                 </Grid>
             </StackLayout>
@@ -50,15 +49,16 @@
             <VerticalStackLayout Grid.Row="2"
                                  HorizontalOptions="Center">
                 <HorizontalStackLayout Spacing="10">
-                    <Button Text="{Binding IsPlaying, Converter={StaticResource booleanToStopPlayConverter}}"
-                            Command="{Binding PlayStopCommand}"
+                    <Button x:Name="playStopBtn"
+                            Text="Play"
+                            Clicked="playStopBtn_Clicked"
                             WidthRequest="100"
                             HeightRequest="100"
                             CornerRadius="50"
                             BorderColor="Grey"
                             BorderWidth="4" />
                     <Button Text="Skip"
-                            Command="{Binding SkipCommand}"
+                            Clicked="skipBtn_Clicked"
                             WidthRequest="80"
                             HeightRequest="80"
                             CornerRadius="50"
@@ -75,7 +75,7 @@
 
             <!-- Songs List -->
             <CollectionView Grid.Row="4"
-                            ItemsSource="{Binding Songs}"
+                            x:Name="songsCollection"
                             HorizontalOptions="Center">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="local:Song">

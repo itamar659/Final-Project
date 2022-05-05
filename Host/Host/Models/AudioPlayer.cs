@@ -4,10 +4,20 @@ namespace Host;
 
 public class AudioPlayer
 {
+    public enum PlayerState
+    {
+        Created,
+        Play,
+        Pause,
+        Stop,
+    }
+
     private readonly IAudioService _audioService;
     private readonly Playlist _playlist;
 
-    public bool IsPlaying { get; set; }
+    public bool IsPlaying => State == PlayerState.Play;
+
+    public PlayerState State { get; set; }
 
     public double Position => _audioService?.Position ?? 0;
 
@@ -24,6 +34,8 @@ public class AudioPlayer
         _audioService = audioService;
         _audioService.SongEnded += async (s, e) => { await NextAsync(); await PlayAsync(); };
         _playlist = new Playlist();
+
+        State = PlayerState.Created;
     }
 
     public async Task PlayAsync()
@@ -34,7 +46,7 @@ public class AudioPlayer
         await _audioService.SetSongAsync(_playlist.SelectedSong.Path);
         await _audioService.PlayAsync();
 
-        IsPlaying = true;
+        State = PlayerState.Play;
         SongStateChanged?.Invoke(this, EventArgs.Empty);
     }
 
@@ -42,7 +54,7 @@ public class AudioPlayer
     {
         await _audioService.PauseAsync();
 
-        IsPlaying = false;
+        State = PlayerState.Pause;
         SongStateChanged?.Invoke(this, EventArgs.Empty);
     }
 
@@ -50,7 +62,7 @@ public class AudioPlayer
     {
         await _audioService.StopAsync();
 
-        IsPlaying = false;
+        State = PlayerState.Stop;
         SongStateChanged?.Invoke(this, EventArgs.Empty);
     }
 
@@ -69,7 +81,10 @@ public class AudioPlayer
         });
 
         if (_playlist.Songs.Count == 1)
+        {
+            State = PlayerState.Stop;
             SongStateChanged?.Invoke(this, EventArgs.Empty);
+        }
     }
 
     public async Task PrevAsync()
@@ -79,7 +94,6 @@ public class AudioPlayer
 
         _playlist.PrevSong();
         await StopAsync();
-        SongStateChanged?.Invoke(this, EventArgs.Empty);
     }
 
     public async Task NextAsync()
@@ -89,7 +103,6 @@ public class AudioPlayer
 
         _playlist.NextSong();
         await StopAsync();
-        SongStateChanged?.Invoke(this, EventArgs.Empty);
     }
 
     private string nameFromPath(string path)
