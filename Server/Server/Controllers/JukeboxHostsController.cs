@@ -20,36 +20,32 @@ public class JukeboxHostsController : ControllerBase
     }
 
     [HttpGet(Name = "JukeboxHosts")]
-    public async Task<IEnumerable<JukeboxHostDTO>> GetJukeboxHost()
+    public async Task<ActionResult<JukeboxHostDto>> GetJukeboxHost(string token)
+    {
+        var jukeboxHost = await _context.JukeboxHost.FirstOrDefaultAsync(host => host.Token == token);
+        //var jukeboxHost = await _context.JukeboxHost.FindAsync(id);
+
+        if (jukeboxHost == null)
+            return NotFound();
+
+        return jukeboxHost.ToDTO();
+    }
+
+    // TODO: For testing only! should not be available to the outside world
+    [HttpGet("All")]
+    public async Task<IEnumerable<JukeboxHostDto>> All()
     {
         var hosts = await _context.JukeboxHost.ToListAsync();
 
         return hosts.Select(host => host.ToDTO());
     }
 
-    [HttpGet("{id}")]
-    public async Task<ActionResult<JukeboxHostDTO>> Details(int? id)
-    {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
-        var jukeboxHost = await _context.JukeboxHost.FindAsync(id);
-
-        if (jukeboxHost == null)
-        {
-            return NotFound();
-        }
-
-        return jukeboxHost.ToDTO();
-    }
-
+    // TODO: TESTING PERPUCES
     [HttpPost("Create")]
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     //[ValidateAntiForgeryToken]
-    public async Task<ActionResult<JukeboxHostDTO>> Create([Bind("Token")] CreateJukeboxHostDTO host)
+    public async Task<ActionResult<JukeboxHostDto>> Create([Bind("Token")] CreateJukeboxHostDto host)
     {
         if (!ModelState.IsValid)
         {
@@ -73,14 +69,14 @@ public class JukeboxHostsController : ControllerBase
 
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetJukeboxHost), new { Id = newHost.Entity.Id }, newHost.Entity.ToDTO());
+        return CreatedAtAction(nameof(GetJukeboxHost), new { Token = newHost.Entity.Token }, newHost.Entity.ToDTO());
     }
 
     [HttpPost("GenerateSessionKey")]
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     //[ValidateAntiForgeryToken]
-    public async Task<ActionResult<JukeboxHostDTO>> GenerateSessionKey([Bind("Id,Token")] EditJukeboxHost jukeboxHost)
+    public async Task<ActionResult<JukeboxHostDto>> GenerateSessionKey([Bind("Id,Token")] EditJukeboxHostDto jukeboxHost)
     {
         if (!ModelState.IsValid)
         {
@@ -122,7 +118,7 @@ public class JukeboxHostsController : ControllerBase
 
     [HttpPost("Delete")]
     //[ValidateAntiForgeryToken]
-    public async Task<ActionResult> DeleteConfirmed(EditJukeboxHost host)
+    public async Task<ActionResult> DeleteConfirmed(EditJukeboxHostDto host)
     {
         var jukeboxHost = await _context.JukeboxHost.FindAsync(host.Id);
 

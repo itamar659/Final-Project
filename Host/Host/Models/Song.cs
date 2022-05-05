@@ -1,4 +1,4 @@
-﻿namespace Host;
+﻿namespace Host.Models;
 
 public class Song
 {

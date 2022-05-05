@@ -2,7 +2,7 @@
 
 namespace Server.Dto;
 
-public record JukeboxHostDTO
+public record JukeboxHostDto
 {
     [Required]
     public int Id { get; set; }

@@ -1,7 +1,7 @@
 ﻿using Host.Services;
 using System.Collections.ObjectModel;
 
-namespace Host;
+namespace Host.Models;
 
 public class AudioPlayer
 {

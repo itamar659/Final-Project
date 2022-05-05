@@ -5,9 +5,9 @@ namespace Server.Services;
 
 public static class Extensions
 {
-    public static JukeboxHostDTO ToDTO(this JukeboxHost host)
+    public static JukeboxHostDto ToDTO(this JukeboxHost host)
     {
-        return new JukeboxHostDTO
+        return new JukeboxHostDto
         {
             Id = host.Id,
             Token = host.Token,

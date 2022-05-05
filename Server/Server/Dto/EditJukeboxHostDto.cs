@@ -2,7 +2,7 @@
 
 namespace Server.Dto;
 
-public class EditJukeboxHost
+public class EditJukeboxHostDto
 {
     [Required]
     public int Id { get; set; }

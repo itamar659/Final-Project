@@ -1,3 +1,4 @@
+using Host.Models;
 using Host.Services;
 
 namespace Host;

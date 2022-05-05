@@ -2,7 +2,7 @@
 
 namespace Server.Dto;
 
-public record CreateJukeboxHostDTO
+public record CreateJukeboxHostDto
 {
     [Required]
     public string? Token { get; set; }
