@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using Host.Services;
+using System.Windows.Input;
 
 namespace Host;
 public class MainPageViewModel : BaseViewModel

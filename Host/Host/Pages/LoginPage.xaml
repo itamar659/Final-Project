@@ -4,7 +4,8 @@
              x:Class="Host.LoginPage"
              xmlns:local="clr-namespace:Host"
              x:DataType="local:LoginViewModel"
-             Title="LoginPage">
+             Shell.NavBarIsVisible="False"
+             Shell.FlyoutBehavior="Disabled">
     <StackLayout>
         <Entry Placeholder="Token"
                Text="{Binding Token, Mode=OneWayToSource}"/>

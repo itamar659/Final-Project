@@ -1,4 +1,5 @@
-﻿using Windows.Media.Playback;
+﻿using Host.Services;
+using Windows.Media.Playback;
 
 namespace Host.Platforms.Windows;
 

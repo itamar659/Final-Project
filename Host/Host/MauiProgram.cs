@@ -1,4 +1,6 @@
-﻿namespace Host;
+﻿using Host.Services;
+
+namespace Host;
 
 public static class MauiProgram
 {

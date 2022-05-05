@@ -1,3 +1,5 @@
+using Host.Services;
+
 namespace Host;
 
 public partial class AudioPlayerControl : ContentView
@@ -137,8 +139,9 @@ public partial class AudioPlayerControl : ContentView
     /// <returns></returns>
     private Task addSongsAsync(IEnumerable<FileResult> files)
     {
-        foreach (var file in files)
-            _playerService.AddToPlaylist(file.FullPath);
+        if (files != null)
+            foreach (var file in files)
+                _playerService.AddToPlaylist(file.FullPath);
 
         return Task.CompletedTask;
     }

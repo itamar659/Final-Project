@@ -1,4 +1,4 @@
-﻿namespace Host;
+﻿namespace Host.Services;
 public interface IServerAPI
 {
     bool ConnectAsync(string token);

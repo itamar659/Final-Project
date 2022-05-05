@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using Host.Services;
+using System.Windows.Input;
 
 namespace Host;
 public class LoginViewModel : BaseViewModel
@@ -16,6 +17,7 @@ public class LoginViewModel : BaseViewModel
             OnPropertyChanged(nameof(ErrorMsgHolder));
         }
     }
+
     public ICommand LoginCommand { get; set; }
 
     public LoginViewModel(IServerAPI serverAPI)
@@ -24,12 +26,13 @@ public class LoginViewModel : BaseViewModel
         LoginCommand = new Command(connect);
     }
 
-    private void connect()
+    private async void connect()
     {
         ErrorMsgHolder = string.Empty;
 
         if (_serverAPI.ConnectAsync(Token))
         {
+            await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
         }
         else
         {
