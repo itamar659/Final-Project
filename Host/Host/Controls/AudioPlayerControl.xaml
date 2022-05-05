@@ -2,6 +2,7 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Host"
+             xmlns:models="clr-namespace:Host.Models"
              x:DataType="local:AudioPlayerControl"
              x:Class="Host.AudioPlayerControl">
 
@@ -78,7 +79,7 @@
                             x:Name="songsCollection"
                             HorizontalOptions="Center">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="local:Song">
+                    <DataTemplate x:DataType="models:Song">
                         <Grid>
                             <Label Text="{Binding Name}"
                                    HorizontalTextAlignment="Center"

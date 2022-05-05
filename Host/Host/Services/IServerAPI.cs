@@ -1,7 +1,7 @@
 ﻿namespace Host.Services;
-public interface IServerAPI
+public interface IServerApi : IDisposable
 {
-    bool ConnectAsync(string token);
+    Task<bool> ConnectAsync(string token);
     void StartSession();
     void StopSession();
     bool IsSessionLive();

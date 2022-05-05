@@ -17,7 +17,7 @@ public static class MauiProgram
 
 			.AddCustomServices();
 
-		builder.Services.AddSingleton<IServerAPI, DummyServerAPI>();
+		builder.Services.AddSingleton<IServerApi, DummyServerAPI>();
 
 		builder.Services.AddTransient<MainPageViewModel>();
 		builder.Services.AddTransient<LoginViewModel>();

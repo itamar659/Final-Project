@@ -20,6 +20,8 @@ public class JukeboxHostsController : ControllerBase
     }
 
     [HttpGet(Name = "JukeboxHosts")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResult<JukeboxHostDto>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<JukeboxHostDto>> GetJukeboxHost(string token)
     {
         var jukeboxHost = await _context.JukeboxHost.FirstOrDefaultAsync(host => host.Token == token);
@@ -28,7 +30,7 @@ public class JukeboxHostsController : ControllerBase
         if (jukeboxHost == null)
             return NotFound();
 
-        return jukeboxHost.ToDTO();
+        return Ok(jukeboxHost.ToDTO());
     }
 
     // TODO: For testing only! should not be available to the outside world

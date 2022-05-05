@@ -5,7 +5,7 @@ namespace Host;
 public class MainPageViewModel : BaseViewModel
 {
     public static readonly TimeSpan SERVER_UPDATE_DELAY = TimeSpan.FromMilliseconds(1000);
-    private IServerAPI _serverAPI;
+    private IServerApi _serverAPI;
 
     public int TotalUsers { get; set; }
 
@@ -23,7 +23,7 @@ public class MainPageViewModel : BaseViewModel
 
     public ICommand GenerateSessionPinCodeCommand { get; set; }
 
-    public MainPageViewModel(IServerAPI serverAPI)
+    public MainPageViewModel(IServerApi serverAPI)
     {
         _serverAPI = serverAPI;
 

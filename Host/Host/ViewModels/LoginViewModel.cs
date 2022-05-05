@@ -4,7 +4,7 @@ using System.Windows.Input;
 namespace Host;
 public class LoginViewModel : BaseViewModel
 {
-    private IServerAPI _serverAPI;
+    private IServerApi _serverAPI;
     private string _errorMsgHolder;
 
     public string Token { get; set; }
@@ -20,7 +20,7 @@ public class LoginViewModel : BaseViewModel
 
     public ICommand LoginCommand { get; set; }
 
-    public LoginViewModel(IServerAPI serverAPI)
+    public LoginViewModel(IServerApi serverAPI)
     {
         _serverAPI = serverAPI;
         LoginCommand = new Command(connect);
@@ -30,7 +30,7 @@ public class LoginViewModel : BaseViewModel
     {
         ErrorMsgHolder = string.Empty;
 
-        if (_serverAPI.ConnectAsync(Token))
+        if (await _serverAPI.ConnectAsync(Token))
         {
             await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
         }
