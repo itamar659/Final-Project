@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Host;
 internal class ServerlessApi : IServerApi
 {
-    private readonly string _apiBaseUrl = "https://csharp-project.azurewebsites.net/jukeboxhosts/";
+    private readonly string _apiBaseUrl = "https://csharp-project.azurewebsites.net/jukeboxhosts";
 
     private HttpClient _client;
 
@@ -28,7 +28,7 @@ internal class ServerlessApi : IServerApi
     {
         try
         {
-            var response = await _client.GetAsync(token);
+            var response = await _client.GetAsync($"?token={token}");
             if (response.IsSuccessStatusCode)
             {
                 var contentStr = await response.Content.ReadFromJsonAsync<JukeboxHostResponse>();
