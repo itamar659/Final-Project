@@ -15,6 +15,14 @@ public static class MauiProgram
 
 			.AddCustomServices();
 
+		builder.Services.AddSingleton<IServerAPI, DummyServerAPI>();
+
+		builder.Services.AddTransient<MainPageViewModel>();
+		builder.Services.AddTransient<LoginViewModel>();
+
+		builder.Services.AddSingleton<MainPage>();
+		builder.Services.AddTransient<LoginPage>();
+
 		return builder.Build();
 	}
 }

@@ -1,6 +1,7 @@
 ﻿namespace Host;
 public interface IServerAPI
 {
+    bool ConnectAsync(string token);
     void StartSession();
     void StopSession();
     bool IsSessionLive();

@@ -3,6 +3,11 @@
 namespace Host;
 public class DummyServerAPI : IServerAPI
 {
+    bool IServerAPI.ConnectAsync(string token)
+    {
+        return true;
+    }
+
     int IServerAPI.FetchActiveUsers()
     {
         return 0;
