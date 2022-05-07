@@ -27,20 +27,23 @@ public class MainPageViewModel : BaseViewModel
     {
         _serverAPI = serverAPI;
 
-        StartStopSessionCommand = new Command(() =>
+        StartStopSessionCommand = new Command(async () =>
         {
-            if (IsSessionLive)
-                _serverAPI.StartSession();
+            if (!IsSessionLive)
+                await _serverAPI.StartSessionAsync();
             else
-                _serverAPI.StopSession();
+                await _serverAPI.StopSessionAsync();
 
             IsSessionLive = !IsSessionLive;
+
+            IsSessionLive = _serverAPI.GetSessionKey() != string.Empty;
+
             OnPropertyChanged(nameof(IsSessionLive));
         });
 
         UpdateSongCommand = new Command(() =>
         {
-            _serverAPI.UpdateSong(new { });
+            _serverAPI.UpdateSongAsync(new { });
         });
 
         GenerateSessionPinCodeCommand = new Command(() =>
@@ -48,19 +51,19 @@ public class MainPageViewModel : BaseViewModel
             int code = generateCode();
             SessionPinCode = code;
             OnPropertyChanged(nameof(SessionPinCode));
-            _serverAPI.SetSessionPinCode(code);
+            _serverAPI.SetSessionPinCodeAsync(code);
         });
     }
 
     public void FetchViewUpdate()
     {
-        TotalUsers = _serverAPI.FetchTotalUsers();
-        ActiveUsers = _serverAPI.FetchActiveUsers();
-        SessionTime = _serverAPI.FetchSessionTime();
+        //TotalUsers = _serverAPI.FetchTotalUsers();
+        //ActiveUsers = _serverAPI.FetchActiveUsers();
+        //SessionTime = _serverAPI.FetchSessionTime();
 
-        OnPropertyChanged(nameof(TotalUsers));
-        OnPropertyChanged(nameof(ActiveUsers));
-        OnPropertyChanged(nameof(SessionTime));
+        //OnPropertyChanged(nameof(TotalUsers));
+        //OnPropertyChanged(nameof(ActiveUsers));
+        //OnPropertyChanged(nameof(SessionTime));
     }
 
     private int generateCode()

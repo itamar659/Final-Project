@@ -15,8 +15,15 @@ public class JukeboxSessionRequestHandler
 
     public async Task<JukeboxSession?> OpenSessionAsync(JukeboxHost host)
     {
+        JukeboxSession? session;
         if (host.SessionKey != NumberGenerator.Empty)
-            return null;
+        {
+            session = await GetSessionAsync(host.SessionKey);
+            if (session is not null)
+            {
+                return session;
+            }
+        }
 
         var key = NumberGenerator.Generate();
 
@@ -25,7 +32,7 @@ public class JukeboxSessionRequestHandler
             SessionKey = key,
         };
 
-        JukeboxSession session = new JukeboxSession
+        JukeboxSession newSession = new JukeboxSession
         {
             SessionKey = key,
         };
@@ -33,7 +40,7 @@ public class JukeboxSessionRequestHandler
         _context.Entry(host).State = EntityState.Detached;
 
         _context.Update(newHost);
-        var updated = _context.Add(session);
+        var updated = _context.Add(newSession);
 
         await _context.SaveChangesAsync();
 

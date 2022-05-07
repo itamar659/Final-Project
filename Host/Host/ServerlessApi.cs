@@ -12,9 +12,12 @@ using System.Threading.Tasks;
 namespace Host;
 internal class ServerlessApi : IServerApi
 {
-    private readonly string _apiBaseUrl = "https://csharp-project.azurewebsites.net/jukeboxhosts";
+    //private readonly string _apiBaseUrl = "https://csharp-project.azurewebsites.net/jukeboxhosts";
+    private readonly string _apiBaseUrl = "https://localhost:7230";
 
-    private HttpClient _client;
+    private readonly HttpClient _client;
+    private string _token;
+    private string _sessionKey;
 
     public ServerlessApi()
     {
@@ -22,25 +25,43 @@ internal class ServerlessApi : IServerApi
         {
             BaseAddress = new Uri(_apiBaseUrl)
         };
+
+        _token = string.Empty;
+        _sessionKey = string.Empty;
     }
 
-    async Task<bool> IServerApi.ConnectAsync(string token)
+    private async Task<T> getResponseOrDefault<T>(string url, object jsonObj)
     {
         try
         {
-            var response = await _client.GetAsync($"?token={token}");
-            if (response.IsSuccessStatusCode)
-            {
-                var contentStr = await response.Content.ReadFromJsonAsync<JukeboxHostResponse>();
+            var json = JsonSerializer.Serialize(jsonObj);
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
 
-                return true;
-            }
+            var response = await _client.PostAsync(url, data);
+
+            if (response.IsSuccessStatusCode)
+                return await response.Content.ReadFromJsonAsync<T>();
+
         }
         catch (Exception ex)
         {
             Debug.WriteLine(ex); // TODO: For Testing only, not for production
         }
-        return false;
+
+        return default;
+    }
+
+    async Task<bool> IServerApi.ConnectAsync(string password)
+    {
+        var obj = new { Password = password };
+        JukeboxHostResponse jukeboxHost = await getResponseOrDefault<JukeboxHostResponse>("/jukeboxhosts/connect", obj);
+
+        if (jukeboxHost is null)
+            return false;
+
+        _token = jukeboxHost.Token;
+
+        return true;
     }
 
     void IDisposable.Dispose()
@@ -48,48 +69,58 @@ internal class ServerlessApi : IServerApi
         _client.Dispose();
     }
 
-    int IServerApi.FetchActiveUsers()
+    async Task<int> IServerApi.FetchActiveUsers()
     {
-        throw new NotImplementedException();
+        return 0;
     }
 
-    object IServerApi.FetchLastVote()
+    async Task<object> IServerApi.FetchLastVote()
     {
-        throw new NotImplementedException();
+        return null;
     }
 
-    TimeSpan IServerApi.FetchSessionTime()
+    async Task<TimeSpan>  IServerApi.FetchSessionTime()
     {
-        throw new NotImplementedException();
+        return TimeSpan.Zero;
     }
 
-    int IServerApi.FetchTotalUsers()
+    async Task<int> IServerApi.FetchTotalUsers()
     {
-        throw new NotImplementedException();
+        return 0;
     }
 
-    bool IServerApi.IsSessionLive()
+    string IServerApi.GetSessionKey()
     {
-        throw new NotImplementedException();
+        return _sessionKey;
     }
 
-    void IServerApi.SetSessionPinCode(int pinCode)
+    async Task<bool> IServerApi.IsSessionLiveAsync()
     {
-        throw new NotImplementedException();
+        return false;
     }
 
-    void IServerApi.StartSession()
+    async Task IServerApi.SetSessionPinCodeAsync(int pinCode)
     {
-        throw new NotImplementedException();
     }
 
-    void IServerApi.StopSession()
+    async Task IServerApi.StartSessionAsync()
     {
-        throw new NotImplementedException();
+        var obj = new { Token = _token };
+        JukeboxSessionResponse jukeboxSession = await getResponseOrDefault<JukeboxSessionResponse>("/jukeboxhosts/OpenSession", obj);
+
+        if (jukeboxSession is not null)
+            _sessionKey = jukeboxSession.SessionKey;
     }
 
-    void IServerApi.UpdateSong(object song)
+    async Task IServerApi.StopSessionAsync()
     {
-        throw new NotImplementedException();
+        var obj = new { Token = _token };
+        await getResponseOrDefault<JukeboxSessionResponse>("/jukeboxhosts/CloseSession", obj);
+
+        _sessionKey = string.Empty;
+    }
+
+    async Task IServerApi.UpdateSongAsync(object song)
+    {
     }
 }
