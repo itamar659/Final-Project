@@ -1,5 +1,7 @@
 ﻿namespace Host.Models.Responses;
-public class JukeboxSessionResponse
+internal class JukeboxSessionResponse
 {
-    public string SessionKey { get; set; }
+    public int TotalUsers { get; set; }
+    public int ActiveUsers { get; set; }
+
 }

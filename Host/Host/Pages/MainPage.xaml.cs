@@ -8,7 +8,8 @@ public partial class MainPage : ContentPage
 
 		BindingContext = vm;
 
-		Dispatcher.DispatchDelayed(MainPageViewModel.SERVER_UPDATE_DELAY, vm.FetchViewUpdate);
+		// TODO: Will call it only once...
+		Dispatcher.DispatchDelayed(MainPageViewModel.SERVER_UPDATE_DELAY, vm.FetchViewUpdateAsync);
 	}
 }
 

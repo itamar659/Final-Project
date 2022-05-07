@@ -64,6 +64,28 @@ internal class ServerlessApi : IServerApi
         return true;
     }
 
+    async Task IServerApi.StartSessionAsync()
+    {
+        var obj = new { Token = _token };
+        JukeboxNewSessionResponse jukeboxSession = await getResponseOrDefault<JukeboxNewSessionResponse>("/jukeboxhosts/OpenSession", obj);
+
+        if (jukeboxSession is not null)
+            _sessionKey = jukeboxSession.SessionKey;
+    }
+
+    async Task IServerApi.StopSessionAsync()
+    {
+        var obj = new { Token = _token };
+        await getResponseOrDefault<JukeboxNewSessionResponse>("/jukeboxhosts/CloseSession", obj);
+
+        _sessionKey = string.Empty;
+    }
+
+    string IServerApi.GetSessionKey()
+    {
+        return _sessionKey;
+    }
+
     void IDisposable.Dispose()
     {
         _client.Dispose();
@@ -89,11 +111,6 @@ internal class ServerlessApi : IServerApi
         return 0;
     }
 
-    string IServerApi.GetSessionKey()
-    {
-        return _sessionKey;
-    }
-
     async Task<bool> IServerApi.IsSessionLiveAsync()
     {
         return false;
@@ -101,23 +118,6 @@ internal class ServerlessApi : IServerApi
 
     async Task IServerApi.SetSessionPinCodeAsync(int pinCode)
     {
-    }
-
-    async Task IServerApi.StartSessionAsync()
-    {
-        var obj = new { Token = _token };
-        JukeboxSessionResponse jukeboxSession = await getResponseOrDefault<JukeboxSessionResponse>("/jukeboxhosts/OpenSession", obj);
-
-        if (jukeboxSession is not null)
-            _sessionKey = jukeboxSession.SessionKey;
-    }
-
-    async Task IServerApi.StopSessionAsync()
-    {
-        var obj = new { Token = _token };
-        await getResponseOrDefault<JukeboxSessionResponse>("/jukeboxhosts/CloseSession", obj);
-
-        _sessionKey = string.Empty;
     }
 
     async Task IServerApi.UpdateSongAsync(object song)

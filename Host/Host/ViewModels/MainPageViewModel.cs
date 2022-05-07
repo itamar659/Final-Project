@@ -55,15 +55,16 @@ public class MainPageViewModel : BaseViewModel
         });
     }
 
-    public void FetchViewUpdate()
+    public async void FetchViewUpdateAsync()
     {
-        //TotalUsers = _serverAPI.FetchTotalUsers();
+
+        TotalUsers = await _serverAPI.FetchTotalUsers();
         //ActiveUsers = _serverAPI.FetchActiveUsers();
         //SessionTime = _serverAPI.FetchSessionTime();
 
-        //OnPropertyChanged(nameof(TotalUsers));
-        //OnPropertyChanged(nameof(ActiveUsers));
-        //OnPropertyChanged(nameof(SessionTime));
+        OnPropertyChanged(nameof(TotalUsers));
+        OnPropertyChanged(nameof(ActiveUsers));
+        OnPropertyChanged(nameof(SessionTime));
     }
 
     private int generateCode()
