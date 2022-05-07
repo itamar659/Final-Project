@@ -30,7 +30,16 @@ public class JukeboxHostsController : ControllerBase
     public async Task<ActionResult<JukeboxHostDto>> GetJukeboxHost(string token)
     {
         var jukeboxHost = await _context.JukeboxHost.FindAsync(token);
+        if (jukeboxHost == null)
+            return NotFound();
 
+        return Ok(jukeboxHost.ToDTO());
+    }
+
+    [HttpPost("Connect")]
+    public async Task<ActionResult<JukeboxHostDto>> Connect([Bind("Password")] ConnectJukeboxHostDto host)
+    {
+        var jukeboxHost = await _context.JukeboxHost.FirstOrDefaultAsync(h => h.Password == host.Password);
         if (jukeboxHost == null)
             return NotFound();
 
@@ -100,7 +109,7 @@ public class JukeboxHostsController : ControllerBase
 
     // TODO: TESTING PURPOSES
     [HttpPost("Create")]
-    public async Task<ActionResult<JukeboxHostDto>> Create([Bind("Password")] CreateJukeboxHostDto host)
+    public async Task<ActionResult<JukeboxHostDto>> Create([Bind("Password")] ConnectJukeboxHostDto host)
     {
         if (host is null)
             return BadRequest();
@@ -117,7 +126,7 @@ public class JukeboxHostsController : ControllerBase
 
     // TODO: TESTING PURPOSES
     [HttpPost("Delete")]
-    public async Task<ActionResult> DeleteConfirmed(CreateJukeboxHostDto host)
+    public async Task<ActionResult> DeleteConfirmed(ConnectJukeboxHostDto host)
     {
         var jukeboxHost = await _context.JukeboxHost.FirstOrDefaultAsync(h => h.Password == host.Password);
         if (jukeboxHost == null)

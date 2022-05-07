@@ -109,7 +109,7 @@ public class JukeboxClientsController : ControllerBase
         }
     }
 
-    // TODO: For testing only! should not be available to the outside world
+    // TODO: TESTING PURPOSES
     [HttpGet("All")]
     public async Task<IEnumerable<JukeboxClient>> All()
     {
@@ -118,4 +118,18 @@ public class JukeboxClientsController : ControllerBase
         return clients;
     }
 
+    // TODO: TESTING PURPOSES
+    [HttpPost("Delete")]
+    public async Task<ActionResult> DeleteConfirmed(JukeboxClient client)
+    {
+        var jukeboxClient = await _context.JukeboxClient.FirstOrDefaultAsync(c => c.Token == client.Token);
+        if (jukeboxClient == null)
+            return NotFound();
+
+        _context.Remove(jukeboxClient);
+
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
 }

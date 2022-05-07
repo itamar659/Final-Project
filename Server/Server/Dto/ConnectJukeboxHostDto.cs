@@ -2,7 +2,7 @@
 
 namespace Server.Dto;
 
-public record CreateJukeboxHostDto
+public record ConnectJukeboxHostDto
 {
     [Key]
     public string Password { get; set; } = string.Empty;
