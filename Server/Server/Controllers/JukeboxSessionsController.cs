@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Server.Data;
+using Server.Dto;
 using Server.Models;
+using Server.Services;
 
 namespace Server.Controllers;
 
@@ -20,6 +22,17 @@ public class JukeboxSessionsController : ControllerBase
     public JukeboxSessionsController(ServerContext context)
     {
         _context = context;
+    }
+
+    // TODO: Should be use request the token too in otder to follow one requests over time.
+    [HttpPost("GetSession")]
+    public async Task<ActionResult<SessionDto>> GetSession([Bind("SessionKey")] SessionDto sessionDto)
+    {
+        var session = await _context.FindAsync<JukeboxSession>(sessionDto.SessionKey);
+        if (session == null)
+            return NotFound();
+
+        return Ok(session.ToDto());
     }
 
     // TODO: For testing only

@@ -33,7 +33,7 @@ public class JukeboxHostsController : ControllerBase
         if (jukeboxHost == null)
             return NotFound();
 
-        return Ok(jukeboxHost.ToDTO());
+        return Ok(jukeboxHost.ToDto());
     }
 
     [HttpPost("Connect")]
@@ -43,7 +43,7 @@ public class JukeboxHostsController : ControllerBase
         if (jukeboxHost == null)
             return NotFound();
 
-        return Ok(jukeboxHost.ToDTO());
+        return Ok(jukeboxHost.ToDto());
     }
 
     [HttpPost("OpenSession")]
@@ -51,7 +51,7 @@ public class JukeboxHostsController : ControllerBase
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     //[ValidateAntiForgeryToken]
-    public async Task<ActionResult<JukeboxSession>> OpenSession([Bind("Token")] SessionJukeboxHostDto jukeboxHost)
+    public async Task<ActionResult<JukeboxSession>> OpenSession([Bind("Token")] SessionRequestJukeboxHostDto jukeboxHost)
     {
         //if (!ModelState.IsValid)
         //    return Unauthorized();
@@ -78,7 +78,7 @@ public class JukeboxHostsController : ControllerBase
     }
 
     [HttpPost("CloseSession")]
-    public async Task<ActionResult<JukeboxSession>> CloseSession([Bind("Token")] SessionJukeboxHostDto jukeboxHost)
+    public async Task<ActionResult<JukeboxSession>> CloseSession([Bind("Token")] SessionRequestJukeboxHostDto jukeboxHost)
     {
         var host = await _context.JukeboxHost.FindAsync(jukeboxHost.Token);
         if (host is null)
@@ -104,7 +104,7 @@ public class JukeboxHostsController : ControllerBase
     {
         var hosts = await _context.JukeboxHost.ToListAsync();
 
-        return hosts.Select(host => host.ToDTO());
+        return hosts.Select(host => host.ToDto());
     }
 
     // TODO: TESTING PURPOSES
@@ -121,7 +121,7 @@ public class JukeboxHostsController : ControllerBase
 
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetJukeboxHost), new { Token = newHost.Entity.Token }, newHost.Entity.ToDTO());
+        return CreatedAtAction(nameof(GetJukeboxHost), new { Token = newHost.Entity.Token }, newHost.Entity.ToDto());
     }
 
     // TODO: TESTING PURPOSES

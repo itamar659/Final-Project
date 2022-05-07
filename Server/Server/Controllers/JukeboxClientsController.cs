@@ -50,7 +50,7 @@ public class JukeboxClientsController : ControllerBase
     }
 
     [HttpPost("JoinSession")]
-    public async Task<ActionResult<JukeboxClient>> JoinSession([Bind("Token,SessionKey")] SessionJukeboxClientDto jukeboxClient)
+    public async Task<ActionResult<JukeboxClient>> JoinSession([Bind("Token,SessionKey")] SessionRequestJukeboxClientDto jukeboxClient)
     {
         if (!await _context.JukeboxClient.AnyAsync(c => c.Token == jukeboxClient.Token))
             return NotFound();
@@ -82,7 +82,7 @@ public class JukeboxClientsController : ControllerBase
     }
 
     [HttpPost("LeaveSession")]
-    public async Task<ActionResult<JukeboxClient>> LeaveSession([Bind("Token,SessionKey")] SessionJukeboxClientDto jukeboxClient)
+    public async Task<ActionResult<JukeboxClient>> LeaveSession([Bind("Token,SessionKey")] SessionRequestJukeboxClientDto jukeboxClient)
     {
         if (!await _context.JukeboxClient.AnyAsync(c => c.Token == jukeboxClient.Token))
             return NotFound();

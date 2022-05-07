@@ -2,7 +2,7 @@
 
 namespace Server.Dto;
 
-public class SessionJukeboxHostDto
+public class SessionRequestJukeboxHostDto
 {
     [Key]
     public string Token { get; set; } = string.Empty;

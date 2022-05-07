@@ -9,7 +9,7 @@ public record JukeboxSession
     [ForeignKey("JukeboxHost")]
     public string SessionKey { get; set; }
 
-    public string? HostName { get; set; }
+    public string? OwnerName { get; set; }
 
     public int ActiveUsers { get; set; }
 
