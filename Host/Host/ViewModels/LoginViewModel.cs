@@ -4,7 +4,7 @@ using System.Windows.Input;
 namespace Host;
 public class LoginViewModel : BaseViewModel
 {
-    private IServerApi _serverAPI;
+    private readonly IServerApi _serverAPI;
     private string _errorMsgHolder;
 
     public string Token { get; set; }

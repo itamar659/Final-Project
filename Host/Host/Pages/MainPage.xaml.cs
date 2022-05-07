@@ -6,10 +6,8 @@ public partial class MainPage : ContentPage
 	{
 		InitializeComponent();
 
+		vm.View = this;
 		BindingContext = vm;
-
-		// TODO: Will call it only once...
-		Dispatcher.DispatchDelayed(MainPageViewModel.SERVER_UPDATE_DELAY, vm.FetchViewUpdateAsync);
 	}
 }
 
