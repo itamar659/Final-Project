@@ -18,7 +18,7 @@ public class MainPageViewModel : BaseViewModel
 
     public bool IsSessionLive { get; set; } // not in use
 
-    public int SessionPinCode { get; set; } // not in use
+    public string SessionPinCode { get; set; } // not in use
 
     public TimeSpan SessionTime { get; set; } // not in use
 
@@ -26,7 +26,7 @@ public class MainPageViewModel : BaseViewModel
 
     public ICommand UpdateSongCommand { get; set; } // not in use
 
-    public ICommand GenerateSessionPinCodeCommand { get; set; } // not in use
+    public ICommand ChangeSessionPinCodeCommand { get; set; } // not in use
 
     public MainPageViewModel(IServerApi serverAPI)
     {
@@ -64,12 +64,9 @@ public class MainPageViewModel : BaseViewModel
             _serverAPI.UpdateSongAsync(new { });
         });
 
-        GenerateSessionPinCodeCommand = new Command(() =>
+        ChangeSessionPinCodeCommand = new Command(async () =>
         {
-            int code = generateCode();
-            SessionPinCode = code;
-            OnPropertyChanged(nameof(SessionPinCode));
-            _serverAPI.SetSessionPinCodeAsync(code);
+            await _serverAPI.ChangeSessionPinCodeAsync(SessionPinCode);
         });
     }
 
@@ -98,10 +95,5 @@ public class MainPageViewModel : BaseViewModel
 
         if (_fetchUpdates)
             View.Dispatcher.DispatchDelayed(SERVER_UPDATE_DELAY, FetchViewUpdateAsync);
-    }
-
-    private int generateCode()
-    {
-        return 1234;
     }
 }

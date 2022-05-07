@@ -18,9 +18,9 @@
             <Label Text="{Binding IsSessionLive}" />
 
             <HorizontalStackLayout>
-                <Label Text="{Binding SessionPinCode}" />
+                <Entry Text="{Binding SessionPinCode}" />
                 <Button Text="Generate Pin Code"
-                        Command="{Binding GenerateSessionPinCodeCommand}" />
+                        Command="{Binding ChangeSessionPinCodeCommand}" />
             </HorizontalStackLayout>
 
             <!-- Create a control that can be used for x number of votes -->

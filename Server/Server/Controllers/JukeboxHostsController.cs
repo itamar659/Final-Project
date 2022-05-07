@@ -51,7 +51,7 @@ public class JukeboxHostsController : ControllerBase
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     //[ValidateAntiForgeryToken]
-    public async Task<ActionResult<JukeboxSession>> OpenSession([Bind("Token")] SessionRequestJukeboxHostDto jukeboxHost)
+    public async Task<ActionResult<JukeboxSessionDto>> OpenSession([Bind("Token")] SessionRequestJukeboxHostDto jukeboxHost)
     {
         //if (!ModelState.IsValid)
         //    return Unauthorized();
@@ -66,7 +66,7 @@ public class JukeboxHostsController : ControllerBase
             if (session is null)
                 return NoContent();
 
-            return Ok(session);
+            return Ok(session.ToDto());
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -78,7 +78,7 @@ public class JukeboxHostsController : ControllerBase
     }
 
     [HttpPost("CloseSession")]
-    public async Task<ActionResult<JukeboxSession>> CloseSession([Bind("Token")] SessionRequestJukeboxHostDto jukeboxHost)
+    public async Task<ActionResult<JukeboxSessionDto>> CloseSession([Bind("Token")] SessionRequestJukeboxHostDto jukeboxHost)
     {
         var host = await _context.JukeboxHost.FindAsync(jukeboxHost.Token);
         if (host is null)
@@ -96,6 +96,31 @@ public class JukeboxHostsController : ControllerBase
 
             throw;
         }
+    }
+
+    [HttpPost("ChangePinCode")]
+    public async Task<ActionResult<bool>> ChangePinCode([Bind("Token,PinCode")] SessionRequestJukeboxHostDto jukeboxHost)
+    {
+        var host = await _context.JukeboxHost.FindAsync(jukeboxHost.Token);
+        if (host is null)
+            return NotFound(false);
+
+        try
+        {
+            await _jukeboxSessionRequestHandler.ChangePinCode(host, jukeboxHost.PinCode);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (await _context.JukeboxHost.FindAsync(jukeboxHost.Token) is null)
+                return NotFound(false);
+            
+            if (await _context.JukeboxSession.FindAsync(host.SessionKey) is null)
+                return NotFound(false);
+
+            throw;
+        }
+
+        return Ok(true);
     }
 
     // TODO: TESTING PURPOSES

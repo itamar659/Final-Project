@@ -9,6 +9,6 @@ public interface IServerApi : IDisposable
     string GetSessionKey(); // Host controller
     Task<JukeboxSessionResponse> FetchSessionUpdateAsync(); // Session controller
     Task<object> FetchLastVote(); // Session controller
-    Task SetSessionPinCodeAsync(int pinCode); // Host controller
+    Task<bool> ChangeSessionPinCodeAsync(string pinCode); // Host controller
     Task UpdateSongAsync(object song); // Host controller
 }

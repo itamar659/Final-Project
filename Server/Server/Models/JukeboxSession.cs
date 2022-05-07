@@ -9,6 +9,8 @@ public record JukeboxSession
     [ForeignKey("JukeboxHost")]
     public string SessionKey { get; set; }
 
+    public string PinCode { get; set; }
+
     public string? OwnerName { get; set; }
 
     public int ActiveUsers { get; set; }
@@ -24,5 +26,6 @@ public record JukeboxSession
     public JukeboxSession()
     {
         SessionKey = NumberGenerator.Empty;
+        PinCode = string.Empty;
     }
 }

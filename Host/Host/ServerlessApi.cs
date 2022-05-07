@@ -103,13 +103,15 @@ public class ServerlessApi : IServerApi
         return session;
     }
 
+    async Task<bool> IServerApi.ChangeSessionPinCodeAsync(string pinCode)
+    {
+        var obj = new { Token = _token, PinCode = pinCode };
+        return await postResponseOrDefault<bool>("/JukeboxHosts/ChangePinCode", obj);
+    }
+
     async Task<object> IServerApi.FetchLastVote()
     {
         return null;
-    }
-
-    async Task IServerApi.SetSessionPinCodeAsync(int pinCode)
-    {
     }
 
     async Task IServerApi.UpdateSongAsync(object song)

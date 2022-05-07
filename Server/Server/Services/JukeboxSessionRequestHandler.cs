@@ -69,6 +69,27 @@ public class JukeboxSessionRequestHandler
         await _context.SaveChangesAsync();
     }
 
+    public async Task ChangePinCode(JukeboxHost host, string pinCode)
+    {
+        if (host.SessionKey == NumberGenerator.Empty)
+            return;
+
+        var session = await GetSessionAsync(host.SessionKey);
+        if (session is null)
+            return;
+
+        JukeboxSession newSession = session with
+        {
+            PinCode = pinCode,
+        };
+
+        _context.Entry(session).State = EntityState.Detached;
+
+        _context.Update(newSession);
+
+        await _context.SaveChangesAsync();
+    }
+
     public async Task JoinSessionAsync(JukeboxClient client, JukeboxSession session)
     {
         if (client.SessionKey != NumberGenerator.Empty)
@@ -124,6 +145,6 @@ public class JukeboxSessionRequestHandler
 
     public async Task<JukeboxSession?> GetSessionAsync(string sessionKey)
     {
-        return await _context.FindAsync<JukeboxSession>(sessionKey);
+        return await _context.JukeboxSession.FindAsync(sessionKey);
     }
 }
