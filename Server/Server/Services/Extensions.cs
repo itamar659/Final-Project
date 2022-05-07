@@ -9,7 +9,6 @@ public static class Extensions
     {
         return new JukeboxHostDto
         {
-            Id = host.Id,
             Token = host.Token,
             SessionKey = host.SessionKey
         };

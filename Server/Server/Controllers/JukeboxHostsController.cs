@@ -14,18 +14,22 @@ public class JukeboxHostsController : ControllerBase
 {
     private readonly ServerContext _context;
 
+    private readonly JukeboxSessionRequestHandler _jukeboxSessionRequestHandler;
+
     public JukeboxHostsController(ServerContext context)
     {
         _context = context;
+
+        _jukeboxSessionRequestHandler = new JukeboxSessionRequestHandler(context);
     }
 
     [HttpGet(Name = "JukeboxHosts")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResult<JukeboxHostDto>))]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    // TODO: Add ProducesResponseType as needed to each method
+    //[ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ActionResult<JukeboxHostDto>))]
+    //[ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<JukeboxHostDto>> GetJukeboxHost(string token)
     {
-        var jukeboxHost = await _context.JukeboxHost.FirstOrDefaultAsync(host => host.Token == token);
-        //var jukeboxHost = await _context.JukeboxHost.FindAsync(id);
+        var jukeboxHost = await _context.JukeboxHost.FindAsync(token);
 
         if (jukeboxHost == null)
             return NotFound();
@@ -33,7 +37,59 @@ public class JukeboxHostsController : ControllerBase
         return Ok(jukeboxHost.ToDTO());
     }
 
-    // TODO: For testing only! should not be available to the outside world
+    [HttpPost("OpenSession")]
+    // TODO: Add valudation to post requests
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    //[ValidateAntiForgeryToken]
+    public async Task<ActionResult<JukeboxSession>> OpenSession([Bind("Token")] SessionJukeboxHostDto jukeboxHost)
+    {
+        //if (!ModelState.IsValid)
+        //    return Unauthorized();
+
+        var host = await _context.JukeboxHost.FindAsync(jukeboxHost.Token);
+        if (host is null)
+            return NotFound();
+
+        try
+        {
+            JukeboxSession session = await _jukeboxSessionRequestHandler.OpenSessionAsync(host);
+            if (session is null)
+                return NoContent();
+
+            return Ok(session);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (await _context.JukeboxHost.FindAsync(jukeboxHost.Token) is null)
+                return NotFound();
+
+            throw;
+        }
+    }
+
+    [HttpPost("CloseSession")]
+    public async Task<ActionResult<JukeboxSession>> CloseSession([Bind("Token")] SessionJukeboxHostDto jukeboxHost)
+    {
+        var host = await _context.JukeboxHost.FindAsync(jukeboxHost.Token);
+        if (host is null)
+            return NotFound();
+
+        try
+        {
+            await _jukeboxSessionRequestHandler.CloseSession(host);
+            return Ok();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (await _context.JukeboxHost.FindAsync(jukeboxHost.Token) is null)
+                return NotFound();
+
+            throw;
+        }
+    }
+
+    // TODO: TESTING PURPOSES
     [HttpGet("All")]
     public async Task<IEnumerable<JukeboxHostDto>> All()
     {
@@ -42,117 +98,35 @@ public class JukeboxHostsController : ControllerBase
         return hosts.Select(host => host.ToDTO());
     }
 
-    // TODO: TESTING PERPUCES
+    // TODO: TESTING PURPOSES
     [HttpPost("Create")]
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    //[ValidateAntiForgeryToken]
-    public async Task<ActionResult<JukeboxHostDto>> Create([Bind("Token")] CreateJukeboxHostDto host)
+    public async Task<ActionResult<JukeboxHostDto>> Create([Bind("Password")] CreateJukeboxHostDto host)
     {
-        if (!ModelState.IsValid)
-        {
-            return Unauthorized();
-        }
-
-        if (host == null)
-        {
+        if (host is null)
             return BadRequest();
-        }
 
-        if (JukeboxHostExists(host.Token))
-        {
-            return NoContent();
-        }
+        if (await _context.JukeboxHost.AnyAsync(h => h.Password == host.Password))
+            return Unauthorized();
 
-        var newHost = _context.Add(new JukeboxHost
-        {
-            Token = host.Token,
-        });
+        var newHost = _context.Add(new JukeboxHost(host.Password));
 
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetJukeboxHost), new { Token = newHost.Entity.Token }, newHost.Entity.ToDTO());
     }
 
-    [HttpPost("GenerateSessionKey")]
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    //[ValidateAntiForgeryToken]
-    public async Task<ActionResult<JukeboxHostDto>> GenerateSessionKey([Bind("Id,Token")] EditJukeboxHostDto jukeboxHost)
-    {
-        if (!ModelState.IsValid)
-        {
-            return Unauthorized();
-        }
-
-        if (!JukeboxHostExists(jukeboxHost.Id, jukeboxHost.Token))
-        {
-            return NotFound();
-        }
-
-        try
-        {
-            JukeboxHost newHost = new JukeboxHost
-            {
-                Id = jukeboxHost.Id,
-                Token = jukeboxHost.Token,
-                SessionKey = SessionKeyGenerator.Generate()
-            };
-
-            _context.Update(newHost);
-
-            await _context.SaveChangesAsync();
-
-            return newHost.ToDTO();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!JukeboxHostExists(jukeboxHost.Id, jukeboxHost.Token))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
-    }
-
+    // TODO: TESTING PURPOSES
     [HttpPost("Delete")]
-    //[ValidateAntiForgeryToken]
-    public async Task<ActionResult> DeleteConfirmed(EditJukeboxHostDto host)
+    public async Task<ActionResult> DeleteConfirmed(CreateJukeboxHostDto host)
     {
-        var jukeboxHost = await _context.JukeboxHost.FindAsync(host.Id);
-
+        var jukeboxHost = await _context.JukeboxHost.FirstOrDefaultAsync(h => h.Password == host.Password);
         if (jukeboxHost == null)
-        {
             return NotFound();
-        }
 
-        if (host.Token != jukeboxHost.Token)
-        {
-            return Unauthorized();
-        }
-
-        _context.JukeboxHost.Remove(jukeboxHost);
+        _context.Remove(jukeboxHost);
 
         await _context.SaveChangesAsync();
 
         return NoContent();
-    }
-
-    private bool JukeboxHostExists(int id)
-    {
-        return _context.JukeboxHost.Any(e => e.Id == id);
-    }
-
-    private bool JukeboxHostExists(string token)
-    {
-        return _context.JukeboxHost.Any(e => e.Token == token);
-    }
-
-    private bool JukeboxHostExists(int id, string token)
-    {
-        return _context.JukeboxHost.Any(e => e.Id == id && e.Token == token);
     }
 }

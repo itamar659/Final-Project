@@ -16,4 +16,8 @@ public class ServerContext : DbContext
     }
 
     public DbSet<Server.Models.JukeboxHost> JukeboxHost { get; set; }
+
+    public DbSet<Server.Models.JukeboxSession> JukeboxSession { get; set; }
+
+    public DbSet<Server.Models.JukeboxClient> JukeboxClient { get; set; }
 }
