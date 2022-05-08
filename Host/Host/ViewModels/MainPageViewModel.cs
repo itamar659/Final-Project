@@ -1,5 +1,7 @@
-﻿using Host.Models.Responses;
+﻿using Host.Models;
+using Host.Models.Responses;
 using Host.Services;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Host;
@@ -18,7 +20,7 @@ public class MainPageViewModel : BaseViewModel
 
     public bool IsSessionLive { get; set; } // not in use
 
-    public string SessionPinCode { get; set; } // not in use
+    public string SessionPinCode { get; set; }
 
     public TimeSpan SessionTime { get; set; } // not in use
 
@@ -26,11 +28,17 @@ public class MainPageViewModel : BaseViewModel
 
     public ICommand UpdateSongCommand { get; set; } // not in use
 
-    public ICommand ChangeSessionPinCodeCommand { get; set; } // not in use
+    public ICommand ChangeSessionPinCodeCommand { get; set; }
+    public ICommand CreatePollCommand { get; set; }
+    public ICommand RemovePollCommand { get; set; }
+
+    public ObservableCollection<PollOption> PollOptions { get; set; }
 
     public MainPageViewModel(IServerApi serverAPI)
     {
         _serverAPI = serverAPI;
+
+        PollOptions = new ObservableCollection<PollOption>();
 
         StartStopSessionCommand = new Command(async () =>
         {
@@ -68,6 +76,16 @@ public class MainPageViewModel : BaseViewModel
         {
             await _serverAPI.ChangeSessionPinCodeAsync(SessionPinCode);
         });
+
+        CreatePollCommand = new Command(async () =>
+        {
+            await _serverAPI.CreatePollAsync();
+        });
+
+        RemovePollCommand = new Command(async () =>
+        {
+            await _serverAPI.RemovePollAsync();
+        });
     }
 
     public void StartFetchUpdates()
@@ -86,6 +104,14 @@ public class MainPageViewModel : BaseViewModel
         JukeboxSessionResponse sessionResponse = await _serverAPI.FetchSessionUpdateAsync();
         if (sessionResponse == null)
             return;
+
+        PollResponse pollResponse = await _serverAPI.FetchPollAsync();
+        if (pollResponse != null)
+        {
+            PollOptions.Clear();
+            foreach (var item in pollResponse.Options)
+                PollOptions.Add(item);
+        }
 
         TotalUsers = sessionResponse.TotalUsers;
         ActiveUsers = sessionResponse.ActiveUsers;

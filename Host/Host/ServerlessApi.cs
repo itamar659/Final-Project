@@ -1,4 +1,6 @@
-﻿using Host.Models.Responses;
+﻿using Host.Models;
+using Host.Models.Requests;
+using Host.Models.Responses;
 using Host.Services;
 using System;
 using System.Collections.Generic;
@@ -109,9 +111,47 @@ public class ServerlessApi : IServerApi
         return await postResponseOrDefault<bool>("/JukeboxHosts/ChangePinCode", obj);
     }
 
-    async Task<object> IServerApi.FetchLastVote()
+    async Task<PollResponse> IServerApi.FetchPollAsync()
     {
-        return null;
+        var obj = new { SessionKey = _sessionKey };
+        List<PollOption> poll = await postResponseOrDefault<List<PollOption>>("/Poll/GetPoll", obj);
+
+        if (poll == null)
+            return null;
+
+        return new PollResponse
+        {
+             Options = poll
+        };
+    }
+
+    async Task<bool> IServerApi.CreatePollAsync()
+    {
+        var obj = new PollRequest
+        {
+            Token = _token,
+            Options = new List<PollOption>
+            {
+                new PollOption
+                {
+                    Id = 1,
+                    Name = "a",
+                },
+                new PollOption
+                {
+                    Id = 2,
+                    Name = "b",
+                },
+            }
+        };
+
+        return await postResponseOrDefault<bool>("/Poll/Create", obj);
+    }
+
+    async Task<bool> IServerApi.RemovePollAsync()
+    {
+        var obj = new { Token = _token };
+        return await postResponseOrDefault<bool>("/Poll/Remove", obj);
     }
 
     async Task IServerApi.UpdateSongAsync(object song)
