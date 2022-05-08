@@ -5,12 +5,13 @@ namespace Server.Models;
 
 public record PollOption
 {
+    [Key]
+    public int Id { get; set; }
+
     [ForeignKey("JukeboxSession")]
     public string SessionKey { get; set; }
 
-    [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    public int Id { get; set; }
+    public int Option { get; set; }
 
     public string Name { get; set; }
 

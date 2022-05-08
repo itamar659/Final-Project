@@ -88,11 +88,17 @@ namespace Server.Migrations
             modelBuilder.Entity("Server.Models.PollOption", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Option")
+                        .HasColumnType("int");
 
                     b.Property<string>("SessionKey")
                         .IsRequired()

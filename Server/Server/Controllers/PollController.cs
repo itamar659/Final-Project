@@ -33,6 +33,7 @@ public class PollController : ControllerBase
         if (host.SessionKey == NumberGenerator.Empty)
             return NotFound();
 
+        var f = await _context.PollOption.AnyAsync(p => p.SessionKey == host.SessionKey);
         if (await _context.PollOption.AnyAsync(p => p.SessionKey == host.SessionKey))
             return Unauthorized();
 
@@ -40,7 +41,7 @@ public class PollController : ControllerBase
         {
             PollOption pollOption = new PollOption
             {
-                Id = option.Id,
+                Option = option.Id,
                 SessionKey = host.SessionKey,
                 Name = option.Name,
                 Votes = 0
@@ -85,7 +86,7 @@ public class PollController : ControllerBase
         if (client.SessionKey == NumberGenerator.Empty)
             return NotFound();
 
-        var pollOption = await _context.PollOption.FirstOrDefaultAsync(option => option.SessionKey == client.SessionKey && option.Id == votePoll.OptionId);
+        var pollOption = await _context.PollOption.FirstOrDefaultAsync(option => option.SessionKey == client.SessionKey && option.Option == votePoll.OptionId);
         if (pollOption == null)
             return Unauthorized();
 
@@ -103,11 +104,14 @@ public class PollController : ControllerBase
         return Ok();
     }
 
-    [HttpGet("GetPoll")]
-    public async Task<ActionResult<IEnumerable<PollOption>>> GetPoll(string sessionKey)
+    [HttpPost("GetPoll")]
+    public async Task<ActionResult<IEnumerable<PollOption>>> GetPoll([Bind("SessionKey")] SessionDto session)
     {
+        if (session.SessionKey == NumberGenerator.Empty || session.SessionKey == null)
+            return NotFound();
+
         // WARNING: Where method is not async
-        var pollOption = _context.PollOption.Where(option => option.SessionKey == sessionKey);
+        var pollOption = _context.PollOption.Where(option => option.SessionKey == session.SessionKey);
         if (pollOption.Count() <= 0)
             return Unauthorized(null);
 

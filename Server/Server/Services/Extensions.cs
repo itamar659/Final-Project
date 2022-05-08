@@ -18,6 +18,7 @@ public static class Extensions
     {
         return new JukeboxSessionDto
         {
+            SessionKey = session.SessionKey,
             OwnerName = session.OwnerName,
             ActiveUsers = session.ActiveUsers,
             TotalUsers = session.TotalUsers,

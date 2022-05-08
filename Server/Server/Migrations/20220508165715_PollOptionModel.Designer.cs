@@ -11,7 +11,7 @@ using Server.Data;
 namespace Server.Migrations
 {
     [DbContext(typeof(ServerContext))]
-    [Migration("20220508154317_PollOptionModel")]
+    [Migration("20220508165715_PollOptionModel")]
     partial class PollOptionModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -90,11 +90,17 @@ namespace Server.Migrations
             modelBuilder.Entity("Server.Models.PollOption", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Option")
+                        .HasColumnType("int");
 
                     b.Property<string>("SessionKey")
                         .IsRequired()

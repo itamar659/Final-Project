@@ -12,8 +12,10 @@ namespace Server.Migrations
                 name: "PollOption",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     SessionKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Option = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Votes = table.Column<int>(type: "int", nullable: false)
                 },
