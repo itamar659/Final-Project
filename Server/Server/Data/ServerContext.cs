@@ -20,4 +20,6 @@ public class ServerContext : DbContext
     public DbSet<Server.Models.JukeboxSession> JukeboxSession { get; set; }
 
     public DbSet<Server.Models.JukeboxClient> JukeboxClient { get; set; }
+
+    public DbSet<Server.Models.PollOption> PollOption { get; set; }
 }

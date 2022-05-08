@@ -142,7 +142,7 @@ public class JukeboxHostsController : ControllerBase
         if (await _context.JukeboxHost.AnyAsync(h => h.Password == host.Password))
             return Unauthorized();
 
-        var newHost = _context.Add(new JukeboxHost(host.Password));
+        var newHost = await _context.AddAsync(new JukeboxHost(host.Password));
 
         await _context.SaveChangesAsync();
 

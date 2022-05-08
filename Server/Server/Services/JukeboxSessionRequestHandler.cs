@@ -40,7 +40,7 @@ public class JukeboxSessionRequestHandler
         _context.Entry(host).State = EntityState.Detached;
 
         _context.Update(newHost);
-        var updated = _context.Add(newSession);
+        var updated = await _context.AddAsync(newSession);
 
         await _context.SaveChangesAsync();
 

@@ -42,7 +42,7 @@ public class JukeboxClientsController : ControllerBase
     [HttpPost("Create")]
     public async Task<ActionResult<JukeboxClient>> Create()
     {
-        var newClient = _context.Add(new JukeboxClient());
+        var newClient = await _context.AddAsync(new JukeboxClient());
 
         await _context.SaveChangesAsync();
 
