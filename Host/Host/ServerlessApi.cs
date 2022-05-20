@@ -15,7 +15,7 @@ namespace Host;
 public class ServerlessApi : IServerApi
 {
     //private readonly string _apiBaseUrl = "https://csharp-project.azurewebsites.net/jukeboxhosts";
-    private readonly string _apiBaseUrl = "https://localhost:7230";
+    private readonly string _apiBaseUrl = "http://10.0.2.2:5230";
 
     private readonly HttpClient _client;
     private string _token;
