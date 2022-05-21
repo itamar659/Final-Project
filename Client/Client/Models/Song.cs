@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Client.Models
 {
-    internal class Song
+    public class Song
     {
+        public string Path { get; set; }
+        public string Name { get; set; }
     }
 }

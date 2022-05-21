@@ -1,4 +1,6 @@
-﻿namespace Client;
+﻿using Client.Services;
+
+namespace Client;
 
 public static class MauiProgram
 {
@@ -13,6 +15,14 @@ public static class MauiProgram
 				fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
 			});
 
-		return builder.Build();
+        builder.Services.AddSingleton<IServerApi, ServerlessApi>();
+
+        //builder.Services.AddTransient<MainPageViewModel>();
+        builder.Services.AddTransient<LoginViewModel>();
+
+        builder.Services.AddSingleton<MainPage>();
+        builder.Services.AddTransient<LoginPage>();
+
+        return builder.Build();
 	}
 }

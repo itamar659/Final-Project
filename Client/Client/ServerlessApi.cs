@@ -55,7 +55,7 @@ namespace Client
         async Task<bool> IServerApi.ConnectAsync(string password)
         {
             var obj = new { Password = password };
-            JukeboxClientResponse jukeboxHost = await postResponseOrDefault<JukeboxClientResponse>("/JukeboxHosts/Connect", obj);
+            JukeboxClientResponse jukeboxHost = await postResponseOrDefault<JukeboxClientResponse>("/JukeboxClients/Connect", obj);
 
             if (jukeboxHost is null)
                 return false;
@@ -68,7 +68,7 @@ namespace Client
         async Task<bool> IServerApi.OpenSessionAsync()
         {
             var obj = new { Token = _token };
-            JukeboxNewSessionResponse jukeboxSession = await postResponseOrDefault<JukeboxNewSessionResponse>("/JukeboxHosts/OpenSession", obj);
+            JukeboxNewSessionResponse jukeboxSession = await postResponseOrDefault<JukeboxNewSessionResponse>("/JukeboxClients/OpenSession", obj);
 
             if (jukeboxSession is null)
                 return false;
@@ -81,7 +81,7 @@ namespace Client
         async Task IServerApi.CloseSessionAsync()
         {
             var obj = new { Token = _token };
-            await postResponseOrDefault<JukeboxNewSessionResponse>("/JukeboxHosts/CloseSession", obj);
+            await postResponseOrDefault<JukeboxNewSessionResponse>("/JukeboxClients/CloseSession", obj);
 
             _sessionKey = string.Empty;
         }

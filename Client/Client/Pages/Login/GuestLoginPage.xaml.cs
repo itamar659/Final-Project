@@ -2,9 +2,12 @@ namespace Client;
 
 public partial class GuestLoginPage : ContentPage
 {
+
 	public GuestLoginPage()
 	{
 		InitializeComponent();
+
+		BindingContext = new LoginViewModel(new ServerlessApi());
 	}
 
     private void Button_Clicked(object sender, EventArgs e)

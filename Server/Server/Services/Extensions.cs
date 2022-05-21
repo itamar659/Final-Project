@@ -13,6 +13,14 @@ public static class Extensions
             SessionKey = host.SessionKey
         };
     }
+    public static JukeboxClientDto ToDto(this JukeboxClient client)
+    {
+        return new JukeboxClientDto
+        {
+            Token = client.Token,
+            SessionKey = client.SessionKey
+        };
+    }
 
     public static JukeboxSessionDto ToDto(this JukeboxSession session)
     {
