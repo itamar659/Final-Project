@@ -20,7 +20,7 @@ public static class MauiProgram
         builder.Services.AddTransient<MainPageViewModel>();
         builder.Services.AddTransient<GuestLoginViewModel>();
         builder.Services.AddTransient<FindHostPageViewModel>();
-        builder.Services.AddTransient<Pages.Host.HostViewModel>();
+        builder.Services.AddTransient<HostViewModel>();
 
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddTransient<GuestLoginPage>();

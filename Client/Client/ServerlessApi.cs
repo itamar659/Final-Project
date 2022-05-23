@@ -74,9 +74,9 @@ public class ServerlessApi : IServerApi
         return true;
     }
 
-    async Task<bool> IServerApi.JoinSessionAsync()
+    async Task<bool> IServerApi.JoinSessionAsync(string ownerName)
     {
-        var obj = new { Token = _token };
+        var obj = new { Token = _token, OwnerName = ownerName };
         JukeboxJoinSessionResponse jukeboxSession = await postResponseOrDefault<JukeboxJoinSessionResponse>("/JukeboxClients/JoinSession", obj);
 
         if (jukeboxSession is null)
@@ -100,7 +100,7 @@ public class ServerlessApi : IServerApi
         _client.Dispose();
     }
 
-    async Task<JukeboxSessionResponse> IServerApi.FetchSessionUpdateAsync()
+    async Task<JukeboxSessionResponse> IServerApi.FetchSessionDetailsAsync()
     {
         var obj = new { SessionKey = _sessionKey };
         JukeboxSessionResponse session = await postResponseOrDefault<JukeboxSessionResponse>("/JukeboxSessions/GetSession", obj);

@@ -1,24 +1,28 @@
-using Client.Pages.Host;
-
 namespace Client;
 
 public partial class HostPage : ContentPage
 {
+    private HostViewModel _vm;
+
     public HostPage(HostViewModel vm)
     {
         InitializeComponent();
 
         // Bad Initialize. Only for Practice.
         // TODO: Add Host Object inorder to make it more expendabily
-        vm.Host = "Clara";
-        vm.Song = "Kendrick Lamar: ADHD";
-        vm.ActiveUsers = "542";
-        vm.Genre = "Pop & Rock";
 
+        _vm = vm;
         BindingContext = vm;
     }
 
-    private async void Button_Clicked(object sender, EventArgs e)
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        Dispatcher.DispatchDelayed(TimeSpan.Zero, _vm.FetchSessionDetails);
+    }
+
+    private async void JoinSession_Clicked(object sender, EventArgs e)
     {
         string result = await DisplayPromptAsync("2-Way Authentication", "Enter Host's personal pincode. for further information please contact the host.", keyboard: Keyboard.Numeric);
 
@@ -32,5 +36,4 @@ public partial class HostPage : ContentPage
             await DisplayAlert("Error", "Wrong Password. please try again.", "OK");
         }
     }
-
 }

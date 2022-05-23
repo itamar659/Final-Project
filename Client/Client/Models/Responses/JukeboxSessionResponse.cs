@@ -1,13 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Client.Models.Responses;
-
+﻿namespace Client.Models.Responses;
 public class JukeboxSessionResponse
 {
-    public Song currentSong { get; set; }
-    public DateTime songTimeToFinish { get; set; } // TODO: think of better way
+    public string SessionKey { get; set; }
+
+    public string OwnerName { get; set; }
+
+    public int ActiveUsers { get; set; }
+
+    public int TotalUsers { get; set; }
+
+    public string SongName { get; set; }
+
+    public double SongDuration { get; set; }
+
+    public double SongPosition { get; set; }
 }

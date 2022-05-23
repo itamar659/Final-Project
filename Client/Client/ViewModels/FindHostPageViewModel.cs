@@ -27,7 +27,12 @@ public class FindHostPageViewModel : BaseViewModel
         _serverApi = serverApi;
         AvailableSessions = new ObservableCollection<string>();
 
-        ViewHostPageCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(HostPage)));
+        ViewHostPageCommand = new Command(async () => {
+
+            if (await _serverApi.JoinSessionAsync("[OWNER_NAME]"))
+                await Shell.Current.GoToAsync($"{nameof(HostPage)}?SessionHostName=[OWNER_NAME]");
+
+            });
 
         updateAvailableSessions();
     }

@@ -1,5 +1,3 @@
-using Client.Pages.Host;
-
 namespace Client;
 
 public partial class HostHomePage : ContentPage
@@ -10,10 +8,6 @@ public partial class HostHomePage : ContentPage
 
         // Bad Initialize. Only for Practice.
         // TODO: Add Host Object inorder to make it more expendabily
-        vm.Host = "Clara";
-        vm.Song = "Kendrick Lamar: ADHD";
-        vm.ActiveUsers = "542";
-        vm.Genre = "Pop & Rock";
 
         BindingContext = vm;
     }

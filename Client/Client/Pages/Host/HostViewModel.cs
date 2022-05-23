@@ -1,48 +1,68 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
+﻿using Client.Models.Responses;
+using Client.Services;
+using System.Windows.Input;
 
-namespace Client.Pages.Host;
+namespace Client;
 
-public class HostViewModel : INotifyPropertyChanged
+[QueryProperty(nameof(SessionHostName), nameof(SessionHostName))]
+public class HostViewModel : BaseViewModel
 {
+    private readonly IServerApi _serverApi;
+
+    private string _sessionHostName;
+    public string SessionHostName
+    {
+        get { return _sessionHostName; }
+        set
+        {
+            _sessionHostName = value;
+            OnPropertyChanged(nameof(SessionHostName));
+        }
+    }
+
     private string _host;
     public string Host
     {
-        get { return _host.ToUpper() + " Bar"; }
-        set => _host = value;
+        get { return _host; }
+        set
+        {
+            _host = value;
+            OnPropertyChanged(nameof(Host));
+        }
     }
 
     private string _imgUrl;
     public string ImageUrl
     {
         get { return _imgUrl; }
-        set => _imgUrl = value;
+        set
+        {
+            _imgUrl = value;
+            OnPropertyChanged(nameof(ImageUrl));
+        }
     }
 
     private string _genre;
     public string Genre
     {
-        get { return _genre.ToString(); }
-        set => _genre = value;
+        get { return _genre; }
+        set
+        {
+            _genre = value;
+            OnPropertyChanged(nameof(Genre));
+        }
     }
 
-    private string _activeUsers;
-    public string ActiveUsers
+    private int _activeUsers;
+    public int ActiveUsers
     {
-        get { return _activeUsers + ": users"; }
-        set => _activeUsers = value;
+        get { return _activeUsers; }
+        set
+        {
+            _activeUsers = value;
+            OnPropertyChanged(nameof(ActiveUsers));
+        }
     }
-
-    public string SessionTime
-    {
-        //Todo: Format the DateTime
-        get { return "2:54:49 Hours"; }
-    }
-
 
     private string _song;
     public string Song
@@ -51,18 +71,28 @@ public class HostViewModel : INotifyPropertyChanged
         set
         {
             _song = value;
-            UpdateSong(value);
+            OnPropertyChanged(nameof(Song));
         }
     }
 
-    private void UpdateSong(string value)
+    public string SessionTime
     {
-        RaisePropertyChanged(nameof(Song));
+        //Todo: Format the DateTime
+        get { return "2:54:49 Hours"; }
     }
 
-    public event PropertyChangedEventHandler PropertyChanged;
-    private void RaisePropertyChanged(string v)
+    public HostViewModel(IServerApi serverApi)
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(v));
+        _serverApi = serverApi;
+    }
+
+    public async void FetchSessionDetails()
+    {
+        JukeboxSessionResponse details = await _serverApi.FetchSessionDetailsAsync();
+
+        Host = details.OwnerName;
+        Song = details.SongName;
+        ActiveUsers = details.ActiveUsers;
+        Genre = "Not Implemented Yet";
     }
 }

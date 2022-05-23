@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Client"
              x:Class="Client.HostPage"
+             x:DataType="local:HostViewModel"
              Title="HostPage"
              BackgroundColor="White">
 
@@ -41,7 +42,7 @@
     
     <local:MainTemplate>
         <local:MainTemplate.PageContent>
-            <StackLayout>
+            <StackLayout BackgroundColor="White">
                 <Label Style="{StaticResource TitleStyle}"
                        Text="{Binding Host}" />
                 <Image Source="Images/image_holder.png"
@@ -106,7 +107,7 @@
                     <Button Grid.Column="1"
                             Text="Enter the Party"
                             Style="{StaticResource NormaButton}"
-                            Clicked="Button_Clicked" />
+                            Clicked="JoinSession_Clicked" />
                 </Grid>
             </StackLayout>
         </local:MainTemplate.PageContent>
