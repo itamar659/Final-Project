@@ -82,31 +82,34 @@ public class JukeboxClientsController : ControllerBase
     }
 
     [HttpPost("JoinSession")]
-    public async Task<ActionResult<JukeboxClient>> JoinSession([Bind("Token,SessionKey")] SessionRequestJukeboxClientDto jukeboxClient)
+    public async Task<ActionResult<JukeboxClient>> JoinSession([Bind("Token,OwnerName")] SessionRequestJukeboxClientDto jukeboxClient)
     {
         if (!await _context.JukeboxClient.AnyAsync(c => c.Token == jukeboxClient.Token))
             return NotFound();
 
-        if (!await _context.JukeboxSession.AnyAsync(s => s.SessionKey == jukeboxClient.SessionKey))
-            return NotFound();
+        var session = await _context.JukeboxSession
+            .Where(h => h.OwnerName == jukeboxClient.OwnerName)
+            .FirstOrDefaultAsync();
 
-        if (jukeboxClient.SessionKey == NumberGenerator.Empty)
+        if (session == null)
             return NotFound();
 
         var client = await _context.FindAsync<JukeboxClient>(jukeboxClient.Token);
-        var session = await _context.FindAsync<JukeboxSession>(jukeboxClient.SessionKey);
 
         try
         {
+            if (client.SessionKey != NumberGenerator.Empty)
+                await _jukeboxSessionRequestHandler.LeaveSessionAsync(client);
+
             await _jukeboxSessionRequestHandler.JoinSessionAsync(client, session);
-            return Ok();
+            return Ok(session.ToDto());
         }
         catch (DbUpdateConcurrencyException)
         {
             if (!await _context.JukeboxClient.AnyAsync(c => c.Token == jukeboxClient.Token))
                 return NotFound();
 
-            if (!await _context.JukeboxSession.AnyAsync(s => s.SessionKey == jukeboxClient.SessionKey))
+            if (!await _context.JukeboxSession.AnyAsync(s => s.OwnerName == jukeboxClient.OwnerName))
                 return NotFound();
 
             throw;
@@ -114,7 +117,7 @@ public class JukeboxClientsController : ControllerBase
     }
 
     [HttpPost("LeaveSession")]
-    public async Task<ActionResult<JukeboxClient>> LeaveSession([Bind("Token,SessionKey")] SessionRequestJukeboxClientDto jukeboxClient)
+    public async Task<ActionResult<JukeboxClient>> LeaveSession([Bind("Token")] SessionRequestJukeboxClientDto jukeboxClient)
     {
         if (!await _context.JukeboxClient.AnyAsync(c => c.Token == jukeboxClient.Token))
             return NotFound();
@@ -129,12 +132,6 @@ public class JukeboxClientsController : ControllerBase
         catch (DbUpdateConcurrencyException)
         {
             if (!await _context.JukeboxClient.AnyAsync(c => c.Token == jukeboxClient.Token))
-                return NotFound();
-
-            if (!await _context.JukeboxSession.AnyAsync(s => s.SessionKey == jukeboxClient.SessionKey))
-                return NotFound();
-
-            if (jukeboxClient.SessionKey == NumberGenerator.Empty)
                 return NotFound();
 
             throw;

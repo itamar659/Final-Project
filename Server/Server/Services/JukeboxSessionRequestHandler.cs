@@ -93,7 +93,7 @@ public class JukeboxSessionRequestHandler
     public async Task JoinSessionAsync(JukeboxClient client, JukeboxSession session)
     {
         if (client.SessionKey != NumberGenerator.Empty)
-            await LeaveSessionAsync(client);
+            return;
 
         JukeboxSession newSession = session with
         {

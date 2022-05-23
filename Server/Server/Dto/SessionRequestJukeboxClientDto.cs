@@ -7,5 +7,6 @@ public record SessionRequestJukeboxClientDto
     [Key]
     public string Token { get; set; } = string.Empty;
 
-    public string SessionKey { get; set; } = NumberGenerator.Empty;
+    [Required]
+    public string OwnerName { get; set; }
 }
