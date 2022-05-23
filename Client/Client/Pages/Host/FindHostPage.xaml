@@ -18,16 +18,16 @@
                 <Label Text="Find a Host:" />
                 <Entry Placeholder="Host Name"
                        x:Name="entry" />
-                
-                <!--<CollectionView ItemsSource="{Binding AvailableHosts}">
+
+                <CollectionView ItemsSource="{Binding AvailableSessions}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid>
-                                <Label Text="{Binding InviterName}" />
+                                <Label Text="{Binding .}" />
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
-                </CollectionView>-->
+                </CollectionView>
                 
                 <Grid ColumnDefinitions="*, *">
                     <Button Grid.Column="1"

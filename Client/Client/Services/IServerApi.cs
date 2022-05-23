@@ -9,11 +9,12 @@ namespace Client.Services;
 
 public interface IServerApi : IDisposable
 {
-    Task<bool> ConnectAsync(string password); // [X] Host controller
-    Task<bool> OpenSessionAsync(); // [X] Host controller
-    Task CloseSessionAsync(); // [X] Host controller
-    string GetSessionKey(); // [X] Host controller
+    Task<bool> LoginAsync(string password);
+    Task<bool> AnonymousLoginAsync(string username);
+    Task<bool> JoinSessionAsync();
+    Task LeaveSessionAsync();
     Task<JukeboxSessionResponse> FetchSessionUpdateAsync();
+    Task<List<string>> FetchAvailableSessionsAsync();
 
     // ADD voting
 }

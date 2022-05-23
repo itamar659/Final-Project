@@ -10,15 +10,15 @@
     <local:MainTemplate PageTitle="Enjoy Music Your Way">
         <local:MainTemplate.PageContent>
             <StackLayout Spacing="20">
-                <Entry Placeholder="Temporary Password:"
+                <Entry Placeholder="Display Username"
                        x:Name="entry"
-                       Text="{Binding Password, Mode=OneWayToSource}"
+                       Text="{Binding Username, Mode=OneWayToSource}"
                        Margin="30, 0, 0, 0" />
                 <Grid ColumnDefinitions="*, *">
                     <Button Grid.Column="1"
                             Text="Join"
                             Style="{StaticResource RedButton}"
-                            Command="{Binding LoginCommand}" />
+                            Command="{Binding AnonymousLoginCommand}" />
                 </Grid>
                 <Label Text="{Binding ErrorMsgHolder}" />
             </StackLayout>

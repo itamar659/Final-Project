@@ -9,7 +9,7 @@ public class GuestLoginViewModel : BaseViewModel
 
     private string _errorMsgHolder;
 
-    public string Password { get; set; }
+    public string Username { get; set; }
     public string ErrorMsgHolder
     {
         get => _errorMsgHolder;
@@ -20,19 +20,19 @@ public class GuestLoginViewModel : BaseViewModel
         }
     }
 
-    public ICommand LoginCommand { get; set; }
+    public ICommand AnonymousLoginCommand { get; set; }
 
     public GuestLoginViewModel(IServerApi serverAPI)
     {
         _serverApi = serverAPI;
-        LoginCommand = new Command(connect);
+        AnonymousLoginCommand = new Command(connect);
     }
 
     private async void connect()
     {
         ErrorMsgHolder = string.Empty;
 
-        if (await _serverApi.ConnectAsync(Password))
+        if (await _serverApi.AnonymousLoginAsync(Username))
         {
             await Shell.Current.GoToAsync(nameof(FindHostPage));
         }

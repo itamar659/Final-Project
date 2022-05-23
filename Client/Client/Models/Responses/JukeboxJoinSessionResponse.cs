@@ -1,8 +1,6 @@
 ﻿namespace Client.Models.Responses;
 
-public class JukeboxClientResponse
+public class JukeboxJoinSessionResponse
 {
-    public string Token { get; set; }
-
     public string SessionKey { get; set; }
 }

@@ -1,13 +1,9 @@
 ﻿using Client.Models.Responses;
 using Client.Services;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Client;
 
@@ -52,10 +48,10 @@ public class ServerlessApi : IServerApi
         return default;
     }
 
-    async Task<bool> IServerApi.ConnectAsync(string password)
+    async Task<bool> IServerApi.LoginAsync(string password)
     {
         var obj = new { Password = password };
-        JukeboxClientResponse jukeboxHost = await postResponseOrDefault<JukeboxClientResponse>("/JukeboxClients/Connect", obj);
+        JukeboxClientResponse jukeboxHost = await postResponseOrDefault<JukeboxClientResponse>("/JukeboxClients/Login", obj);
 
         if (jukeboxHost is null)
             return false;
@@ -65,10 +61,23 @@ public class ServerlessApi : IServerApi
         return true;
     }
 
-    async Task<bool> IServerApi.OpenSessionAsync()
+    async Task<bool> IServerApi.AnonymousLoginAsync(string username)
+    {
+        var obj = new { Username = username };
+        JukeboxClientResponse jukeboxHost = await postResponseOrDefault<JukeboxClientResponse>("/JukeboxClients/AnonymousLogin", obj);
+
+        if (jukeboxHost is null)
+            return false;
+
+        _token = jukeboxHost.Token;
+
+        return true;
+    }
+
+    async Task<bool> IServerApi.JoinSessionAsync()
     {
         var obj = new { Token = _token };
-        JukeboxNewSessionResponse jukeboxSession = await postResponseOrDefault<JukeboxNewSessionResponse>("/JukeboxClients/OpenSession", obj);
+        JukeboxJoinSessionResponse jukeboxSession = await postResponseOrDefault<JukeboxJoinSessionResponse>("/JukeboxClients/JoinSession", obj);
 
         if (jukeboxSession is null)
             return false;
@@ -78,17 +87,12 @@ public class ServerlessApi : IServerApi
         return true;
     }
 
-    async Task IServerApi.CloseSessionAsync()
+    async Task IServerApi.LeaveSessionAsync()
     {
         var obj = new { Token = _token };
-        await postResponseOrDefault<JukeboxNewSessionResponse>("/JukeboxClients/CloseSession", obj);
+        await postResponseOrDefault<JukeboxJoinSessionResponse>("/JukeboxClients/LeaveSession", obj);
 
         _sessionKey = string.Empty;
-    }
-
-    string IServerApi.GetSessionKey()
-    {
-        return _sessionKey;
     }
 
     void IDisposable.Dispose()
@@ -104,4 +108,10 @@ public class ServerlessApi : IServerApi
         return session;
     }
 
+    async Task<List<string>> IServerApi.FetchAvailableSessionsAsync()
+    {
+        List<string> sessionNames = await postResponseOrDefault<List<string>>("/JukeboxSessions/AvailableSessions", null);
+
+        return sessionNames;
+    }
 }

@@ -1,11 +1,15 @@
-﻿using System.Windows.Input;
+﻿using Client.Services;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace Client;
 public class FindHostPageViewModel : BaseViewModel
 {
+    private readonly IServerApi _serverApi;
     private string _name;
 
-    public string Password { get; set; }
+    public ObservableCollection<string> AvailableSessions { get; }
+
     public string WelcomeMessage
     {
         get => _name;
@@ -18,8 +22,25 @@ public class FindHostPageViewModel : BaseViewModel
 
     public ICommand ViewHostPageCommand { get; set; }
 
-    public FindHostPageViewModel()
+    public FindHostPageViewModel(IServerApi serverApi)
     {
+        _serverApi = serverApi;
+        AvailableSessions = new ObservableCollection<string>();
+
         ViewHostPageCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(HostPage)));
+
+        updateAvailableSessions();
+    }
+
+    private async void updateAvailableSessions()
+    {
+        List<string> availableSessions = await _serverApi.FetchAvailableSessionsAsync();
+
+        if (availableSessions == null)
+            return;
+
+        AvailableSessions.Clear();
+        foreach (var sessionName in availableSessions)
+            AvailableSessions.Add(sessionName);
     }
 }
