@@ -80,6 +80,8 @@ public class JukeboxHostsController : ControllerBase
     [HttpPost("CloseSession")]
     public async Task<ActionResult<JukeboxSessionDto>> CloseSession([Bind("Token")] SessionRequestJukeboxHostDto jukeboxHost)
     {
+        // TODO: Remove the active polls
+
         var host = await _context.JukeboxHost.FindAsync(jukeboxHost.Token);
         if (host is null)
             return NotFound();
