@@ -26,13 +26,21 @@ public class JukeboxSessionsController : ControllerBase
 
     // TODO: Should be use request the token too in otder to follow one requests over time.
     [HttpPost("GetSession")]
-    public async Task<ActionResult<SessionDto>> GetSession([Bind("SessionKey")] SessionDto sessionDto)
+    public async Task<ActionResult<JukeboxSessionDto>> GetSession([Bind("SessionKey")] SessionDto sessionDto)
     {
         var session = await _context.FindAsync<JukeboxSession>(sessionDto.SessionKey);
         if (session == null)
             return NotFound();
 
         return Ok(session.ToDto());
+    }
+
+    [HttpPost("AvailableSessions")]
+    public async Task<ActionResult<SessionDto>> AvailableSessions()
+    {
+        return Ok(await _context.JukeboxSession
+            .Select(s => s.OwnerName)
+            .ToListAsync());
     }
 
     // TODO: For testing only

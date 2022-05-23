@@ -27,5 +27,7 @@ public record JukeboxSession
     {
         SessionKey = NumberGenerator.Empty;
         PinCode = string.Empty;
+
+        OwnerName = "[OWNER_NAME]";
     }
 }

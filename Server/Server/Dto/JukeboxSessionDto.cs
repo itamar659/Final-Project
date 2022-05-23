@@ -3,6 +3,7 @@
 public class JukeboxSessionDto
 {
     public string SessionKey { get; set; }
+
     public string? OwnerName { get; set; }
 
     public int ActiveUsers { get; set; }

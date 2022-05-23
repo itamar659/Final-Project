@@ -28,8 +28,8 @@ public class JukeboxClientsController : ControllerBase
         _jukeboxSessionRequestHandler = new JukeboxSessionRequestHandler(context);
     }
 
-    [HttpGet(Name = "JukeboxClients")]
-    public async Task<ActionResult<JukeboxClient>> GetJukeboxHost(string token)
+    [HttpGet(Name = "JukeboxClient")]
+    public async Task<ActionResult<JukeboxClient>> JukeboxClient(string token)
     {
         var jukeboxHost = await _context.JukeboxClient.FindAsync(token);
 
@@ -39,8 +39,8 @@ public class JukeboxClientsController : ControllerBase
         return Ok(jukeboxHost);
     }
 
-    [HttpPost("Connect")]
-    public async Task<ActionResult<JukeboxClientDto>> Connect([Bind("Password")] ConnectJukeboxClientDto client)
+    [HttpPost("Login")]
+    public async Task<ActionResult<JukeboxClientDto>> Login([Bind("Password")] LoginJukeboxClientDto client)
     {
         var jukeboxClient = await _context.JukeboxClient.FirstOrDefaultAsync(h => h.Password == client.Password);
         if (jukeboxClient == null)
@@ -49,20 +49,36 @@ public class JukeboxClientsController : ControllerBase
         return Ok(jukeboxClient.ToDto());
     }
 
-    [HttpPost("Create")]
-    public async Task<ActionResult<JukeboxClientDto>> Create([Bind("Password")] ConnectJukeboxClientDto client)
+    [HttpPost("AnonymousLogin")]
+    public async Task<ActionResult<JukeboxClientDto>> AnonymousLogin([Bind("Username")] AnonymousLoginJukeboxClientDto client)
     {
+        // TODO: Change the stupid logic
+
         if (client is null)
             return BadRequest();
 
-        if (await _context.JukeboxClient.AnyAsync(c => c.Password == client.Password))
-            return Unauthorized();
+        var jukeboxClient = await _context.JukeboxClient.FirstOrDefaultAsync(c => c.Password == client.Username);
+        if (jukeboxClient != null)
+            return Ok(jukeboxClient.ToDto());
+
+        var newClient = await _context.AddAsync(new JukeboxClient(client.Username));
+
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(JukeboxClient), new { Token = newClient.Entity.Token }, newClient.Entity);
+    }
+
+    [HttpPost("Create")]
+    public async Task<ActionResult<JukeboxClientDto>> Create([Bind("Password")] LoginJukeboxClientDto client)
+    {
+        if (client is null)
+            return BadRequest();
 
         var newClient = await _context.AddAsync(new JukeboxClient(client.Password));
 
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetJukeboxHost), new { Token = newClient.Entity.Token }, newClient.Entity);
+        return CreatedAtAction(nameof(JukeboxClient), new { Token = newClient.Entity.Token }, newClient.Entity);
     }
 
     [HttpPost("JoinSession")]
