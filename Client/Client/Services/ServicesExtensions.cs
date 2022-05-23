@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.Services
-{
-    public static class ServicesExtensions
-    {
-    }
+namespace Client.Services;
 
+public static class ServicesExtensions
+{
 }
+

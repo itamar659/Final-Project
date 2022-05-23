@@ -18,6 +18,5 @@ public partial class LoginPage : ContentPage
 
 	private void LoginBtn_Clicked(object sender, EventArgs e)
 	{
-		App.Current.MainPage = new NavigationPage(new FindHostPage("Test Username"));
 	}
 }

@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.Models
+namespace Client.Models;
+
+public class Song
 {
-    public class Song
-    {
-        public string Path { get; set; }
-        public string Name { get; set; }
-    }
+    public string Path { get; set; }
+    public string Name { get; set; }
 }

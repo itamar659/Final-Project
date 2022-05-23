@@ -1,28 +1,11 @@
-﻿using System.Windows.Input;
+﻿namespace Client;
 
-namespace Client
+public partial class MainPage : ContentPage
 {
-    public partial class MainPage : ContentPage
+    public MainPage(MainPageViewModel vm)
     {
-        public ICommand SignInCommand { get; set; }
+        InitializeComponent();
 
-        public ICommand GuestLoginCommand { get; set; }
-
-        public MainPage()
-        {
-            InitializeComponent();
-
-            SignInCommand = new Command(async () => await Navigation.PushAsync(new LoginPage()));
-            GuestLoginCommand = new Command(async () => await Navigation.PushAsync(new GuestLoginPage()));
-
-            BindingContext = this;
-		}
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-
-            // auto login if token available?
-        }
+        BindingContext = vm;
 	}
 }

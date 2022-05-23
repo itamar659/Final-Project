@@ -3,16 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Client"
              x:Class="Client.GuestLoginPage"
-             x:DataType="local:LoginViewModel"
+             x:DataType="local:GuestLoginViewModel"
              Title="GuestLoginPage"
              BackgroundColor="White"
              Shell.FlyoutBehavior="Disabled">
     <local:MainTemplate PageTitle="Enjoy Music Your Way">
         <local:MainTemplate.PageContent>
             <StackLayout Spacing="20">
-                <Entry Placeholder="Username"
+                <Entry Placeholder="Temporary Password:"
                        x:Name="entry"
-                       Text="{Binding Token, Mode=OneWayToSource}"
+                       Text="{Binding Password, Mode=OneWayToSource}"
                        Margin="30, 0, 0, 0" />
                 <Grid ColumnDefinitions="*, *">
                     <Button Grid.Column="1"

@@ -31,7 +31,7 @@ public class JukeboxClientsController : ControllerBase
     [HttpGet(Name = "JukeboxClients")]
     public async Task<ActionResult<JukeboxClient>> GetJukeboxHost(string token)
     {
-        var jukeboxHost = await _context.JukeboxHost.FindAsync(token);
+        var jukeboxHost = await _context.JukeboxClient.FindAsync(token);
 
         if (jukeboxHost == null)
             return NotFound();
@@ -42,10 +42,6 @@ public class JukeboxClientsController : ControllerBase
     [HttpPost("Connect")]
     public async Task<ActionResult<JukeboxClientDto>> Connect([Bind("Password")] ConnectJukeboxClientDto client)
     {
-        if (client.Password == "1234")
-        {
-            return Ok(new JukeboxClient("1234").ToDto());
-        }
         var jukeboxClient = await _context.JukeboxClient.FirstOrDefaultAsync(h => h.Password == client.Password);
         if (jukeboxClient == null)
             return NotFound();
@@ -59,7 +55,7 @@ public class JukeboxClientsController : ControllerBase
         if (client is null)
             return BadRequest();
 
-        if (await _context.JukeboxHost.AnyAsync(h => h.Password == client.Password))
+        if (await _context.JukeboxClient.AnyAsync(c => c.Password == client.Password))
             return Unauthorized();
 
         var newClient = await _context.AddAsync(new JukeboxClient(client.Password));

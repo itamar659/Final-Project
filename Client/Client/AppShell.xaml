@@ -6,12 +6,7 @@
     xmlns:local="clr-namespace:Client"
     Shell.FlyoutBehavior="Disabled">
 
-    <ShellContent
-        Title="Hello, World!"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
-    <ShellContent ContentTemplate="{DataTemplate local:FindHostPage}"
-                          Route="FindHostPage" />
+    <ShellContent ContentTemplate="{DataTemplate local:MainPage}"
+                  Route="MainPage" />
 
 </Shell>

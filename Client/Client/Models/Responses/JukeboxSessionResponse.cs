@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Client.Models.Responses
+namespace Client.Models.Responses;
+
+public class JukeboxSessionResponse
 {
-    public class JukeboxSessionResponse
-    {
-        public Song currentSong { get; set; }
-        public DateTime songTimeToFinish { get; set; } // TODO: think of better way
-    }
+    public Song currentSong { get; set; }
+    public DateTime songTimeToFinish { get; set; } // TODO: think of better way
 }

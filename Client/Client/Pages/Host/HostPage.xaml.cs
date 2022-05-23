@@ -4,15 +4,13 @@ namespace Client;
 
 public partial class HostPage : ContentPage
 {
-    private HostViewModel vm;
-
-    public HostPage(string host)
+    public HostPage(HostViewModel vm)
     {
         InitializeComponent();
 
         // Bad Initialize. Only for Practice.
         // TODO: Add Host Object inorder to make it more expendabily
-        vm = new HostViewModel("Carla " + host);
+        vm.Host = "Clara";
         vm.Song = "Kendrick Lamar: ADHD";
         vm.ActiveUsers = "542";
         vm.Genre = "Pop & Rock";
@@ -27,8 +25,7 @@ public partial class HostPage : ContentPage
         // TODO: make it dynamic password inside of the host object.
         if (result == "1234")
         {
-            Navigation.InsertPageBefore(new HostHomePage(vm), Navigation.NavigationStack[0]);
-            await Navigation.PopToRootAsync();
+            await Shell.Current.GoToAsync(nameof(HostHomePage));
         }
         else
         {

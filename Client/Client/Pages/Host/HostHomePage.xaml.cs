@@ -4,17 +4,23 @@ namespace Client;
 
 public partial class HostHomePage : ContentPage
 {
-    private HostViewModel vm;
-    public HostHomePage(HostViewModel hostViewModel)
+    public HostHomePage(HostViewModel vm)
     {
         InitializeComponent();
-        vm = hostViewModel;
-        BindingContext = hostViewModel;
+
+        // Bad Initialize. Only for Practice.
+        // TODO: Add Host Object inorder to make it more expendabily
+        vm.Host = "Clara";
+        vm.Song = "Kendrick Lamar: ADHD";
+        vm.ActiveUsers = "542";
+        vm.Genre = "Pop & Rock";
+
+        BindingContext = vm;
     }
 
     private async void Button_Clicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new HostLastPage());
+        await Shell.Current.GoToAsync(nameof(HostLastPage));
     }
 
     private async void Left_Button_Clicked(object sender, EventArgs e)
@@ -22,9 +28,7 @@ public partial class HostHomePage : ContentPage
         bool answer = await DisplayAlert("Leaving already?", "Are you sure wanna leave ?", "Yes", "No");
         if (answer)
         {
-            Navigation.InsertPageBefore(new FindHostPage(vm.Host), Navigation.NavigationStack[0]);
-            await Navigation.PopToRootAsync();
+            await Shell.Current.GoToAsync("..");
         }
-
     }
 }

@@ -49,6 +49,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <AndroidResource Remove="Models\Requests\**" />
+	  <Compile Remove="Models\Requests\**" />
+	  <EmbeddedResource Remove="Models\Requests\**" />
+	  <MauiCss Remove="Models\Requests\**" />
+	  <MauiXaml Remove="Models\Requests\**" />
+	  <None Remove="Models\Requests\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Remove="Resources\Fonts\Roboto-Bold - Copy.ttf" />
 	  <None Remove="Resources\Fonts\Roboto-Light - Copy.ttf" />
 	  <None Remove="Resources\Fonts\Roboto-Medium - Copy.ttf" />
@@ -62,10 +71,6 @@
 	  <MauiXaml Update="Styles\CustomStyles.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Models\Requests\" />
 	</ItemGroup>
 
 </Project>

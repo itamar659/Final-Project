@@ -2,18 +2,10 @@ namespace Client;
 
 public partial class GuestLoginPage : ContentPage
 {
-
-	public GuestLoginPage()
+	public GuestLoginPage(GuestLoginViewModel vm)
 	{
 		InitializeComponent();
 
-		BindingContext = new LoginViewModel(new ServerlessApi());
+		BindingContext = vm;
 	}
-
-    private void Button_Clicked(object sender, EventArgs e)
-    {
-		//Navigation.InsertPageBefore(new FindHostPage(entry.Text), Navigation.NavigationStack[0]);
-		//await Navigation.PopToRootAsync();
-        App.Current.MainPage = new NavigationPage(new FindHostPage(entry.Text));
-    }
 }
