@@ -62,10 +62,14 @@
 	  <None Remove="Resources\Fonts\Roboto-Light - Copy.ttf" />
 	  <None Remove="Resources\Fonts\Roboto-Medium - Copy.ttf" />
 	  <None Remove="Resources\Fonts\Roboto-Regular - Copy.ttf" />
+	  <None Remove="Resources\Images\user_male_icon.png" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="Controls\HostPlayerControl.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\Users\ProfilePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Styles\CustomStyles.xaml">

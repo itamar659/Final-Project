@@ -7,12 +7,14 @@
 
     <local:MainTemplate PageTitle="Enjoy Music Your Way">
         <local:MainTemplate.PageContent>
-            <StackLayout Spacing="20">
-                <BoxView BackgroundColor="Gray"
-                         HeightRequest="200"
-                         Margin="0, 0, 30, 0" />
+            <StackLayout Spacing="40">
 
-                <Button Text="Member"
+                <!-- Additional logins -->
+                <Label Text="Choose one of the following:"
+                       TextColor="{StaticResource LightGreyColor}"
+                       HorizontalOptions="Center" />
+
+                <Button Text="Socials Media"
                         Style="{StaticResource RedButton}"
                         Command="{Binding SignInCommand}" />
 

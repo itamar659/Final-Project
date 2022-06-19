@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Client"
              x:Class="Client.LoginPage"
+             x:DataType="local:LoginViewModel"
              Title="Login"
              BackgroundColor="White">
     <local:MainTemplate>
@@ -14,48 +15,24 @@
                        FontFamily="RobotoMedium"
                        FontSize="Large"
                        Margin="0, 0, 5, 0 " />
-                <Label Text="Hi there! Nice to see you!"
-                       TextColor="{StaticResource LightGreyColor}" />
-
-                <!-- Sign in Form -->
-                <StackLayout>
-                    <Label Text="Username"
-                           Style="{StaticResource RedLabel}"
-                           Margin="0, 0, 5, 0 " />
-                    <Entry x:Name="UsernameEntry"
-                           Placeholder="Username"
-                           Margin="0, 0, 10, 0" />
-
-                    <Label Text="Password"
-                           Style="{StaticResource RedLabel}" />
-                    <Entry x:Name="PasswordEntry"
-                           IsPassword="True"
-                           Placeholder="Password" />
-
-                    <Button x:Name="LoginBtn"
-                            Text="Sign in"
-                            Style="{StaticResource RedButton}"
-                            Margin="20, 0, 0, 0"
-                            Clicked="LoginBtn_Clicked" />
-                </StackLayout>
 
                 <!-- Additional logins -->
-                <Label Text="or use one of your social profiles"
+                <Label Text="Use one of your social profiles"
                        TextColor="{StaticResource LightGreyColor}"
                        HorizontalOptions="Center" />
-                <Grid Padding="0, 15"
-                      ColumnSpacing="15"
-                      ColumnDefinitions="*, *">
-                    <Button Grid.Column="0"
-                            Text="Twitter"
+
+                <Button     Text="Google"
+                            Background="Green"
+                            FontFamily="RobotoBold" 
+                            Command="{Binding LoginCommand}"/>
+                
+                <Button     Text="Twitter"
                             Background="#20AAFF"
                             FontFamily="RobotoBold" />
 
-                    <Button Grid.Column="1"
-                            Text="Facebook"
+                <Button     Text="Facebook"
                             Background="#203070"
                             FontFamily="RobotoBold" />
-                </Grid>
 
                 <!-- Signup/ forget password -->
                 <Grid Padding="10"

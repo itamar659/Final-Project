@@ -30,21 +30,24 @@ namespace Client
         public LoginViewModel(IServerApi serverAPI)
         {
             _serverApi = serverAPI;
-            LoginCommand = new Command(connect);
+            LoginCommand = new Command(async () => await Shell.Current.GoToAsync($"{nameof(FindHostPage)}"));
+            ForgotPasswordCommand = new Command(() => { });
         }
 
         private async void connect()
         {
             ErrorMsgHolder = string.Empty;
 
-            if (await _serverApi.ConnectAsync(Token))
-            {
-                await Shell.Current.GoToAsync(new FindHostPage(Token);
-            }
-            else
-            {
-                ErrorMsgHolder = "Error occurred";
-            }
+            await Shell.Current.GoToAsync($"//{nameof(FindHostPage)}");
+
+            //if (await _serverApi.LoginAsync(Token))
+            //{
+            //    await Shell.Current.GoToAsync($"//{nameof(FindHostPage)}");
+            //}
+            //else
+            //{
+            //    ErrorMsgHolder = "Error occurred";
+            //}
         }
     }
 }

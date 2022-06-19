@@ -4,16 +4,12 @@ namespace Client;
 
 public partial class LoginPage : ContentPage
 {
-    public ICommand ForgotPasswordCommand { get; set; }
-
-	public LoginPage()
+	public LoginPage(LoginViewModel vm)
 	{
 		InitializeComponent();
 
-        ForgotPasswordCommand = new Command(() => { });
-
 		// Binding should be last.
-		BindingContext = this;
+		BindingContext = vm;
 	}
 
 	private void LoginBtn_Clicked(object sender, EventArgs e)

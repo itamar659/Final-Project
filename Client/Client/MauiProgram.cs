@@ -18,6 +18,7 @@ public static class MauiProgram
         builder.Services.AddSingleton<IServerApi, ServerlessApi>();
 
         builder.Services.AddTransient<MainPageViewModel>();
+        builder.Services.AddTransient<LoginViewModel>();
         builder.Services.AddTransient<GuestLoginViewModel>();
         builder.Services.AddTransient<FindHostPageViewModel>();
         builder.Services.AddTransient<HostViewModel>();

@@ -9,6 +9,11 @@ public class HostViewModel : BaseViewModel
 {
     private readonly IServerApi _serverApi;
 
+    public HostViewModel(IServerApi serverApi)
+    {
+        _serverApi = serverApi;
+    }
+
     private string _sessionHostName;
     public string SessionHostName
     {
@@ -79,11 +84,6 @@ public class HostViewModel : BaseViewModel
     {
         //Todo: Format the DateTime
         get { return "2:54:49 Hours"; }
-    }
-
-    public HostViewModel(IServerApi serverApi)
-    {
-        _serverApi = serverApi;
     }
 
     public async void FetchSessionDetails()

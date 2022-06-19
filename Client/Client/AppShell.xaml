@@ -1,12 +1,72 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+    
 <Shell
     x:Class="Client.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Client"
-    Shell.FlyoutBehavior="Disabled">
+    xmlns:profile="clr-namespace:Client.Pages.Users">
 
-    <ShellContent ContentTemplate="{DataTemplate local:MainPage}"
-                  Route="MainPage" />
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+        <ShellContent Title="Home"
+                      Icon="app_logo.png"
+                      ContentTemplate="{DataTemplate local:MainPage}" />
+        <ShellContent Title="Reports"
+                      Icon="dog.png"
+                      ContentTemplate="{DataTemplate  profile:ProfilePage}" />
+        <ShellContent Title="Profile"
+                      Icon="monkey.png"
+                      ContentTemplate="{DataTemplate  profile:ProfilePage}" />
+        <ShellContent Title="Music"
+                      Icon="elephant.png"
+                      ContentTemplate="{DataTemplate  profile:ProfilePage}" />
+        <ShellContent Title="Hosts"
+                      Icon="bear.png"
+                      ContentTemplate="{DataTemplate  profile:ProfilePage}" />
+    </FlyoutItem>
 
+    <ShellContent Title="Settings"
+                  Icon="info.png"
+                  ContentTemplate="{DataTemplate  profile:ProfilePage}" />
+
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid ColumnDefinitions="0.2*,0.8*">
+                <Image Source="{Binding FlyoutIcon}"
+                       Margin="5"
+                       HeightRequest="45" />
+                <Label Grid.Column="1"
+                       Text="{Binding Title}"
+                       VerticalTextAlignment="Center" />
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <Grid Height="200">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="2*" />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Image Aspect="AspectFill"
+                       Source="user_male_icon.png"
+                       Grid.Row="0"/>
+                <Label Text="Animals"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" 
+                       Grid.Row="1"/>
+                <Label Text="Animals"
+                       TextColor="White"
+                       FontAttributes="Bold"
+                       HorizontalTextAlignment="Center"
+                       VerticalTextAlignment="Center" 
+                       Grid.Row="2"/>
+            </Grid>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
 </Shell>
