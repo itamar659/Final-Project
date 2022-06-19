@@ -27,6 +27,8 @@ namespace Client
 
         public ICommand LoginCommand { get; set; }
 
+        public ICommand ForgotPasswordCommand { get; set; }
+
         public LoginViewModel(IServerApi serverAPI)
         {
             _serverApi = serverAPI;
