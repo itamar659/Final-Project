@@ -61,10 +61,10 @@
                        Text="{Binding Song}" />
                     <Label Grid.Column="1"
                        Style="{StaticResource ValueStyle}"
-                       Text="{Binding Source={x:Reference SliderAu
-                    Path=Value,
-                    StringFormat='Time left: {0:F0}' 
-                }" />
+                     Text="{Binding Source={x:Reference SliderAudioPlayer},
+                        Path=Value,
+                        StringFormat='Time left: {0:F0}' 
+                    }" />
                 </Grid>
                 <Slider x:Name="SliderAudioPlayer"
                     Maximum="240"

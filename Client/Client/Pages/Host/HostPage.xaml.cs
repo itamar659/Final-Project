@@ -19,7 +19,7 @@ public partial class HostPage : ContentPage
     {
         base.OnAppearing();
 
-        Dispatcher.DispatchDelayed(TimeSpan.Zero, _vm.FetchSessionDetails);
+        //Dispatcher.DispatchDelayed(TimeSpan.Zero, _vm.FetchSessionDetails);
     }
 
     private async void JoinSession_Clicked(object sender, EventArgs e)

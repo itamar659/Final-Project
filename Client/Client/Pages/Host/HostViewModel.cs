@@ -1,5 +1,8 @@
-﻿using Client.Models.Responses;
+﻿using Client.Models;
+using Client.Models.Responses;
 using Client.Services;
+using Microsoft.VisualBasic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Client;
@@ -9,9 +12,27 @@ public class HostViewModel : BaseViewModel
 {
     private readonly IServerApi _serverApi;
 
+    public ObservableCollection<Song> Songs { get; set; }
+    public ObservableCollection<HostInformation> information { get; set; }
+
     public HostViewModel(IServerApi serverApi)
     {
         _serverApi = serverApi;
+
+        Songs = new ObservableCollection<Song>
+            {
+                new Song { Name = "Hip-Hop" },
+                new Song { Name = "Jazz" },
+                new Song { Name = "R&B"}
+            };
+
+        information = new ObservableCollection<HostInformation>
+            {
+                new HostInformation { Icon = "info_icon" , Title="Genre", Description="Hip-Hop" },
+                new HostInformation { Icon = "info_icon" , Title="Active Users", Description="1024" },
+                new HostInformation { Icon = "info_icon" , Title="Song", Description="21 Savage: a lot" },
+                new HostInformation { Icon = "info_icon" , Title="Session Time", Description="1:23:42" }
+            };
     }
 
     private string _sessionHostName;
