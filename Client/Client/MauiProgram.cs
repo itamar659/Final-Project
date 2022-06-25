@@ -1,4 +1,6 @@
-﻿using Client.Services;
+﻿using Client.Pages.Users;
+using Client.Services;
+using Client.ViewModels;
 
 namespace Client;
 
@@ -22,9 +24,11 @@ public static class MauiProgram
         builder.Services.AddTransient<GuestLoginViewModel>();
         builder.Services.AddTransient<FindHostPageViewModel>();
         builder.Services.AddTransient<HostViewModel>();
+        builder.Services.AddTransient<SongsViewModel>();
 
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddTransient<GuestLoginPage>();
+        builder.Services.AddTransient<ProfilePage>();
         builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<FindHostPage>();
         builder.Services.AddTransient<HostHomePage>();
