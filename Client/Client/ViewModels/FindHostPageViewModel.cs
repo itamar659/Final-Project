@@ -40,6 +40,8 @@ public class FindHostPageViewModel : BaseViewModel
 
     public ICommand ViewHostPageCommand { get; set; }
 
+    public ICommand ViewHostPage { get; set; }
+
     public FindHostPageViewModel(IServerApi serverApi)
     {
         _serverApi = serverApi;
@@ -50,6 +52,12 @@ public class FindHostPageViewModel : BaseViewModel
 
             if (await _serverApi.JoinSessionAsync("[OWNER_NAME]"))
                 await Shell.Current.GoToAsync($"{nameof(HostPage)}?SessionHostName=[OWNER_NAME]");
+
+        });
+
+        ViewHostPage = new Command(async () =>
+        {
+            await Shell.Current.GoToAsync($"{nameof(HostPage)}?SessionHostName=[OWNER_NAME]");
 
         });
 
