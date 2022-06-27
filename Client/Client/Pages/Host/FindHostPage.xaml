@@ -4,6 +4,7 @@
              xmlns:local="clr-namespace:Client"
              x:Class="Client.FindHostPage"
              Title="Find Host"
+             Shell.NavBarIsVisible="False"
              BackgroundColor="White">
     <!-- Main layout-->
     <Grid RowDefinitions="Auto,Auto,Auto,Auto,*"
@@ -19,7 +20,7 @@
         <Button Grid.Row="0"
                 Grid.Column="1"
                 CornerRadius="7"
-                ImageSource="AddIcon"
+                ImageSource="medal.png"
                 BackgroundColor="Black"
                 HeightRequest="35"
                 WidthRequest="35"/>

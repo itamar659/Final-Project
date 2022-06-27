@@ -5,6 +5,8 @@
              x:Class="Client.LoginPage"
              x:DataType="local:LoginViewModel"
              Title="Login"
+             Shell.FlyoutBehavior="Disabled"
+             Shell.TabBarIsVisible="False"
              BackgroundColor="White">
     <local:MainTemplate>
         <local:MainTemplate.PageContent>

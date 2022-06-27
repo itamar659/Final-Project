@@ -6,7 +6,8 @@
              x:DataType="local:GuestLoginViewModel"
              Title="GuestLoginPage"
              BackgroundColor="White"
-             Shell.FlyoutBehavior="Disabled">
+             Shell.FlyoutBehavior="Disabled"
+             Shell.TabBarIsVisible="False">
     <local:MainTemplate PageTitle="Enjoy Music Your Way">
         <local:MainTemplate.PageContent>
             <StackLayout Spacing="20">

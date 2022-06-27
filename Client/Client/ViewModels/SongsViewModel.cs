@@ -18,7 +18,9 @@ namespace Client.ViewModels
             {
                 new Song { Name = "Kendrick Lamar: ADHD" , Path = ""},
                 new Song { Name = "50 Cent: CandyShop" , Path = ""},
-                new Song { Name = "Noa Killer: Kill me" , Path = ""}
+                new Song { Name = "Noa Killer: Kill me" , Path = ""},
+                new Song { Name = "Noa Killer: Kill me" , Path = ""},
+                new Song { Name = "Noa Killer: Kill me" , Path = ""},
             };
         }
     }

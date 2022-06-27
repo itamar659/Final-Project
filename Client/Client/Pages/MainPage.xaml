@@ -3,6 +3,9 @@
              xmlns:local="clr-namespace:Client"
              x:Class="Client.MainPage"
              x:DataType="local:MainPageViewModel"
+             Shell.FlyoutBehavior="Disabled"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
              BackgroundColor="{DynamicResource SecondaryColor}">
 
     <local:MainTemplate PageTitle="Enjoy Music Your Way">

@@ -31,14 +31,21 @@ public class GuestLoginViewModel : BaseViewModel
     private async void connect()
     {
         ErrorMsgHolder = string.Empty;
-
-        if (await _serverApi.AnonymousLoginAsync(Username))
+        try
         {
-            await Shell.Current.GoToAsync(nameof(FindHostPage));
+            if (await _serverApi.AnonymousLoginAsync(Username))
+            {
+                await Shell.Current.GoToAsync(nameof(FindHostPage));
+            }
+            else
+            {
+                ErrorMsgHolder = "Error occurred";
+            }
         }
-        else
+        catch (NullReferenceException e)
         {
-            ErrorMsgHolder = "Error occurred";
+            Console.WriteLine(e.Message);
         }
+       
     }
 }

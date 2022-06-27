@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Client"
              x:Class="Client.HostPage"
-             Title="HostPage"
+             Title="Host Profile Page"
              BackgroundColor="White">
 
     <ContentPage.Resources>
@@ -40,10 +40,10 @@
     </ContentPage.Resources>
     
             <!-- 1. Floating Button-->
-            <Grid RowDefinitions="*">
+    <Grid RowDefinitions="Auto">
         <ScrollView Grid.Row="0">
             <Grid ColumnDefinitions="*,*"
-                          RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,*"
+                          RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
                           Padding="30,0">
 
                 <!-- 2. Header information-->
@@ -103,8 +103,8 @@
                         <DataTemplate>
                             <StackLayout Padding="4,10" Margin="0,20">
 
-                                <Label Text="{Binding Name}"
-                                               BackgroundColor="Grey"
+                                <Label Text="Lala"
+                                               BackgroundColor="Black"
                                                Padding="8"/>
 
                             </StackLayout>
@@ -116,7 +116,7 @@
                                         Grid.Column="0"
                                         Grid.ColumnSpan="2"
                                         HorizontalScrollBarVisibility="Never"
-                                        ItemsSource="{Binding information}" Margin="0,0"
+                                        ItemsSource="{Binding information}" Margin="0,-30"
                                         HeightRequest="250">
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical" Span="2" />
@@ -162,7 +162,7 @@
                                Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."/>
 
                 <Button Grid.Row="7"
-                        Grid.ColumnSpan="2"
+                        Grid.Column="2"
                         Text="Join The Party"
                         FontSize="{OnPlatform iOS='20', Android='15'}"
                         FontAttributes="Bold"
@@ -171,8 +171,7 @@
                         CornerRadius="20"
                         TextColor="White"
                         HeightRequest="{OnPlatform iOS='70', Android='50'}"
-                        Margin="20"
-                        VerticalOptions="End"/>
+                        Margin="0,20"/>
             </Grid>
             <!-- Floating Button-->
         </ScrollView>

@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Client.Pages.Users.ProfilePage"
-             Title="ProfilePage">
+             Title="ProfilePage"
+             Shell.TabBarIsVisible="False">
     <ScrollView VerticalScrollBarVisibility="Never"
                 HorizontalScrollBarVisibility="Never">
         <!-- Main layout-->
@@ -32,8 +33,7 @@
                    CornerRadius="55"
                    Padding="0"
                    IsClippedToBounds="True">
-                <Image Source="modelprofile"
-                       Aspect="AspectFill"/>
+                <Image Source="modelprofile" Aspect="AspectFill"/>
             </Frame>
             <!-- Profile name & general description-->
             <Label Grid.Row="2"
@@ -100,13 +100,13 @@
                    FontSize="15"
                    Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.&#10;&#10;Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."/>
 
-            <!-- Homework-->
+            <!-- Songs-->
             <Label Grid.Row="6"
-                   Text="Homework"
+                   Text="Liked Songs"
                    FontAttributes="Bold"
                    TextColor="#383b67"
                    HorizontalTextAlignment="Start"
-                   Margin="0,30,0,10" FontSize="20"/>
+                   Margin="0,20,0,10" FontSize="20"/>
             <CollectionView Grid.Row="7"
                             HorizontalScrollBarVisibility="Never"
                             ItemsSource="{Binding Songs}"
@@ -115,7 +115,7 @@
                             ItemsLayout="HorizontalList">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout WidthRequest="{OnPlatform iOS='135', Android='160'}"
+                        <StackLayout WidthRequest="{OnPlatform iOS='135', Android='160'}" 
                                      Padding="0,0,15,0">
                             <Frame CornerRadius="13"
                                    HorizontalOptions="Start"

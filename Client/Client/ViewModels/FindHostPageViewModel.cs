@@ -9,7 +9,7 @@ public class FindHostPageViewModel : BaseViewModel
     private readonly IServerApi _serverApi;
     private string _name;
 
-    public ObservableCollection<string> AvailableSessions { get; }
+    public ObservableCollection<string> AvailableSessions { get; set; }
     public ObservableCollection<Host> hosts { get; set; }
     public ObservableCollection<HostStatus> hostStatus { get; set; }
 
@@ -46,6 +46,7 @@ public class FindHostPageViewModel : BaseViewModel
     {
         _serverApi = serverApi;
         AvailableSessions = new ObservableCollection<string>();
+        hostStatus = new ObservableCollection<HostStatus>();
 
         ViewHostPageCommand = new Command(async () =>
         {
@@ -77,7 +78,7 @@ public class FindHostPageViewModel : BaseViewModel
         if (availableSessions == null)
             return;
 
-        AvailableSessions.Clear();
+        AvailableSessions = new ObservableCollection<string>();
         foreach (var sessionName in availableSessions)
         {
             AvailableSessions.Add(sessionName);
