@@ -29,7 +29,7 @@
             <Grid ColumnDefinitions="0.2*,0.8*">
                 <Image Source="{Binding FlyoutIcon}"
                        Margin="5"
-                       HeightRequest="45" />
+                       HeightRequest="35" />
                 <Label Grid.Column="1"
                        Text="{Binding Title}"
                        VerticalTextAlignment="Center" />
@@ -58,7 +58,7 @@
                            HeightRequest="{OnPlatform iOS='80', Android='80'}"
                            HasShadow="False"
                            CornerRadius="55"
-                           Margin="60 0 10 0"
+                           Margin="0, 60, 0, 0"
                            Padding="0"
                            IsClippedToBounds="True">
                         
