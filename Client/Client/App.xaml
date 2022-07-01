@@ -6,5 +6,23 @@
     <Application.Resources>
         <ResourceDictionary Source="Resources/Styles.xaml" />
         <ResourceDictionary Source="Styles/CustomStyles.xaml" />
+        <ResourceDictionary>
+            <Color x:Key="MainColor">#02c38e</Color>
+            <Style x:Key="SocialNetworks" TargetType="Button">
+                <Setter Property="BackgroundColor" Value = "#e5f9f2"    />
+                <Setter Property="FontSize"        Value = "17"    />
+                <Setter Property="FontAttributes"  Value = "Bold"    />
+                <Setter Property="HeightRequest"   Value = "50"    />
+                <Setter Property="TextColor"       Value = "#2d2c2c"    />
+                <Setter Property="CornerRadius"    Value = "10"    />
+            </Style>
+            <Style x:Key="Highlighted" TargetType="Button">
+                <Setter Property="FontAttributes"  Value = "Bold"    />
+                <Setter Property="HeightRequest"   Value = "50"    />
+                <Setter Property="CornerRadius"    Value = "10"    />
+                <Setter Property="TextColor"       Value = "White"    />
+                <Setter Property="BackgroundColor" Value = "{StaticResource MainColor}"    />
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -2,17 +2,72 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Client"
              x:Class="Client.MainPage"
-             x:DataType="local:MainPageViewModel"
              Shell.FlyoutBehavior="Disabled"
              Shell.NavBarIsVisible="False"
              Shell.TabBarIsVisible="False"
              BackgroundColor="{DynamicResource SecondaryColor}">
 
-    <local:MainTemplate PageTitle="Enjoy Music Your Way">
+    <!-- Main structure-->
+    <Grid RowDefinitions="*,Auto">
+        <!--Main image-->
+        <Image Grid.RowSpan="2" Source="modelprofile.png" VerticalOptions="Start" Aspect="AspectFit"/>
+        <Frame Grid.Row="1" HasShadow="False" Margin="15,0,15,30" VerticalOptions="FillAndExpand" CornerRadius="20" Opacity="0.9" BackgroundColor="#2e2b2c">
+            <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="25" Padding="0,10,0,0">
+                <Entry Placeholder="Display Username"
+                       Grid.Row="0"
+                       x:Name="entry"
+                       Text="{Binding Username, Mode=OneWayToSource}"
+                       Margin="30, 0, 0, 0" />
+
+                <Button Grid.Row="1" 
+                        Text="Continue"
+                        Command="{Binding AnonymousLoginCommand}"
+                        Style="{StaticResource Highlighted}"/>
+                
+                <Label  Grid.Row="2" 
+                        Text="or" 
+                        VerticalTextAlignment="Center" 
+                        HorizontalTextAlignment="Center" 
+                        TextColor="White"/>
+                
+                <Button Grid.Row="3"
+                        ImageSource="facebook_icon.png"
+                        Text="Continue with Facebook" 
+                        Style="{StaticResource SocialNetworks}" />
+                
+                <Button Grid.Row="4" 
+                        ImageSource="google_icon.png" 
+                        FontSize="17" 
+                        Text="Continue with Google"
+                        Command="{Binding SignInCommand}"
+                        Style="{StaticResource SocialNetworks}"/>
+                
+                <Button Grid.Row="5" 
+                        ImageSource="apple_icon.png" 
+                        FontSize="17" 
+                        Text="Continue with Apple" 
+                        Style="{StaticResource SocialNetworks}" />
+
+                <Label Grid.Row="6" Margin="0,10,0,0">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Don't have an account? " TextColor="White"/>
+                            <Span Text="Sign Up" TextColor="{StaticResource MainColor}" FontAttributes="Bold"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                <Label Grid.Row="7" Text="Forget your password?" TextColor="{StaticResource MainColor}" FontAttributes="Bold"/>
+            </Grid>
+        </Frame>
+
+    </Grid>
+
+    <!--<local:MainTemplate PageTitle="Enjoy Music Your Way">
         <local:MainTemplate.PageContent>
             <StackLayout Spacing="40">
 
-                <!-- Additional logins -->
+                --><!-- Additional logins --><!--
                 <Label Text="Choose one of the following:"
                        TextColor="{StaticResource LightGreyColor}"
                        HorizontalOptions="Center" />
@@ -26,5 +81,5 @@
                         Command="{Binding GuestLoginCommand}" />
             </StackLayout>
         </local:MainTemplate.PageContent>
-    </local:MainTemplate>
+    </local:MainTemplate>-->
 </ContentPage>
