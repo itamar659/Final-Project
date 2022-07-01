@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Client"
+             x:DataType="local:FindHostPageViewModel"
              x:Class="Client.FindHostPage"
              Title="Find Host"
              Shell.NavBarIsVisible="False"
@@ -10,6 +11,7 @@
     <Grid RowDefinitions="Auto,Auto,Auto,Auto,*"
           ColumnDefinitions="*,Auto"
           Padding="30,60,30,-50">
+        
         <!-- 1. Search block-->
         <Label Grid.Row="0"
                Grid.Column="0"
@@ -42,119 +44,51 @@
                FontSize="20"
                CharacterSpacing="1"
                Margin="0,0,0,20"/>
-        
+
         <CollectionView Grid.Row="3"
                         Grid.Column="0"
                         Grid.ColumnSpan="2"
                         HorizontalScrollBarVisibility="Never"
-                        ItemsSource="{Binding hosts}"
                         Margin="0,0,-10,0"
                         HeightRequest="120"
-                        ItemsLayout="HorizontalList">  
-            
+                        ItemsLayout="HorizontalList"
+                        ItemsSource="{Binding FavoriteHosts}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid RowDefinitions="Auto,Auto,Auto"
-                          Padding="0,0,15,0">
-                        <Frame Grid.Row="0"
-                               BorderColor="Transparent"
-                               HorizontalOptions="Start"
-                               VerticalOptions="Start"
-                               WidthRequest="70"
-                               HeightRequest="70"
-                               HasShadow="False"
-                               CornerRadius="17"
-                               Padding="0"
-                               IsClippedToBounds="True">
-
-                            <ImageButton Clicked="on_click"
-                                         Source="{Binding Picture}"
-                                         Aspect="AspectFill"/>
-
-                        </Frame>
-                        
-                        <Ellipse Grid.Row="1"
-                                 HorizontalOptions="Start"
-                                 Margin="30,-10,30,0"
-                                 Fill="#1ad32e"
-                                 VerticalOptions="End"
-                                 HeightRequest="10"
-                                 WidthRequest="10"
-                                 StrokeThickness="0"/>
-                        
-                        <Label Grid.Row="2"
-                               Grid.Column="0"
-                               Text="{Binding Name}"
-                               HorizontalOptions="Center" 
-                               FontAttributes="Bold"
-                               FontSize="14"
-                               CharacterSpacing="1"
-                               Margin="0,0,0,20"/>
-                    </Grid>
+                    <Border>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BindingContext.ViewHostPageCommand,
+                                    Source={x:RelativeSource AncestorType={x:Type ContentPage}}}" />
+                        </Border.GestureRecognizers>
+                            <local:FindHostFavItemControl />
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+        
         <!-- Active Hosts Frames-->
         <Frame Grid.Row="4"
                Grid.Column="0"
                Grid.ColumnSpan="2" 
                Margin="-30,0"
                VerticalOptions="FillAndExpand"
-               HasShadow="True" 
+               HasShadow="True"
                CornerRadius="40"
                BackgroundColor="White">
             <CollectionView HorizontalScrollBarVisibility="Never" 
                             HorizontalOptions="FillAndExpand"
                             VerticalScrollBarVisibility="Never"
-                            ItemsSource="{Binding hostStatus}">
+                            ItemsSource="{Binding AvailableHosts}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Grid ColumnDefinitions="Auto,*,Auto"
-                              RowDefinitions="Auto,Auto"
-                              Padding="20">
-                            <Frame Grid.Row="0"
-                                   Grid.RowSpan="2" 
-                                   Grid.Column="0"
-                                   BorderColor="Transparent"
-                                   HorizontalOptions="Start"
-                                   VerticalOptions="Start"
-                                   HasShadow="False"
-                                   CornerRadius="17"
-                                   Padding="0"
-                                   IsClippedToBounds="True"
-                                   Margin="0,0,20,0">
-                                
-                                <Image Source="{Binding Picture}"
-                                       Aspect="AspectFill"
-                                       WidthRequest="60"
-                                       HeightRequest="60"/>
-                                
-                            </Frame>
-                            
-                            <Label Grid.Row="0"
-                                   Grid.Column="1"
-                                   Text="{Binding Name}"
-                                   FontAttributes="Bold"/>
-                            
-                            <Label Grid.Row="1" 
-                                   Grid.Column="1"
-                                   Text="{Binding StatusComment}"
-                                   FontAttributes="Bold" 
-                                   TextColor="#b4b4b4"/>
-                            
-                            <Ellipse Grid.Row="0"
-                                     Grid.Column="2" 
-                                     Grid.RowSpan="2"
-                                     IsVisible="{Binding IsOnline}"
-                                     VerticalOptions="Center"
-                                     HorizontalOptions="Start"
-                                     Margin="30,-10,30,0"
-                                     Fill="#1ad32e" 
-                                     HeightRequest="10" 
-                                     WidthRequest="10"
-                                     StrokeThickness="0"/>
-                            
-                        </Grid>
+                        <Border>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding BindingContext.ViewHostPageCommand,
+                                    Source={x:RelativeSource AncestorType={x:Type ContentPage}}}"
+                                                      CommandParameter="{Binding .}"/>
+                            </Border.GestureRecognizers>
+                            <local:FindHostItemControl />
+                        </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

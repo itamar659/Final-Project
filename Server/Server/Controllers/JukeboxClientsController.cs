@@ -82,7 +82,7 @@ public class JukeboxClientsController : ControllerBase
     }
 
     [HttpPost("JoinSession")]
-    public async Task<ActionResult<JukeboxClient>> JoinSession([Bind("Token,OwnerName")] SessionRequestJukeboxClientDto jukeboxClient)
+    public async Task<ActionResult<JukeboxClient>> JoinSession([Bind("Token,OwnerName,PinCode")] SessionRequestJukeboxClientDto jukeboxClient)
     {
         // TODO: BUG FIX - RE-JOIN SESSION
         if (!await _context.JukeboxClient.AnyAsync(c => c.Token == jukeboxClient.Token))
@@ -94,6 +94,9 @@ public class JukeboxClientsController : ControllerBase
 
         if (session == null)
             return NotFound();
+
+        if (session.PinCode != jukeboxClient.PinCode)
+            return Unauthorized();
 
         var client = await _context.FindAsync<JukeboxClient>(jukeboxClient.Token);
 

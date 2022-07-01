@@ -20,21 +20,17 @@ public static class MauiProgram
         builder.Services.AddSingleton<IServerApi, ServerlessApi>();
 
         builder.Services.AddTransient<MainPageViewModel>();
-        builder.Services.AddTransient<LoginViewModel>();
-        builder.Services.AddTransient<GuestLoginViewModel>();
         builder.Services.AddTransient<FindHostPageViewModel>();
-        builder.Services.AddTransient<HostViewModel>();
+        builder.Services.AddTransient<HostFrontPageViewModel>();
         builder.Services.AddTransient<SongsViewModel>();
 
         builder.Services.AddSingleton<MainPage>();
-        builder.Services.AddTransient<GuestLoginPage>();
         builder.Services.AddTransient<ProfilePage>();
-        builder.Services.AddTransient<LoginPage>();
         builder.Services.AddTransient<FindHostPage>();
         builder.Services.AddTransient<HostHomePage>();
         builder.Services.AddTransient<HostLastPage>();
         builder.Services.AddTransient<HostNotFoundPage>();
-        builder.Services.AddTransient<HostPage>();
+        builder.Services.AddTransient<HostFrontPage>();
 
         return builder.Build();
 	}

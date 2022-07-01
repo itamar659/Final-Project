@@ -1,49 +1,27 @@
 ﻿using Client.Services;
+using Microsoft.Maui.Dispatching;
 using System.Windows.Input;
 
 namespace Client;
 public class MainPageViewModel : BaseViewModel
 {
-    public ICommand SignInCommand { get; set; }
-    public ICommand GuestLoginCommand { get; set; }
-
-
     private readonly IServerApi _serverApi;
 
-    private string _errorMsgHolder;
-
     public string Username { get; set; }
-    public string ErrorMsgHolder
-    {
-        get => _errorMsgHolder;
-        set
-        {
-            _errorMsgHolder = value;
-            OnPropertyChanged(nameof(ErrorMsgHolder));
-        }
-    }
-
-    //public MainPageViewModel()
-    //{
-    //    //SignInCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(LoginPage)));
-    //    //GuestLoginCommand = new Command(async () => await Shell.Current.GoToAsync(nameof(GuestLoginPage)));
-    //}    public ICommand AnonymousLoginCommand { get; set; }
-
-    public ICommand AnonymousLoginCommand { get; set; }
-
 
     public MainPageViewModel(IServerApi serverAPI)
     {
+        //Preferences.Default.Set("Token", 123); // Save token for next startup
+
         _serverApi = serverAPI;
-        AnonymousLoginCommand = new Command(connect);
-        SignInCommand = new Command(async () => await Shell.Current.GoToAsync($"{nameof(FindHostPage)}"));
+        //SignInCommand = new Command(async () => await Shell.Current.GoToAsync($"{nameof(FindHostPage)}"));
     }
 
-
-
-    private async void connect()
+    public async Task<Tuple<bool, string>> AnonymousConnectAsync()
     {
-        ErrorMsgHolder = string.Empty;
+        string error = string.Empty;
+        bool errorOccured = false;
+
         try
         {
             if (await _serverApi.AnonymousLoginAsync(Username))
@@ -52,13 +30,16 @@ public class MainPageViewModel : BaseViewModel
             }
             else
             {
-                ErrorMsgHolder = "Error occurred";
+                error = "Error occurred. Please change the username.";
+                errorOccured = true;
             }
         }
         catch (NullReferenceException e)
         {
-            Console.WriteLine(e.Message);
+            error = e.Message;
+            errorOccured = true;
         }
 
+        return new (errorOccured, error);
     }
 }

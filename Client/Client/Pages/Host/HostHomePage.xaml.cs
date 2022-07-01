@@ -1,8 +1,10 @@
+using Client.ViewModels;
+
 namespace Client;
 
 public partial class HostHomePage : ContentPage
 {
-    public HostHomePage(HostViewModel vm)
+    public HostHomePage(HostFrontPageViewModel vm)
     {
         InitializeComponent();
 

@@ -9,4 +9,6 @@ public record SessionRequestJukeboxClientDto
 
     [Required]
     public string OwnerName { get; set; }
+
+    public string PinCode { get; set; }
 }

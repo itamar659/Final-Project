@@ -8,9 +8,4 @@ public partial class FindHostPage : ContentPage
 
         BindingContext = vm;
     }
-
-    public async void on_click(object sender, EventArgs e)
-    {
-        await Shell.Current.GoToAsync($"{nameof(HostPage)}?SessionHostName=[OWNER_NAME]");
-    }
 }

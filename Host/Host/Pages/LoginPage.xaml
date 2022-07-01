@@ -6,11 +6,14 @@
              x:DataType="local:LoginViewModel"
              Shell.NavBarIsVisible="False"
              Shell.FlyoutBehavior="Disabled">
-    <StackLayout>
-        <Entry Placeholder="Token"
-               Text="{Binding Token, Mode=OneWayToSource}"/>
-        <Button Text="Login"
-                Command="{Binding LoginCommand}" />
-        <Label Text="{Binding ErrorMsgHolder}" />
-    </StackLayout>
+    <Border>
+        <VerticalStackLayout VerticalOptions="Center"
+                             HorizontalOptions="Center">
+            <Entry Placeholder="Token"
+                    Text="{Binding Token, Mode=OneWayToSource}"/>
+            <Button Text="Login"
+                    Command="{Binding LoginCommand}" />
+            <Label Text="{Binding ErrorMsgHolder}" />
+        </VerticalStackLayout>
+    </Border>
 </ContentPage>

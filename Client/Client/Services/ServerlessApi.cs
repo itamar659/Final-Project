@@ -1,11 +1,10 @@
 ﻿using Client.Models.Responses;
-using Client.Services;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 
-namespace Client;
+namespace Client.Services;
 
 public class ServerlessApi : IServerApi
 {
@@ -74,9 +73,9 @@ public class ServerlessApi : IServerApi
         return true;
     }
 
-    async Task<bool> IServerApi.JoinSessionAsync(string ownerName)
+    async Task<bool> IServerApi.JoinSessionAsync(string ownerName, string pinCode)
     {
-        var obj = new { Token = _token, OwnerName = ownerName };
+        var obj = new { Token = _token, OwnerName = ownerName, PinCode = pinCode };
         JukeboxJoinSessionResponse jukeboxSession = await postResponseOrDefault<JukeboxJoinSessionResponse>("/JukeboxClients/JoinSession", obj);
 
         if (jukeboxSession is null)
@@ -100,17 +99,17 @@ public class ServerlessApi : IServerApi
         _client.Dispose();
     }
 
-    async Task<JukeboxSessionResponse> IServerApi.FetchSessionDetailsAsync()
+    async Task<JukeboxSessionResponse> IServerApi.FetchSessionDetailsAsync(string sessionKey = null)
     {
-        var obj = new { SessionKey = _sessionKey };
+        var obj = new { SessionKey = (sessionKey is null ? _sessionKey : sessionKey) };
         JukeboxSessionResponse session = await postResponseOrDefault<JukeboxSessionResponse>("/JukeboxSessions/GetSession", obj);
 
         return session;
     }
 
-    async Task<List<string>> IServerApi.FetchAvailableSessionsAsync()
+    async Task<List<JukeboxSessionResponse>> IServerApi.FetchAvailableSessionsAsync()
     {
-        List<string> sessionNames = await postResponseOrDefault<List<string>>("/JukeboxSessions/AvailableSessions", null);
+        List<JukeboxSessionResponse> sessionNames = await postResponseOrDefault<List<JukeboxSessionResponse>>("/JukeboxSessions/AvailableSessions", null);
 
         return sessionNames;
     }

@@ -1,10 +1,10 @@
 namespace Client;
 
-public partial class HostPage : ContentPage
+public partial class HostFrontPage : ContentPage
 {
-    private HostViewModel _vm;
+    private HostFrontPageViewModel _vm;
 
-    public HostPage(HostViewModel vm)
+    public HostFrontPage(HostFrontPageViewModel vm)
     {
         InitializeComponent();
 
@@ -18,22 +18,22 @@ public partial class HostPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-
-        //Dispatcher.DispatchDelayed(TimeSpan.Zero, _vm.FetchSessionDetails);
     }
 
     private async void JoinSession_Clicked(object sender, EventArgs e)
     {
-        string result = await DisplayPromptAsync("2-Way Authentication", "Enter Host's personal pincode. for further information please contact the host.", keyboard: Keyboard.Numeric);
-
+        string result = await DisplayPromptAsync("2-Way Authentication",
+                                                 "Enter Host's personal pincode. for further information please contact the host.",
+                                                 keyboard: Keyboard.Numeric);
+        
         // TODO: make it dynamic password inside of the host object.
-        if (result == "1234")
+        if (await _vm.JoinSessionAsync(result) == true)
         {
             await Shell.Current.GoToAsync(nameof(HostHomePage));
         }
         else
         {
-            await DisplayAlert("Error", "Wrong Password. please try again.", "OK");
+            await DisplayAlert("Error", "Wrong pin code. please try again.", "OK");
         }
     }
 }

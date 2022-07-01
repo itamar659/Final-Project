@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Client.Models"
+             x:DataType="models:Host"
+             x:Class="Client.FindHostItemControl">
+    <Grid ColumnDefinitions="Auto,*,Auto"
+          RowDefinitions="Auto,Auto"
+          Padding="20">
+        <Frame Grid.Row="0"
+               Grid.RowSpan="2"
+               Grid.Column="0"
+               BorderColor="Transparent"
+               HorizontalOptions="Start"
+               VerticalOptions="Start"
+               HasShadow="False"
+               CornerRadius="17"
+               Padding="0"
+               IsClippedToBounds="True"
+               Margin="0,0,20,0">
+
+            <Image Source="{Binding Picture}"
+                   Aspect="AspectFill"
+                   WidthRequest="60"
+                   HeightRequest="60" />
+
+        </Frame>
+
+        <Label Grid.Row="0"
+               Grid.Column="1"
+               Text="{Binding Name}"
+               FontAttributes="Bold" />
+
+        <Label Grid.Row="1"
+               Grid.Column="1"
+               Text="{Binding StatusComment}"
+               FontAttributes="Bold"
+               TextColor="#b4b4b4" />
+
+        <Ellipse Grid.Row="0"
+                 Grid.Column="2"
+                 Grid.RowSpan="2"
+                 IsVisible="{Binding IsOnline}"
+                 VerticalOptions="Center"
+                 HorizontalOptions="Start"
+                 Margin="30,-10,30,0"
+                 Fill="#1ad32e"
+                 HeightRequest="10"
+                 WidthRequest="10"
+                 StrokeThickness="0" />
+    </Grid>
+</ContentView>

@@ -66,6 +66,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\Host\HostFrontPage.xaml.cs">
+	    <DependentUpon>HostFrontPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Controls\FindHostPage\FindHostFavItemControl.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\FindHostPage\FindHostItemControl.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Controls\HostPlayerControl.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

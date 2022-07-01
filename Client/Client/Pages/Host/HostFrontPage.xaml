@@ -2,7 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Client"
-             x:Class="Client.HostPage"
+             xmlns:models="clr-namespace:Client.Models"
+             x:DataType="local:HostFrontPageViewModel"
+             x:Class="Client.HostFrontPage"
              Title="Host Profile Page"
              BackgroundColor="White">
 
@@ -38,129 +40,127 @@
             <Setter Property="MaximumTrackColor" Value="{StaticResource SilderColor}"/>
         </Style>
     </ContentPage.Resources>
-    
-            <!-- 1. Floating Button-->
+
+    <!-- 1. Floating Button-->
     <Grid RowDefinitions="Auto">
         <ScrollView Grid.Row="0">
             <Grid ColumnDefinitions="*,*"
-                          RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
-                          Padding="30,0">
+                  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                  Padding="30,0">
 
                 <!-- 2. Header information-->
-
+                <!-- Profile and background pictures -->
                 <Image Grid.Row="0"
-                               Grid.Column="0"
-                               Grid.ColumnSpan="2"
-                               Source="Landscape"
-                               VerticalOptions="Start"
-                               Margin="-35,-45,-35,0" 
-                               HeightRequest="{OnPlatform iOS='250', Android='200'}"
-                               Aspect="AspectFill"/>
-
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Source="{Binding BannerImageUrl}"
+                       VerticalOptions="Start"
+                       Margin="-35,-45,-35,0"
+                       HeightRequest="{OnPlatform iOS='250', Android='200'}"
+                       Aspect="AspectFill" />
                 <Frame Grid.Row="1"
-                               Grid.Column="1"
-                               Margin="0,-40,0,0"
-                               BorderColor="White"
-                               VerticalOptions="Start"
-                               HorizontalOptions="End"
-                               WidthRequest="70"
-                               HeightRequest="70"
-                               HasShadow="False"
-                               CornerRadius="35"
-                               Padding="0"
-                               IsClippedToBounds="True">
-
-                    <Image Source="avatar_icon"
-                                   Aspect="AspectFill"/>
-
+                       Grid.Column="1"
+                       Margin="0,-40,0,0"
+                       BorderColor="White"
+                       VerticalOptions="Start"
+                       HorizontalOptions="End"
+                       WidthRequest="70"
+                       HeightRequest="70"
+                       HasShadow="False"
+                       CornerRadius="35"
+                       Padding="0"
+                       IsClippedToBounds="True">
+                    <Image Source="{Binding AvatarIconUrl}"
+                           Aspect="AspectFill" />
                 </Frame>
 
+                <!-- Place name -->
                 <Label Grid.Row="1"
-                               Grid.Column="0"
-                               Grid.ColumnSpan="2"
-                               Text="Carla Bruni"
-                               Margin="0,20,0,0"
-                               FontAttributes="Bold"
-                               FontSize="{OnPlatform iOS='28', Android='23'}"/>
-
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Text="{Binding HostName}"
+                       Margin="0,20,0,0"
+                       FontAttributes="Bold"
+                       FontSize="{OnPlatform iOS='28', Android='23'}" />
                 <Label Grid.Row="2"
-                               Grid.Column="0"
-                               Grid.ColumnSpan="2"
-                               Text="Bar of Wine"
-                               FontSize="18"
-                               TextColor="Silver"/>
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Text="{Binding HostSummary}"
+                       FontSize="18"
+                       TextColor="Silver" />
 
                 <!-- 3. Topics-->
                 <CollectionView Grid.Row="3"
-                                        Grid.Column="0"
-                                        Grid.ColumnSpan="2"
-                                        HorizontalScrollBarVisibility="Never"
-                                        ItemsSource="{Binding Songs}" 
-                                        ItemsLayout="HorizontalList"
-                                        HeightRequest="50">
-
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                HorizontalScrollBarVisibility="Never"
+                                ItemsSource="{Binding Songs}"
+                                ItemsLayout="HorizontalList"
+                                HeightRequest="50">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <StackLayout Padding="4,10" Margin="0,20">
-
+                            <StackLayout Padding="4,10"
+                                         Margin="0,20">
                                 <Label Text="Lala"
-                                               BackgroundColor="Black"
-                                               Padding="8"/>
-
+                                       BackgroundColor="Black"
+                                       Padding="8" />
                             </StackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <!-- 4. Details-->
+
+                <!-- 4. Details -->
                 <CollectionView Grid.Row="4"
-                                        Grid.Column="0"
-                                        Grid.ColumnSpan="2"
-                                        HorizontalScrollBarVisibility="Never"
-                                        ItemsSource="{Binding information}" Margin="0,-30"
-                                        HeightRequest="250">
+                                Grid.Column="0"
+                                Grid.ColumnSpan="2"
+                                HorizontalScrollBarVisibility="Never"
+                                ItemsSource="{Binding Information}"
+                                Margin="0,-30"
+                                HeightRequest="250">
                     <CollectionView.ItemsLayout>
-                        <GridItemsLayout Orientation="Vertical" Span="2" />
+                        <GridItemsLayout Orientation="Vertical"
+                                         Span="2" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Padding="0,0,30,0" RowDefinitions="40,*,60">
-
-                                <Image Grid.Row="0" 
-                                               Source="{Binding Icon}"
-                                               Aspect="AspectFit"
-                                               HorizontalOptions="Start"
-                                               HeightRequest="38"
-                                               WidthRequest="38"/>
-
+                        <DataTemplate x:DataType="models:HostInformation">
+                            <Grid Padding="0,0,30,0"
+                                  RowDefinitions="40,*,60">
+                                <Image Grid.Row="0"
+                                       Source="{Binding Icon}"
+                                       Aspect="AspectFit"
+                                       HorizontalOptions="Start"
+                                       HeightRequest="38"
+                                       WidthRequest="38" />
                                 <Label Grid.Row="1"
-                                               Text="{Binding Title}"
-                                               TextColor="#7d7e83"
-                                               VerticalOptions="Start"
-                                               FontSize="{OnPlatform iOS='20', Android='15'}"
-                                               FontAttributes="Bold"/>
-
-                                <Label Grid.Row="2" 
-                                               Text="{Binding Description}"
-                                               TextColor="#909093"
-                                               FontSize="{OnPlatform iOS='20', Android='15'}"/>
+                                       Text="{Binding Title}"
+                                       TextColor="#7d7e83"
+                                       VerticalOptions="Start"
+                                       FontSize="{OnPlatform iOS='20', Android='15'}"
+                                       FontAttributes="Bold" />
+                                <Label Grid.Row="2"
+                                       Text="{Binding Details}"
+                                       TextColor="#909093"
+                                       FontSize="{OnPlatform iOS='20', Android='15'}" />
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <!-- 5. Description-->
-                <Label Grid.Row="5"
-                               Grid.Column="0"
-                               Text="Description"
-                               FontAttributes="Bold"
-                               FontSize="22"
-                               Margin="0,0,0,0"/>
-                <Label Grid.Row="6"
-                               Grid.ColumnSpan="2"
-                               TextColor="#828184"
-                               LineHeight="1.5"
-                               Padding="0,0,0,0"
-                               Text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."/>
 
+                <!-- 5. Description -->
+                <Label Grid.Row="5"
+                       Grid.Column="0"
+                       Text="Description"
+                       FontAttributes="Bold"
+                       FontSize="22"
+                       Margin="0,0,0,0" />
+                <Label Grid.Row="6"
+                       Grid.ColumnSpan="2"
+                       TextColor="#828184"
+                       LineHeight="1.5"
+                       Padding="0,0,0,0"
+                       Text="{Binding HostDescription}" />
+                
+                <!-- 6. Join Button -->
                 <Button Grid.Row="7"
                         Grid.Column="2"
                         Text="Join The Party"
@@ -171,7 +171,7 @@
                         CornerRadius="20"
                         TextColor="White"
                         HeightRequest="{OnPlatform iOS='70', Android='50'}"
-                        Margin="0,20"/>
+                        Margin="0,20" />
             </Grid>
             <!-- Floating Button-->
         </ScrollView>

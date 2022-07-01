@@ -36,10 +36,10 @@ public class JukeboxSessionsController : ControllerBase
     }
 
     [HttpPost("AvailableSessions")]
-    public async Task<ActionResult<SessionDto>> AvailableSessions()
+    public async Task<ActionResult<List<JukeboxSessionDto>>> AvailableSessions()
     {
         return Ok(await _context.JukeboxSession
-            .Select(s => s.OwnerName)
+            .Select(s => s.ToDto())
             .ToListAsync());
     }
 

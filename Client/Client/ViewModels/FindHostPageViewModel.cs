@@ -1,4 +1,5 @@
 ﻿using Client.Models;
+using Client.Models.Responses;
 using Client.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
@@ -9,24 +10,8 @@ public class FindHostPageViewModel : BaseViewModel
     private readonly IServerApi _serverApi;
     private string _name;
 
-    public ObservableCollection<string> AvailableSessions { get; set; }
-    public ObservableCollection<Host> hosts { get; set; }
-    public ObservableCollection<HostStatus> hostStatus { get; set; }
-
-    //public FindHostPageViewModel()
-    //{
-        
-
-    //    hostStatus = new ObservableCollection<HostStatus>()
-    //        {
-    //            new HostStatus { Picture = "host_icon", Name="Alice" , StatusComment="Online", IsOnline=true},
-    //            new HostStatus { Picture = "avatar_icon", Name="Pauline" , StatusComment="Online", IsOnline=true},
-    //            new HostStatus { Picture = "avatar_icon", Name="Martin" , StatusComment="Online", IsOnline=true},
-    //            new HostStatus { Picture = "avatar_icon", Name="Fanny" , StatusComment="Last activity 35 min", IsOnline=false },
-    //            new HostStatus { Picture = "host_icon", Name="Celine" , StatusComment="Last activity 25 min", IsOnline=false}
-    //        };
-
-    //}
+    public ObservableCollection<Host> FavoriteHosts { get; set; }
+    public ObservableCollection<Host> AvailableHosts { get; set; }
 
     public string WelcomeMessage
     {
@@ -40,52 +25,61 @@ public class FindHostPageViewModel : BaseViewModel
 
     public ICommand ViewHostPageCommand { get; set; }
 
-    public ICommand ViewHostPage { get; set; }
-
     public FindHostPageViewModel(IServerApi serverApi)
     {
         _serverApi = serverApi;
-        AvailableSessions = new ObservableCollection<string>();
-        hostStatus = new ObservableCollection<HostStatus>();
+        FavoriteHosts = new ObservableCollection<Host>();
+        AvailableHosts = new ObservableCollection<Host>();
 
-        ViewHostPageCommand = new Command(async () =>
+        ViewHostPageCommand = new Command(async (host) =>
         {
-
-            if (await _serverApi.JoinSessionAsync("[OWNER_NAME]"))
-                await Shell.Current.GoToAsync($"{nameof(HostPage)}?SessionHostName=[OWNER_NAME]");
-
-        });
-
-        ViewHostPage = new Command(async () =>
-        {
-            await Shell.Current.GoToAsync($"{nameof(HostPage)}?SessionHostName=[OWNER_NAME]");
-
-        });
-
-        hosts = new ObservableCollection<Host>()
+            if (host is Host hs)
             {
-                new Host{ Name ="Carla Bruni", Picture="avatar_icon"},
-                new Host{ Name ="Dizi", Picture="host_icon"}
-            };
+                await Shell.Current.GoToAsync($"{nameof(HostFrontPage)}?SessionKey={hs.SessionKey}");
+            }
+        });
 
         updateAvailableSessions();
     }
 
     private async void updateAvailableSessions()
     {
-        List<string> availableSessions = await _serverApi.FetchAvailableSessionsAsync();
+        List<JukeboxSessionResponse> availableSessions = await _serverApi.FetchAvailableSessionsAsync();
 
         if (availableSessions == null)
             return;
 
-        AvailableSessions = new ObservableCollection<string>();
-        foreach (var sessionName in availableSessions)
+        AvailableHosts.Clear();
+        foreach (var session in availableSessions)
         {
-            AvailableSessions.Add(sessionName);
-            hostStatus.Add(new HostStatus { Name = sessionName, IsOnline = true, Picture = "host_icon", StatusComment = "Online" });
-        }
+            AvailableHosts.Add(new Host
+            {
+                SessionKey = session.SessionKey,
 
+                OnlineUsers = session.ActiveUsers,
+                Name = session.OwnerName,
+                IsOnline = true,
+                Picture = "host_icon",
+                StatusComment = "Online"
+            });
+        }
     }
+
+    //public FindHostPageViewModel()
+    //{
+
+
+    //    hostStatus = new ObservableCollection<HostStatus>()
+    //        {
+    //            new HostStatus { Picture = "host_icon", Name="Alice" , StatusComment="Online", IsOnline=true},
+    //            new HostStatus { Picture = "avatar_icon", Name="Pauline" , StatusComment="Online", IsOnline=true},
+    //            new HostStatus { Picture = "avatar_icon", Name="Martin" , StatusComment="Online", IsOnline=true},
+    //            new HostStatus { Picture = "avatar_icon", Name="Fanny" , StatusComment="Last activity 35 min", IsOnline=false },
+    //            new HostStatus { Picture = "host_icon", Name="Celine" , StatusComment="Last activity 25 min", IsOnline=false}
+    //        };
+
+    //}
+
 }
 
 

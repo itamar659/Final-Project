@@ -1,6 +1,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Client"
+             x:DataType="local:MainPageViewModel"
              x:Class="Client.MainPage"
              Shell.FlyoutBehavior="Disabled"
              Shell.NavBarIsVisible="False"
@@ -21,7 +22,7 @@
 
                 <Button Grid.Row="1" 
                         Text="Continue"
-                        Command="{Binding AnonymousLoginCommand}"
+                        Clicked="AnonymousSignIn_Clicked"
                         Style="{StaticResource Highlighted}"/>
                 
                 <Label  Grid.Row="2" 
@@ -39,7 +40,7 @@
                         ImageSource="google_icon.png" 
                         FontSize="17" 
                         Text="Continue with Google"
-                        Command="{Binding SignInCommand}"
+                        Clicked="GoogleSignIn_Clicked"
                         Style="{StaticResource SocialNetworks}"/>
                 
                 <Button Grid.Row="5" 
@@ -60,7 +61,6 @@
                 <Label Grid.Row="7" Text="Forget your password?" TextColor="{StaticResource MainColor}" FontAttributes="Bold"/>
             </Grid>
         </Frame>
-
     </Grid>
 
     <!--<local:MainTemplate PageTitle="Enjoy Music Your Way">
