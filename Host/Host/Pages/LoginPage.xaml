@@ -6,14 +6,33 @@
              x:DataType="local:LoginViewModel"
              Shell.NavBarIsVisible="False"
              Shell.FlyoutBehavior="Disabled">
+
     <Border>
-        <VerticalStackLayout VerticalOptions="Center"
-                             HorizontalOptions="Center">
-            <Entry Placeholder="Token"
-                    Text="{Binding Token, Mode=OneWayToSource}"/>
-            <Button Text="Login"
-                    Command="{Binding LoginCommand}" />
-            <Label Text="{Binding ErrorMsgHolder}" />
-        </VerticalStackLayout>
+        <Border VerticalOptions="Center"
+                HorizontalOptions="Center"
+                StrokeThickness="1"
+                Padding="80, 60">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="10" />
+            </Border.StrokeShape>
+            <StackLayout>
+                <Image Source="app_logo.png"
+                       WidthRequest="100"
+                       HeightRequest="100"
+                       Margin="0, 0, 0, 40" />
+                <Border StrokeThickness="1"
+                        Margin="0, 0, 0, 20">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="5" />
+                    </Border.StrokeShape>
+                    <Entry Placeholder="Password"
+                           Text="{Binding Token, Mode=OneWayToSource}" />
+                </Border>
+                <Button Text="Login"
+                        Command="{Binding LoginCommand}" 
+                        Margin="0, 0, 0, 5"/>
+                <Label Text="{Binding ErrorMsgHolder}" />
+            </StackLayout>
+        </Border>
     </Border>
 </ContentPage>
