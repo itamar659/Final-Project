@@ -1,4 +1,5 @@
-﻿using Host.Models.Responses;
+﻿using Host.Models.Requests;
+using Host.Models.Responses;
 
 namespace Host.Services;
 public interface IServerApi : IDisposable
@@ -12,5 +13,5 @@ public interface IServerApi : IDisposable
     Task<bool> CreatePollAsync();
     Task<bool> RemovePollAsync();
     Task<bool> ChangeSessionPinCodeAsync(string pinCode);
-    Task UpdateSongAsync(object song);
+    Task UpdateSongAsync(SongUpdateRequest song);
 }

@@ -49,4 +49,18 @@ public class JukeboxSessionsController : ControllerBase
     {
         return Ok(await _context.JukeboxSession.ToListAsync());
     }
+
+
+    // TODO: For testing only
+    [HttpGet("/delete")]
+    public async Task<IActionResult> DeleteSession(string sessionKey)
+    {
+        var session = await _context.FindAsync<JukeboxSession>(sessionKey);
+
+        _context.Remove(session);
+
+        await _context.SaveChangesAsync();
+
+        return Ok();
+    }
 }

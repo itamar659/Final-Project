@@ -154,7 +154,9 @@ public class ServerlessApi : IServerApi
         return await postResponseOrDefault<bool>("/Poll/Remove", obj);
     }
 
-    async Task IServerApi.UpdateSongAsync(object song)
+    async Task IServerApi.UpdateSongAsync(SongUpdateRequest song)
     {
+        var obj = new { Token = _token, SongName = song.SongName, Duration = song.Duration, Position = song.Position };
+        await postResponseOrDefault<bool>("/JukeboxHosts/ChangeSong", obj);
     }
 }

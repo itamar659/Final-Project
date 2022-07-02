@@ -1,4 +1,5 @@
 ﻿using Host.Models;
+using Host.Models.Requests;
 using Host.Models.Responses;
 using Host.Services;
 using System.Collections.ObjectModel;
@@ -10,6 +11,7 @@ public class MainPageViewModel : BaseViewModel
     public static readonly TimeSpan SERVER_UPDATE_DELAY = TimeSpan.FromMilliseconds(1000);
 
     private IServerApi _serverAPI;
+    private AudioPlayer _audioPlayer;
     private bool _fetchUpdates;
 
     public BindableObject View { get; set; }
@@ -25,18 +27,17 @@ public class MainPageViewModel : BaseViewModel
     public TimeSpan SessionTime { get; set; } // not in use
 
     public ICommand StartStopSessionCommand { get; set; }
-
     public ICommand UpdateSongCommand { get; set; } // not in use
-
     public ICommand ChangeSessionPinCodeCommand { get; set; }
     public ICommand CreatePollCommand { get; set; }
     public ICommand RemovePollCommand { get; set; }
 
     public ObservableCollection<PollOption> PollOptions { get; set; }
 
-    public MainPageViewModel(IServerApi serverAPI)
+    public MainPageViewModel(IServerApi serverAPI, AudioPlayer audioPlayer)
     {
         _serverAPI = serverAPI;
+        _audioPlayer = audioPlayer;
 
         PollOptions = new ObservableCollection<PollOption>();
 
@@ -67,9 +68,9 @@ public class MainPageViewModel : BaseViewModel
             OnPropertyChanged(nameof(IsSessionLive));
         });
 
-        UpdateSongCommand = new Command(() =>
+        UpdateSongCommand = new Command(async () =>
         {
-            _serverAPI.UpdateSongAsync(new { });
+            //await _serverAPI.UpdateSongAsync(new SongUpdateRequest { SongName = SongName, Duration = Duration, Position = Position});
         });
 
         ChangeSessionPinCodeCommand = new Command(async () =>
@@ -121,5 +122,7 @@ public class MainPageViewModel : BaseViewModel
 
         if (_fetchUpdates)
             View.Dispatcher.DispatchDelayed(SERVER_UPDATE_DELAY, FetchViewUpdateAsync);
+
+        await _serverAPI.UpdateSongAsync(new SongUpdateRequest { SongName = _audioPlayer.SongName, Duration = _audioPlayer.Duration, Position = _audioPlayer.Position });
     }
 }

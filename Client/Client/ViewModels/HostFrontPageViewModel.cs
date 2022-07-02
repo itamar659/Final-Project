@@ -117,6 +117,10 @@ public class HostFrontPageViewModel : BaseViewModel
 
     public async Task<bool> JoinSessionAsync(string pinCode)
     {
-        return await _serverApi.JoinSessionAsync(HostName, pinCode);
+        var success = await _serverApi.JoinSessionAsync(HostName, pinCode);
+        if (success)
+            await Shell.Current.GoToAsync(nameof(HostHomePage));
+
+        return success;
     }
 }

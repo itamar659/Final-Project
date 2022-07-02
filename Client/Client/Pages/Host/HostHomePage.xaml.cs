@@ -4,12 +4,9 @@ namespace Client;
 
 public partial class HostHomePage : ContentPage
 {
-    public HostHomePage(HostFrontPageViewModel vm)
+    public HostHomePage(HostHomePageViewModel vm)
     {
         InitializeComponent();
-
-        // Bad Initialize. Only for Practice.
-        // TODO: Add Host Object inorder to make it more expendabily
 
         BindingContext = vm;
     }

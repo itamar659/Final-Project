@@ -26,14 +26,7 @@ public partial class HostFrontPage : ContentPage
                                                  "Enter Host's personal pincode. for further information please contact the host.",
                                                  keyboard: Keyboard.Numeric);
         
-        // TODO: make it dynamic password inside of the host object.
-        if (await _vm.JoinSessionAsync(result) == true)
-        {
-            await Shell.Current.GoToAsync(nameof(HostHomePage));
-        }
-        else
-        {
+        if (await _vm.JoinSessionAsync(result) == false)
             await DisplayAlert("Error", "Wrong pin code. please try again.", "OK");
-        }
     }
 }

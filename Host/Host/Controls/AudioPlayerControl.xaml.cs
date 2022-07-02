@@ -1,71 +1,13 @@
 using Host.Models;
 using Host.Services;
+using System.ComponentModel;
 
 namespace Host;
 
 public partial class AudioPlayerControl : ContentView
 {
+
     private AudioPlayer _playerService;
-
-    //public static readonly BindableProperty SongNameProperty =
-    //    BindableProperty.Create(
-    //        nameof(SongName),
-    //        typeof(string),
-    //        typeof(AudioPlayerControl),
-    //        defaultValue: string.Empty,
-    //        propertyChanged: (b, o, n) => ((AudioPlayerControl)b).SongName = n.ToString());
-
-    //public static readonly BindableProperty DurationProperty =
-    //    BindableProperty.Create(
-    //        nameof(Duration),
-    //        typeof(double),
-    //        typeof(AudioPlayerControl),
-    //        defaultValue: double.Epsilon,
-    //        propertyChanged: (b, o, n) => ((AudioPlayerControl)b).Duration = (double)n);
-
-    //public static readonly BindableProperty PositionProperty =
-    //    BindableProperty.Create(
-    //        nameof(Position),
-    //        typeof(double),
-    //        typeof(AudioPlayerControl),
-    //        defaultValue: (double)0,
-    //        propertyChanged: (b, o, n) => ((AudioPlayerControl)b).Position = (double)n);
-
-    //public static readonly BindableProperty IsPlayingProperty =
-    //    BindableProperty.Create(
-    //        nameof(IsPlaying),
-    //        typeof(bool),
-    //        typeof(AudioPlayerControl),
-    //        defaultValue: false,
-    //        propertyChanged: (b, o, n) => {
-    //            ((AudioPlayerControl)b).IsPlaying = (bool)n;
-    //            ((AudioPlayerControl)b).playStopBtn.Text = (bool)n ? "Stop" : "Play";
-    //        });
-
-    //public bool IsPlaying
-    //{
-    //    get { return (bool)GetValue(IsPlayingProperty); }
-    //    set { SetValue(IsPlayingProperty, value); }
-    //}
-
-
-    //public string SongName
-    //{
-    //    get { return (string)GetValue(SongNameProperty); }
-    //    set { SetValue(SongNameProperty, value); }
-    //}
-
-    //public double Duration
-    //{
-    //    get { return (double)GetValue(DurationProperty); }
-    //    set { SetValue(DurationProperty, value); }
-    //}
-
-    //public double Position
-    //{
-    //    get { return (double)GetValue(PositionProperty); }
-    //    set { SetValue(PositionProperty, value); }
-    //}
 
     public AudioPlayerControl()
     {
@@ -82,8 +24,7 @@ public partial class AudioPlayerControl : ContentView
 
         if (_playerService == null)
         {
-            IAudioService audioPlayer = Handler.MauiContext.Services.GetService<IAudioService>();
-            _playerService = new AudioPlayer(audioPlayer);
+            _playerService = Handler.MauiContext.Services.GetService<AudioPlayer>();
             _playerService.SongStateChanged += _playerService_SongStateChanged;
 
             songsCollection.ItemsSource = _playerService.Songs;

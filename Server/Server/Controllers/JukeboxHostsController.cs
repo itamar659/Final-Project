@@ -77,6 +77,32 @@ public class JukeboxHostsController : ControllerBase
         }
     }
 
+    [HttpPost("ChangeSong")]
+    public async Task<ActionResult<JukeboxSessionDto>> ChangeSong([Bind("Token,SongName,Duration,Position")] SongDto songDto)
+    {
+        var host = await _context.JukeboxHost.FindAsync(songDto.Token);
+        if (host is null)
+            return NotFound();
+
+        JukeboxSession session = await _jukeboxSessionRequestHandler.GetSessionAsync(host.SessionKey);
+        if (session is null)
+            return NotFound();
+
+        JukeboxSession updatedSession = session with
+        {
+            SongName = songDto.SongName,
+            SongDuration = songDto.Duration,
+            SongPosition = songDto.Position
+        };
+
+        _context.Entry(session).State = EntityState.Detached;
+
+        _context.Update(updatedSession);
+        await _context.SaveChangesAsync();
+
+        return Ok();
+    }
+
     [HttpPost("CloseSession")]
     public async Task<ActionResult<JukeboxSessionDto>> CloseSession([Bind("Token")] SessionRequestJukeboxHostDto jukeboxHost)
     {

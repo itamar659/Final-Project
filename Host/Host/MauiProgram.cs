@@ -1,4 +1,5 @@
-﻿using Host.Services;
+﻿using Host.Models;
+using Host.Services;
 
 namespace Host;
 
@@ -18,6 +19,7 @@ public static class MauiProgram
 			.AddCustomServices();
 
 		builder.Services.AddSingleton<IServerApi, ServerlessApi>();
+		builder.Services.AddSingleton<AudioPlayer>();
 
 		builder.Services.AddTransient<MainPageViewModel>();
 		builder.Services.AddTransient<LoginViewModel>();
