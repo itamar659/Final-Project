@@ -6,12 +6,12 @@
              Shell.FlyoutBehavior="Disabled"
              Shell.NavBarIsVisible="False"
              Shell.TabBarIsVisible="False"
-             BackgroundColor="{DynamicResource SecondaryColor}">
+             BackgroundColor="#181415">
 
     <!-- Main structure-->
     <Grid RowDefinitions="*,Auto">
         <!--Main image-->
-        <Image Grid.RowSpan="2" Source="modelprofile.png" VerticalOptions="Start" Aspect="AspectFit"/>
+        <Image Grid.RowSpan="2" Source="model_green.png" VerticalOptions="Start" Aspect="AspectFit"/>
         <Frame Grid.Row="1" HasShadow="False" Margin="15,0,15,30" VerticalOptions="FillAndExpand" CornerRadius="20" Opacity="0.9" BackgroundColor="#2e2b2c">
             <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" RowSpacing="25" Padding="0,10,0,0">
                 <Entry Placeholder="Display Username"
