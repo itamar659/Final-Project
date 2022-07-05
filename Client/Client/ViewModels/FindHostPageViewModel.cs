@@ -31,6 +31,8 @@ public class FindHostPageViewModel : BaseViewModel
         FavoriteHosts = new ObservableCollection<Host>();
         AvailableHosts = new ObservableCollection<Host>();
 
+        InitFavoriteHosts();
+
         ViewHostPageCommand = new Command(async (host) =>
         {
             if (host is Host hs)
@@ -63,6 +65,20 @@ public class FindHostPageViewModel : BaseViewModel
                 StatusComment = "Online"
             });
         }
+    }
+
+    private void InitFavoriteHosts()
+    {
+        FavoriteHosts.Clear();
+        FavoriteHosts.Add(new Host
+        {
+            SessionKey = "",
+            OnlineUsers = 12,
+            Name = "ADD",
+            IsOnline = false,
+            Picture = "default_favorite_host",
+            StatusComment = "Add favorite host"
+        });
     }
 
     //public FindHostPageViewModel()

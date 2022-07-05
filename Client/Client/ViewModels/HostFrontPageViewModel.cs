@@ -102,7 +102,11 @@ public class HostFrontPageViewModel : BaseViewModel
     {
         JukeboxSessionResponse details = await _serverApi.FetchSessionDetailsAsync(SessionKey);
         if (details == null)
-            return; // Return to last page...
+        {
+
+            return;
+        }
+             // Return to last page...
 
         HostName = details.OwnerName;
         HostSummary = "No Summary";

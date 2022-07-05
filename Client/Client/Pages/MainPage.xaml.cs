@@ -20,8 +20,8 @@ public partial class MainPage : ContentPage
             await DisplayAlert("Error", res.Item2, "OK");
     }
 
-    private void GoogleSignIn_Clicked(object sender, EventArgs e)
+    private async void GoogleSignIn_Clicked(object sender, EventArgs e)
     {
-
+        await Shell.Current.GoToAsync($"{nameof(FindHostPage)}");
     }
 }

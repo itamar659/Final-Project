@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
     
-<Shell
+<Shell 
     x:Class="Client.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -11,20 +11,31 @@
         <ShellContent ContentTemplate="{DataTemplate local:MainPage}"/>
     </ShellItem>
     
-    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+    <!--<FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent Title="Home"
                       Icon="info_icon.png"
                       ContentTemplate="{DataTemplate local:MainPage}" />
         <ShellContent Title="Profile"
                       Icon="profile_icon.png"
                       ContentTemplate="{DataTemplate  profile:ProfilePage}" />
-    </FlyoutItem>
+    </FlyoutItem>-->
 
+    
+
+    <ShellContent Title="Home"
+                  Icon="home_icon.png"
+                  ContentTemplate="{DataTemplate local:MainPage}"/>
+
+    <ShellContent Title="Profile"
+                  Icon="profile_icon.png"
+                  ContentTemplate="{DataTemplate profile:ProfilePage}"/>
+ 
+    
     <ShellContent Title="Settings"
                   Icon="settings_icon.png"
                   ContentTemplate="{DataTemplate  profile:ProfilePage}" />
 
-    <Shell.ItemTemplate>
+    <!--<Shell.ItemTemplate>
         <DataTemplate>
             <Grid ColumnDefinitions="0.2*,0.8*">
                 <Image Source="{Binding FlyoutIcon}"
@@ -33,6 +44,21 @@
                 <Label Grid.Column="1"
                        Text="{Binding Title}"
                        VerticalTextAlignment="Center" />
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>-->
+
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid Padding="10,10,0,10" ColumnDefinitions="0.2*,0.8*">
+                <Image Source="{Binding FlyoutIcon}"
+                       Margin="5"
+                       HeightRequest="35" />
+                <Label Grid.Column="1"
+                   Text="{Binding Title}"
+                   FontSize="Small"
+                   FontAttributes="Bold"
+                   VerticalOptions="Center"/>
             </Grid>
         </DataTemplate>
     </Shell.ItemTemplate>
