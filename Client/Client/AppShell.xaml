@@ -4,49 +4,32 @@
     x:Class="Client.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:controls="clr-namespace:Xaminals.Controls"
+    xmlns:views="clr-namespace:Xaminals.Views"
     xmlns:local="clr-namespace:Client"
+     Shell.TabBarIsVisible="False"
     xmlns:profile="clr-namespace:Client.Pages.Users">
 
     <ShellItem Route="MainPage" FlyoutItemIsVisible="False">
         <ShellContent ContentTemplate="{DataTemplate local:MainPage}"/>
     </ShellItem>
-    
-    <!--<FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
+    <ShellItem Route="FindHostPage" FlyoutItemIsVisible="False">
+        <ShellContent ContentTemplate="{DataTemplate local:FindHostPage}"/>
+    </ShellItem>
+
+    <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
         <ShellContent Title="Home"
-                      Icon="info_icon.png"
-                      ContentTemplate="{DataTemplate local:MainPage}" />
-        <ShellContent Title="Profile"
-                      Icon="profile_icon.png"
-                      ContentTemplate="{DataTemplate  profile:ProfilePage}" />
-    </FlyoutItem>-->
-
-    
-
-    <ShellContent Title="Home"
                   Icon="home_icon.png"
-                  ContentTemplate="{DataTemplate local:MainPage}"/>
+                  ContentTemplate="{DataTemplate local:FindHostPage}"/>
 
-    <ShellContent Title="Profile"
+        <ShellContent Title="Profile"
                   Icon="profile_icon.png"
                   ContentTemplate="{DataTemplate profile:ProfilePage}"/>
- 
-    
+    </FlyoutItem>
+
     <ShellContent Title="Settings"
                   Icon="settings_icon.png"
                   ContentTemplate="{DataTemplate  profile:ProfilePage}" />
-
-    <!--<Shell.ItemTemplate>
-        <DataTemplate>
-            <Grid ColumnDefinitions="0.2*,0.8*">
-                <Image Source="{Binding FlyoutIcon}"
-                       Margin="5"
-                       HeightRequest="35" />
-                <Label Grid.Column="1"
-                       Text="{Binding Title}"
-                       VerticalTextAlignment="Center" />
-            </Grid>
-        </DataTemplate>
-    </Shell.ItemTemplate>-->
 
     <Shell.ItemTemplate>
         <DataTemplate>
@@ -87,9 +70,9 @@
                            Margin="0, 60, 0, 0"
                            Padding="0"
                            IsClippedToBounds="True">
-                        
+
                         <Image Source="modelprofile" Aspect="AspectFill"/>
-                        
+
                     </Frame>
                     <!-- Profile name & general description-->
                     <Label Grid.Row="1"

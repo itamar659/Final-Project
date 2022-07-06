@@ -5,7 +5,7 @@
              x:DataType="local:FindHostPageViewModel"
              x:Class="Client.FindHostPage"
              Title="Find Host"
-             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False"
              BackgroundColor="White">
     <!-- Main layout-->
     <Grid RowDefinitions="Auto,Auto,Auto,Auto,*"

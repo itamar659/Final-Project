@@ -22,6 +22,6 @@ public partial class MainPage : ContentPage
 
     private async void GoogleSignIn_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync($"{nameof(FindHostPage)}");
+        await Shell.Current.GoToAsync($"//{nameof(FindHostPage)}");
     }
 }
