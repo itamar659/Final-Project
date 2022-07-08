@@ -22,6 +22,22 @@ public partial class MainPage : ContentPage
 
     private async void GoogleSignIn_Clicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync($"//{nameof(FindHostPage)}");
+        try
+        {
+            //Uri uri = new Uri("https://www.google.com");
+            //await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+
+            WebAuthenticatorResult authResult = await WebAuthenticator.Default.AuthenticateAsync(
+                    new Uri("https://mysite.com/mobileauth/Microsoft"),
+                    new Uri("myapp://")
+                    );
+
+            string accessToken = authResult?.AccessToken;
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        //await Shell.Current.GoToAsync($"//{nameof(FindHostPage)}");
     }
 }

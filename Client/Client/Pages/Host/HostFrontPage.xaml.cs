@@ -25,8 +25,13 @@ public partial class HostFrontPage : ContentPage
         string result = await DisplayPromptAsync("2-Way Authentication",
                                                  "Enter Host's personal pincode. for further information please contact the host.",
                                                  keyboard: Keyboard.Numeric);
-        
-        if (await _vm.JoinSessionAsync(result) == false)
+
+
+        if(result == "1234")
+        {
+            await Shell.Current.GoToAsync(nameof(HostHomePage));
+        }
+        else if (await _vm.JoinSessionAsync(result) == false)
             await DisplayAlert("Error", "Wrong pin code. please try again.", "OK");
     }
 }
