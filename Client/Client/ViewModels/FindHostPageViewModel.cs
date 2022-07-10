@@ -46,27 +46,27 @@ public class FindHostPageViewModel : BaseViewModel
 
     private async void updateAvailableSessions()
     {
-        //List<JukeboxSessionResponse> availableSessions = await _serverApi.FetchAvailableSessionsAsync();
+        List<JukeboxSessionResponse> availableSessions = await _serverApi.FetchAvailableSessionsAsync();
         AvailableHosts.Clear();
 
-        //if (availableSessions != null)
-        //{
-        //    foreach (var session in availableSessions)
-        //    {
-        //        AvailableHosts.Add(new Host
-        //        {
-        //            SessionKey = session.SessionKey,
+        if (availableSessions != null)
+        {
+            foreach (var session in availableSessions)
+            {
+                AvailableHosts.Add(new Host
+                {
+                    SessionKey = session.SessionKey,
 
-        //            OnlineUsers = session.ActiveUsers,
-        //            Name = session.OwnerName,
-        //            IsOnline = true,
-        //            Picture = "host_icon",
-        //            StatusComment = "Online"
-        //        });
-        //    }
-        //}
-        //else
-        //{ 
+                    OnlineUsers = session.ActiveUsers,
+                    Name = session.OwnerName,
+                    IsOnline = true,
+                    Picture = "host_icon",
+                    StatusComment = "Online"
+                });
+            }
+        }
+        else
+        {
             AvailableHosts.Add(new Host
             {
                 SessionKey = "",
@@ -75,7 +75,7 @@ public class FindHostPageViewModel : BaseViewModel
                 Picture = "error_icon",
                 StatusComment = "Try again later."
             });
-        //}
+        }
 
     }
 

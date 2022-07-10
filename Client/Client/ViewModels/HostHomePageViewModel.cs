@@ -1,5 +1,6 @@
 ﻿using Client.Models.Responses;
 using Client.Services;
+using System.Windows.Input;
 
 namespace Client;
 public class HostHomePageViewModel : BaseViewModel
@@ -49,6 +50,8 @@ public class HostHomePageViewModel : BaseViewModel
         set { _hostname = value; }
     }
 
+    public ICommand LeaveSessionCommand { get; set; }
+
     public HostHomePageViewModel(IServerApi serverApi)
     {
         _serverApi = serverApi;
@@ -81,5 +84,11 @@ public class HostHomePageViewModel : BaseViewModel
             await fetchSessionDetailsAsync();
             _songTimer.Start();
         }
+    }
+
+    public async Task LeaveSessionAsync()
+    {
+        await _serverApi.LeaveSessionAsync();
+        await Shell.Current.GoToAsync("..");
     }
 }

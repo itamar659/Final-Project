@@ -4,11 +4,13 @@ namespace Client;
 
 public partial class HostHomePage : ContentPage
 {
+    private HostHomePageViewModel _vm;
     public HostHomePage(HostHomePageViewModel vm)
     {
         InitializeComponent();
 
-        BindingContext = vm;
+        _vm = vm;
+        BindingContext = _vm;
     }
 
     private async void VoteBtn_Clicked(object sender, EventArgs e)
@@ -21,7 +23,7 @@ public partial class HostHomePage : ContentPage
         bool answer = await DisplayAlert("Leaving already?", "Are you sure wanna leave ?", "Yes", "No");
         if (answer)
         {
-            await Shell.Current.GoToAsync("..");
+            await _vm.LeaveSessionAsync();
         }
     }
 }

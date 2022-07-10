@@ -8,6 +8,7 @@ using System.Windows.Input;
 namespace Host;
 public class MainPageViewModel : BaseViewModel
 {
+    public static Random RANDOM = new Random();
     public static readonly double SERVER_UPDATE_DELAY = TimeSpan.FromSeconds(10).TotalMilliseconds;
 
     private IServerApi _serverAPI;
@@ -46,7 +47,7 @@ public class MainPageViewModel : BaseViewModel
 
         StartStopSessionCommand = new Command(startStopSession);
         ChangeSessionPinCodeCommand = new Command(async () => await _serverAPI.ChangeSessionPinCodeAsync(SessionPinCode));
-        CreatePollCommand = new Command(async () => await _serverAPI.CreatePollAsync());
+        CreatePollCommand = new Command(createPoll);
         RemovePollCommand = new Command(async () => await _serverAPI.RemovePollAsync());
     }
 
@@ -76,6 +77,7 @@ public class MainPageViewModel : BaseViewModel
 
     private async void updateSongAsync(object sender, EventArgs e)
     {
+        Thread.Sleep(100); // TEMPORARY: let the song name & duration load before sending update request
         await _serverAPI.UpdateSongAsync(new SongUpdateRequest { SongName = _audioPlayer.SongName, Duration = _audioPlayer.Duration, Position = _audioPlayer.Position });
     }
 
@@ -98,5 +100,27 @@ public class MainPageViewModel : BaseViewModel
         IsSessionLive = _serverAPI.GetSessionKey() != string.Empty;
 
         OnPropertyChanged(nameof(IsSessionLive));
+    }
+
+    private async void createPoll()
+    {
+        int pollSize = 4;
+        var songs = new List<PollOption>();
+
+        for (int i = 0; i < pollSize; i++)
+        {
+            var chosen = RANDOM.Next(_audioPlayer.Songs.Count);
+
+            songs.Add(new PollOption
+            {
+                Id = i,
+                Name = _audioPlayer.Songs[chosen].Name,
+                Votes = 0,
+            });
+        }
+
+        var request = new PollRequest() { Options = songs };
+
+        await _serverAPI.CreatePollAsync(request);
     }
 }

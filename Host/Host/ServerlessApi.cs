@@ -125,27 +125,11 @@ public class ServerlessApi : IServerApi
         };
     }
 
-    async Task<bool> IServerApi.CreatePollAsync()
+    async Task<bool> IServerApi.CreatePollAsync(PollRequest pollRequest)
     {
-        var obj = new PollRequest
-        {
-            Token = _token,
-            Options = new List<PollOption>
-            {
-                new PollOption
-                {
-                    Id = 1,
-                    Name = "a",
-                },
-                new PollOption
-                {
-                    Id = 2,
-                    Name = "b",
-                },
-            }
-        };
+        pollRequest.Token = _token;
 
-        return await postResponseOrDefault<bool>("/Poll/Create", obj);
+        return await postResponseOrDefault<bool>("/Poll/Create", pollRequest);
     }
 
     async Task<bool> IServerApi.RemovePollAsync()

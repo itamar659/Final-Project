@@ -10,7 +10,7 @@ public interface IServerApi : IDisposable
     string GetSessionKey();
     Task<JukeboxSessionResponse> FetchSessionUpdateAsync();
     Task<PollResponse> FetchPollAsync();
-    Task<bool> CreatePollAsync();
+    Task<bool> CreatePollAsync(PollRequest pollRequest);
     Task<bool> RemovePollAsync();
     Task<bool> ChangeSessionPinCodeAsync(string pinCode);
     Task UpdateSongAsync(SongUpdateRequest song);

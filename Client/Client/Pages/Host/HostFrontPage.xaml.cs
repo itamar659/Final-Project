@@ -27,11 +27,13 @@ public partial class HostFrontPage : ContentPage
                                                  keyboard: Keyboard.Numeric);
 
 
-        if(result == "1234")
+        if (await _vm.JoinSessionAsync(result) == false) // JoinSession links the client token with the session key for the current session
+        {
+            await DisplayAlert("Error", "Wrong pin code. please try again.", "OK");
+        }
+        else if (result == "1234")
         {
             await Shell.Current.GoToAsync(nameof(HostHomePage));
         }
-        else if (await _vm.JoinSessionAsync(result) == false)
-            await DisplayAlert("Error", "Wrong pin code. please try again.", "OK");
     }
 }

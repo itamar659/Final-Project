@@ -114,6 +114,7 @@ public class HostFrontPageViewModel : BaseViewModel
         AvatarIconUrl = "profile_icon";
         BannerImageUrl = "landscape";
 
+        Information.Clear();
         Information.Add(new HostInformation { Icon = "info_icon", Title = "Active Users", Details = details.ActiveUsers.ToString() });
         Information.Add(new HostInformation { Icon = "info_icon", Title = "Total Users", Details = details.TotalUsers.ToString() });
         Information.Add(new HostInformation { Icon = "info_icon", Title = "Song", Details = details.SongName });
