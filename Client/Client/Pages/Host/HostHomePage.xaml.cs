@@ -11,7 +11,7 @@ public partial class HostHomePage : ContentPage
         BindingContext = vm;
     }
 
-    private async void Button_Clicked(object sender, EventArgs e)
+    private async void VoteBtn_Clicked(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(HostLastPage));
     }

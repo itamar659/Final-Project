@@ -81,14 +81,14 @@ public class PollController : ControllerBase
     {
         var client = await _context.JukeboxClient.FindAsync(votePoll.Token);
         if (client is null)
-            return NotFound();
+            return NotFound(false);
 
         if (client.SessionKey == NumberGenerator.Empty)
-            return NotFound();
+            return NotFound(false);
 
         var pollOption = await _context.PollOption.FirstOrDefaultAsync(option => option.SessionKey == client.SessionKey && option.Option == votePoll.OptionId);
         if (pollOption == null)
-            return Unauthorized();
+            return Unauthorized(false);
 
         var newPollOption = pollOption with
         {
@@ -101,7 +101,7 @@ public class PollController : ControllerBase
 
         await _context.SaveChangesAsync();
 
-        return Ok();
+        return Ok(true);
     }
 
     [HttpPost("GetPoll")]

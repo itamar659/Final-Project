@@ -113,4 +113,20 @@ public class ServerlessApi : IServerApi
 
         return sessionNames;
     }
+
+    async Task<JukeboxPollResponse> IServerApi.FetchPollAsync(string sessionKey)
+    {
+        var obj = new { SessionKey = sessionKey };
+        JukeboxPollResponse pollResponse = await postResponseOrDefault<JukeboxPollResponse>("/Poll/GetPoll", obj);
+
+        return pollResponse;
+    }
+
+    async Task<bool> IServerApi.VoteAsync(int voteOption)
+    {
+        var obj = new { Token = _token, OptionId = voteOption };
+        bool hasVoteSuccessfully = await postResponseOrDefault<bool>("/Poll/Vote", obj);
+
+        return hasVoteSuccessfully;
+    }
 }

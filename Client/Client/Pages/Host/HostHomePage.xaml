@@ -128,7 +128,7 @@
                     <Button Grid.Column="0"
                             Text="Vote"
                             Style="{StaticResource voteButton}"
-                            Clicked="Button_Clicked" />
+                            Clicked="VoteBtn_Clicked" />
                 </Grid>
                 <Grid ColumnDefinitions="*, *, *">
                     <Button Grid.Column="1"
