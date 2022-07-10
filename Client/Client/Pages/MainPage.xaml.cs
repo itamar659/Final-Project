@@ -28,7 +28,8 @@ public partial class MainPage : ContentPage
             //await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
 
             WebAuthenticatorResult authResult = await WebAuthenticator.Default.AuthenticateAsync(
-                    new Uri("https://mysite.com/mobileauth/Microsoft"),
+                    //new Uri("https://csharp-project.azurewebsites.net/.auth/login/facebook"),
+                    new Uri("https://csharp-project.azurewebsites.net/.auth/login/google"),
                     new Uri("myapp://")
                     );
 
