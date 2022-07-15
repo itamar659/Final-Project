@@ -33,7 +33,7 @@ public class AudioPlayer
     public AudioPlayer(IAudioService audioService)
     {
         _audioService = audioService;
-        _audioService.SongEnded += async (s, e) => { await NextAsync(); await PlayAsync(); };
+        _audioService.SongEnded += async (s, e) => { await NextAsync(); };
         _playlist = new Playlist();
 
         State = PlayerState.Created;
@@ -44,7 +44,8 @@ public class AudioPlayer
         if (_playlist.SelectedSong == null)
             return;
 
-        await _audioService.SetSongAsync(_playlist.SelectedSong.Path);
+        if (State != PlayerState.Pause)
+            await _audioService.SetSongAsync(_playlist.SelectedSong.Path);
         await _audioService.PlayAsync();
 
         State = PlayerState.Play;
@@ -72,20 +73,56 @@ public class AudioPlayer
         if (path == null)
             return;
 
-        // TODO: How to use future access for faster buffering the songs
-        // Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.Add(file);
-
         _playlist.AddSong(new Song
         {
-            Name = nameFromPath(path),
+            Name = getNameFromPath(path),
             Path = path,
         });
 
-        if (_playlist.Songs.Count == 1)
+        if (_playlist.Songs.Count == 1 && State == PlayerState.Created)
         {
             State = PlayerState.Stop;
             SongStateChanged?.Invoke(this, EventArgs.Empty);
         }
+    }
+
+    public void RemoveFromPlaylist(string name)
+    {
+        if (name == null)
+            return;
+
+        var song = _playlist.Songs.FirstOrDefault(s => s.Name == name);
+        if (song == null)
+            return;
+
+        _playlist.Songs.Remove(song);
+
+        if (_playlist.Songs.Count == 0)
+        {
+            State = PlayerState.Created;
+            SongStateChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public async Task ChangeSong(string songName)
+    {
+        if (songName == null)
+            return;
+
+        bool autoPlay = State == PlayerState.Play;
+
+        var song = _playlist.Songs.FirstOrDefault(s => s.Name == songName);
+        if (song == null)
+            return;
+
+        var idx = _playlist.Songs.IndexOf(song);
+
+        _playlist.SetSong(idx);
+
+        if (autoPlay)
+            await PlayAsync();
+        else
+            await StopAsync();
     }
 
     public async Task PrevAsync()
@@ -93,8 +130,14 @@ public class AudioPlayer
         if (_playlist.SelectedSong == null)
             return;
 
+        bool autoPlay = State == PlayerState.Play;
+
         _playlist.PrevSong();
-        await StopAsync();
+        
+        if (autoPlay)
+            await PlayAsync();
+        else
+            await StopAsync();
     }
 
     public async Task NextAsync()
@@ -102,11 +145,17 @@ public class AudioPlayer
         if (_playlist.SelectedSong == null)
             return;
 
+        bool autoPlay = State == PlayerState.Play;
+
         _playlist.NextSong();
-        await StopAsync();
+
+        if (autoPlay)
+            await PlayAsync();
+        else
+            await StopAsync();
     }
 
-    private string nameFromPath(string path)
+    private string getNameFromPath(string path)
     {
         var file = new FileInfo(path);
         return file.Name.Replace(file.Extension, "");

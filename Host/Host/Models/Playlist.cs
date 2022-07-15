@@ -33,12 +33,17 @@ public class Playlist
         changeSelectedSong(false);
     }
 
+    public void SetSong(int idx)
+    {
+        SelectedSong = Songs[idx];
+    }
+
     private void changeSelectedSong(bool isNext)
     {
         var diff = isNext ? 1 : -1;
         var currentIndex = Songs.IndexOf(SelectedSong);
 
-        if (currentIndex != -1)
-            SelectedSong = Songs[(currentIndex + diff) % Songs.Count];
+        var idx = (currentIndex + diff) % Songs.Count;
+        SelectedSong = Songs[idx < 0 ? idx = Songs.Count - 1 : idx];
     }
 }

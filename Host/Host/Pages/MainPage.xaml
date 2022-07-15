@@ -6,42 +6,190 @@
              xmlns:model="clr-namespace:Host.Models"
              x:DataType="local:MainPageViewModel">
 
-    <Grid RowDefinitions="*, *">
-        <HorizontalStackLayout Grid.Row="0"
-                               HorizontalOptions="Center">
-            <local:AudioPlayerControl />
-        </HorizontalStackLayout>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:DoubleMSToTimeStrConverter x:Key="millisecondsToTimeConverter" />
+            <local:BooleanToStringConverter x:Key="booleanToStringConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
-        <VerticalStackLayout Grid.Row="1">
-            <Label Text="{Binding TotalUsers}" />
-            <Label Text="{Binding ActiveUsers}" />
-            <Label Text="{Binding SessionTime}" />
-            <Label Text="{Binding IsSessionLive}" />
+    <ScrollView Background="{StaticResource Background}">
+        <Grid Padding="40, 20"
+                RowDefinitions="auto, auto, auto, auto, auto, auto">
 
-            <HorizontalStackLayout>
-                <Entry Text="{Binding SessionPinCode}" />
-                <Button Text="Generate Pin Code"
-                        Command="{Binding ChangeSessionPinCodeCommand}" />
-            </HorizontalStackLayout>
+            <!-- Header -->
+            <Grid>
+                <Label Text="Session Dashboard"
+                       Style="{StaticResource HeaderLabel}"/>
+                <HorizontalStackLayout Spacing="10"
+                                        HorizontalOptions="End">
+                    <Label Text="Status :"
+                           Style="{StaticResource HeaderLabel}"/>
+                    <Label Text="{Binding MyRoom.IsOpen}"
+                           Style="{StaticResource HeaderLabel}"/>
+                </HorizontalStackLayout>
+            </Grid>
 
-            <!-- Create a control that can be used for x number of votes -->
-            <VerticalStackLayout>
-                <Label Text="Last vote statistics:" />
-                <CollectionView ItemsSource="{Binding PollOptions}">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="model:PollOption">
-                            <HorizontalStackLayout Spacing="30">
-                                <Label Text="{Binding Name}" />
-                                <Label Text="{Binding Votes}" />
-                            </HorizontalStackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+            <!-- Host Name -->
+            <Label Grid.Row="1"
+                   Text="[Owner Name]"
+                   Style="{StaticResource HeaderLabel}"
+                   HorizontalOptions="Center"
+                   Margin="0, 0, 0, 60" />
+
+            <!-- Audio Player -->
+            <Border Grid.Row="2"
+                    Style="{StaticResource CardBorder}">
+                <VerticalStackLayout HorizontalOptions="Center"
+                                     Spacing="20">
+                    <Label Text="{Binding AudioPlayer.SongName}"
+                            HorizontalTextAlignment="Center" />
+                    <StackLayout Grid.Row="1">
+                        <Grid ColumnSpacing="10"
+                                ColumnDefinitions="auto, *, auto">
+                            <Label Grid.Column="0"
+                                    Text="{Binding Path=Value, Source={x:Reference timeSlider},
+                                    Converter={StaticResource millisecondsToTimeConverter}}"
+                                    VerticalOptions="Center" />
+                            <Slider Grid.Column="1"
+                                    x:Name="timeSlider"
+                                    Minimum="0"
+                                    Maximum="{Binding AudioPlayer.Duration}"
+                                    Value="{Binding AudioPlayer.Position, Mode=Default}"
+                                    MinimumWidthRequest="150"
+                                    IsEnabled="False" />
+                            <Label Grid.Column="2"
+                                    Text="{Binding Path=Maximum, Source={x:Reference timeSlider},
+                                    Converter={StaticResource millisecondsToTimeConverter}}"
+                                    VerticalOptions="Center" />
+                        </Grid>
+                    </StackLayout>
+
+                    <HorizontalStackLayout Spacing="20"
+                                            HorizontalOptions="Center"
+                                           Margin="0, 0, 0, 10">
+                        <Button Text="&lt;&lt;"
+                                Command="{Binding PrevCommand}"
+                                Style="{StaticResource MediaButton}" />
+                        <Button Text="{Binding AudioPlayer.IsPlaying, Converter={StaticResource booleanToStringConverter}}"
+                                Command="{Binding StartStopPlayerCommand}"
+                                Style="{StaticResource MediaButton}" />
+                        <Button Text=">>"
+                                Command="{Binding NextCommand}"
+                                Style="{StaticResource MediaButton}" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Body -->
+            <Grid Grid.Row="3"
+                  Margin="0, 20"
+                  ColumnDefinitions="*, 2*"
+                  ColumnSpacing="60">
+                <!-- General information -->
+                <Grid RowDefinitions="auto, auto, auto"
+                        RowSpacing="6">
+                    <Border Grid.Row="0"
+                            Style="{StaticResource CardBorder}">
+                        <HorizontalStackLayout Spacing="4">
+                            <Label Text="Online users:" />
+                            <Label Text="{Binding MyRoom.OnlineUsers}" />
+                        </HorizontalStackLayout>
+                    </Border>
+                    <Border Grid.Row="1"
+                            Style="{StaticResource CardBorder}">
+                        <HorizontalStackLayout Spacing="4">
+                            <Label Text="Live:" />
+                            <Label Text="{Binding MyRoom.LiveTime}" />
+                        </HorizontalStackLayout>
+                    </Border>
+
+                    <!-- Polls -->
+                    <Border Grid.Row="2"
+                            Style="{StaticResource CardBorder}">
+                        <VerticalStackLayout Grid.Column="1"
+                                                Spacing="8">
+                            <Label Text="Poll:" />
+
+                            <CollectionView ItemsSource="{Binding PollOptions}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:PollOption">
+                                        <HorizontalStackLayout Spacing="30">
+                                            <Label Text="{Binding Id}" />
+                                            <Label Text="{Binding Name}" />
+                                            <Label Text="{Binding Votes}" />
+                                        </HorizontalStackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                <!-- Song list -->
+                <Grid Grid.Column="1"
+                        ColumnDefinitions="*, auto"
+                        ColumnSpacing="20">
+                    <Border Grid.Column="0"
+                            Style="{StaticResource CardBorder}">
+                        <Grid RowDefinitions="auto, *">
+                            <Label Grid.Row="0"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalOptions="Center"
+                                    Text="Songs:" />
+
+                            <CollectionView Grid.Row="4"
+                                            SelectionMode="Multiple"
+                                            ItemsSource="{Binding Songs}"
+                                            HorizontalOptions="Center">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:Song">
+                                        <Grid>
+                                            <Label Text="{Binding Name}"
+                                                   HorizontalTextAlignment="Center"
+                                                   HorizontalOptions="Center" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </Grid>
+                    </Border>
+
+                    <VerticalStackLayout Grid.Column="1"
+                                         Spacing="4">
+                        <Button Text="Add Songs"
+                                Clicked="AddSongsBtn_Clicked"/>
+                        <Button Text="Remove Songs" />
+                        <Button Text="Clear" />
+                    </VerticalStackLayout>
+                </Grid>
+
+            </Grid>
+
+            <Line Grid.Row="4"
+                  Stroke="{StaticResource LightLime}"
+                  StrokeThickness="2"
+                  X1="0"
+                  X2="{Binding Width, Source={x:RelativeSource AncestorType={x:Type Grid}}}">
+            </Line>
+
+            <VerticalStackLayout Grid.Row="5"
+                                 Margin="0, 30, 0, 0"
+                                 HorizontalOptions="Center"
+                                 Spacing="6">
+                <Button Text="Open Room"
+                        Padding="80, 20"
+                        Command="{Binding OpenCloseRoomCommand}"/>
+
+                <HorizontalStackLayout Spacing="4"
+                                       HorizontalOptions="Center">
+                    <Label Text="Code:"
+                           TextColor="Gray" />
+                    <Label Text="{Binding MyRoom.PinCode}"
+                           TextColor="Gray" />
+                </HorizontalStackLayout>
             </VerticalStackLayout>
 
-            <Button Text="Start/Stop Session" Command="{Binding StartStopSessionCommand}" />
-            <Button Text="Create Poll" Command="{Binding CreatePollCommand}" />
-            <Button Text="Remove Poll" Command="{Binding RemovePollCommand}" />
-        </VerticalStackLayout>
-    </Grid>
+        </Grid>
+    </ScrollView>
 </ContentPage>

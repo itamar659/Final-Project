@@ -12,50 +12,90 @@ public class MainPageViewModel : BaseViewModel
     public static readonly double SERVER_UPDATE_DELAY = TimeSpan.FromSeconds(10).TotalMilliseconds;
 
     private IServerApi _serverAPI;
-    private AudioPlayer _audioPlayer;
     private System.Timers.Timer _updateTimer;
 
-    public BindableObject View { get; set; }
+    private AudioPlayer _audioPlayer;
 
-    public int TotalUsers { get; set; }
+    public AudioPlayerUpdater AudioPlayer { get; set; }
 
-    public int ActiveUsers { get; set; }
-
-    public bool IsSessionLive { get; set; } // not in use
-
-    public string SessionPinCode { get; set; }
-
-    public TimeSpan SessionTime { get; set; } // not in use
-
-    public ICommand StartStopSessionCommand { get; set; }
-    public ICommand UpdateSongCommand { get; set; } // not in use
-    public ICommand ChangeSessionPinCodeCommand { get; set; }
-    public ICommand CreatePollCommand { get; set; }
-    public ICommand RemovePollCommand { get; set; }
+    public ObservableCollection<Song> Songs => _audioPlayer.Songs;
 
     public ObservableCollection<PollOption> PollOptions { get; set; }
+
+    public Room MyRoom { get; set; }
+
+    public ICommand OpenCloseRoomCommand { get; set; }
+
+    public ICommand StartStopPlayerCommand { get; set; }
+
+    public ICommand PrevCommand { get; set; }
+
+    public ICommand NextCommand { get; set; }
 
     public MainPageViewModel(IServerApi serverAPI, AudioPlayer audioPlayer)
     {
         _serverAPI = serverAPI;
+
         _audioPlayer = audioPlayer;
-        _audioPlayer.SongStateChanged += updateSongAsync;
+        _audioPlayer.SongStateChanged += updateSong;
+
         _updateTimer = new System.Timers.Timer(SERVER_UPDATE_DELAY);
         _updateTimer.Elapsed += fetchViewUpdateAsync;
 
+        AudioPlayer = new AudioPlayerUpdater(_audioPlayer);
         PollOptions = new ObservableCollection<PollOption>();
+        MyRoom = new Room(serverAPI);
 
-        StartStopSessionCommand = new Command(startStopSession);
-        ChangeSessionPinCodeCommand = new Command(async () => await _serverAPI.ChangeSessionPinCodeAsync(SessionPinCode));
-        CreatePollCommand = new Command(createPoll);
-        RemovePollCommand = new Command(async () => await _serverAPI.RemovePollAsync());
+        OpenCloseRoomCommand = new Command(openCloseRoomAsync);
+        StartStopPlayerCommand = new Command(startStopPlayerAsync);
+        PrevCommand = new Command(prevAsync);
+        NextCommand = new Command(nextAsync);
+
+        _updateTimer.Start();
+    }
+
+    /// <summary>
+    /// Add a list of song to the playlist asynchronous.
+    /// </summary>
+    /// <param name="files">list of paths</param>
+    /// <returns></returns>
+    public Task AddSongsAsync(IEnumerable<FileResult> files)
+    {
+        if (files != null)
+            foreach (var file in files)
+                _audioPlayer.AddToPlaylist(file.FullPath);
+
+        return Task.CompletedTask;
+    }
+
+    private async void openCloseRoomAsync()
+    {
+        if (!MyRoom.IsOpen)
+            await MyRoom.OpenRoomAsync();
+        else
+            await MyRoom.CloseRoomAsync();
+    }
+
+    private async void prevAsync(object obj)
+    {
+        await _audioPlayer.PrevAsync();
+    }
+
+    private async void nextAsync(object obj)
+    {
+        await _audioPlayer.NextAsync();
+    }
+
+    private async void startStopPlayerAsync(object obj)
+    {
+        if (_audioPlayer.IsPlaying)
+            await _audioPlayer.PauseAsync();
+        else
+            await _audioPlayer.PlayAsync();
     }
 
     private async void fetchViewUpdateAsync(object sender, System.Timers.ElapsedEventArgs e)
     {
-        if (IsSessionLive == false)
-            return;
-
         JukeboxSessionResponse sessionResponse = await _serverAPI.FetchSessionUpdateAsync();
         if (sessionResponse == null)
             return;
@@ -68,40 +108,28 @@ public class MainPageViewModel : BaseViewModel
                 PollOptions.Add(item);
         }
 
-        TotalUsers = sessionResponse.TotalUsers;
-        ActiveUsers = sessionResponse.ActiveUsers;
-
-        OnPropertyChanged(nameof(TotalUsers));
-        OnPropertyChanged(nameof(ActiveUsers));
+        MyRoom.OnlineUsers = sessionResponse.ActiveUsers;
     }
 
-    private async void updateSongAsync(object sender, EventArgs e)
+    /// <summary>
+    /// Update the song when the AudioPlayer fire SongStateChanged event.
+    /// </summary>
+    private void updateSong(object sender, EventArgs e)
     {
-        Thread.Sleep(100); // TEMPORARY: let the song name & duration load before sending update request
-        await _serverAPI.UpdateSongAsync(new SongUpdateRequest { SongName = _audioPlayer.SongName, Duration = _audioPlayer.Duration, Position = _audioPlayer.Position });
+        // Can transfer it to another thread insteaf of creating new timer - almost same but thread stop after completion...
+        // Also make Thread as daemon to stop the fking crash on exit.
+
+        //var t = new System.Timers.Timer(100);
+        //t.Elapsed += async (s, e) => {
+        //    await _serverAPI.UpdateSongAsync(new SongUpdateRequest { SongName = _audioPlayer.SongName, Duration = _audioPlayer.Duration, Position = _audioPlayer.Position });
+        //    t.Stop();
+        //};
+        //t.Start();
     }
 
-    private async void startStopSession()
-    {
-        if (!IsSessionLive)
-        {
-            await _serverAPI.OpenSessionAsync();
-        }
-        else
-        {
-            await _serverAPI.CloseSessionAsync();
-
-            TotalUsers = 0;
-            ActiveUsers = 0;
-            OnPropertyChanged(nameof(TotalUsers));
-            OnPropertyChanged(nameof(ActiveUsers));
-        }
-
-        IsSessionLive = _serverAPI.GetSessionKey() != string.Empty;
-
-        OnPropertyChanged(nameof(IsSessionLive));
-    }
-
+    /// <summary>
+    /// Creating new poll and send it to the server
+    /// </summary>
     private async void createPoll()
     {
         int pollSize = 4;
@@ -113,7 +141,7 @@ public class MainPageViewModel : BaseViewModel
 
             songs.Add(new PollOption
             {
-                Id = i,
+                Id = i + 1,
                 Name = _audioPlayer.Songs[chosen].Name,
                 Votes = 0,
             });
@@ -121,6 +149,7 @@ public class MainPageViewModel : BaseViewModel
 
         var request = new PollRequest() { Options = songs };
 
+        // TODO: Check the poll in server, the changes in the model can make problems.
         await _serverAPI.CreatePollAsync(request);
     }
 }
