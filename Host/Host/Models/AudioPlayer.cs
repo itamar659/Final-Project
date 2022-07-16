@@ -30,10 +30,12 @@ public class AudioPlayer
 
     public event EventHandler SongStateChanged;
 
+    public event EventHandler SongEnded;
+
     public AudioPlayer(IAudioService audioService)
     {
         _audioService = audioService;
-        _audioService.SongEnded += async (s, e) => { await NextAsync(); };
+        _audioService.SongEnded += (s, e) => { SongEnded?.Invoke(s, e); };
         _playlist = new Playlist();
 
         State = PlayerState.Created;
@@ -82,7 +84,7 @@ public class AudioPlayer
         if (_playlist.Songs.Count == 1 && State == PlayerState.Created)
         {
             State = PlayerState.Stop;
-            SongStateChanged?.Invoke(this, EventArgs.Empty);
+            SongEnded?.Invoke(this, EventArgs.Empty);
         }
     }
 

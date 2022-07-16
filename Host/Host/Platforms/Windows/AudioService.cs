@@ -40,7 +40,9 @@ public class AudioService : IAudioService
                 AudioCategory = MediaPlayerAudioCategory.Media,
             };
 
-            mediaPlayer.SeekCompleted += (s, e) => { SongEnded?.Invoke(this, EventArgs.Empty); };
+            mediaPlayer.MediaEnded += (s, e) => {
+                SongEnded?.Invoke(this, EventArgs.Empty);
+            };
         }
         else
         {

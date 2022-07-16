@@ -6,14 +6,18 @@
        Shell.NavBarIsVisible="False"
        Shell.TabBarIsVisible="False">
 
-    <!--<ShellItem Route="LoginPage"
+    <ShellItem Route="LoginPage"
                FlyoutItemIsVisible="False">
         <ShellContent ContentTemplate="{DataTemplate local:LoginPage}" />
-    </ShellItem>-->
+    </ShellItem>
 
     <FlyoutItem FlyoutDisplayOptions="AsMultipleItems">
-        <ShellContent Title="Dashboard" ContentTemplate="{DataTemplate local:MainPage}" />
-        <ShellContent Title="Profile" ContentTemplate="{DataTemplate local:ProfilePage}" />
+        <ShellContent Route="MainPage"
+                      Title="Dashboard"
+                      ContentTemplate="{DataTemplate local:MainPage}" />
+        <ShellContent Route="ProfilePage"
+                      Title="Profile"
+                      ContentTemplate="{DataTemplate local:ProfilePage}" />
     </FlyoutItem>
 
 </Shell>
