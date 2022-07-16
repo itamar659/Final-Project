@@ -46,7 +46,16 @@ public class FindHostPageViewModel : BaseViewModel
 
     private async void updateAvailableSessions()
     {
-        List<JukeboxSessionResponse> availableSessions = await _serverApi.FetchAvailableSessionsAsync();
+        List<JukeboxSessionResponse> availableSessions = null;
+        try
+        {
+             availableSessions = await _serverApi.FetchAvailableSessionsAsync();
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine("Couldn't fetch Available Hosts");
+        }
+       
         AvailableHosts.Clear();
 
         if (availableSessions != null)
@@ -64,19 +73,28 @@ public class FindHostPageViewModel : BaseViewModel
                     StatusComment = "Online"
                 });
             }
+            if(availableSessions.Count == 0)
+            {
+                addDefaultAvailableHost();
+            }
         }
         else
         {
-            AvailableHosts.Add(new Host
-            {
-                SessionKey = "",
-                OnlineUsers = 0,
-                Name = "No Hosts Available",
-                Picture = "error_icon",
-                StatusComment = "Try again later."
-            });
+            addDefaultAvailableHost();
         }
 
+    }
+
+    private void addDefaultAvailableHost()
+    {
+        AvailableHosts.Add(new Host
+        {
+            SessionKey = "",
+            OnlineUsers = 0,
+            Name = "No Hosts Available",
+            Picture = "error_icon",
+            StatusComment = "Try again later."
+        });
     }
 
     private void InitFavoriteHosts()

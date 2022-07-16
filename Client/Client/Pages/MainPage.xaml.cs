@@ -20,6 +20,18 @@ public partial class MainPage : ContentPage
             await DisplayAlert("Error", res.Item2, "OK");
     }
 
+    private async void AppleFakeSignIn_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            await Shell.Current.GoToAsync(nameof(FindHostPage));
+        }
+        catch(Exception ex) 
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
     private async void GoogleSignIn_Clicked(object sender, EventArgs e)
     {
         try
