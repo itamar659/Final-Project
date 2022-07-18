@@ -50,7 +50,7 @@
     <Grid RowDefinitions="Auto">
         <ScrollView Grid.Row="0">
             <Grid ColumnDefinitions="*,*"
-                  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                  RowDefinitions="Auto,Auto,*"
                   Padding="30,0">
 
                 <!-- 2. Header information-->
@@ -80,54 +80,72 @@
                            Aspect="AspectFill" />
                 </Frame>
 
-                <Grid Grid.Row="2"
-                      Grid.Column="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="180" />
-                        <ColumnDefinition Width="100" />
-                    </Grid.ColumnDefinitions>
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*"
+                      Grid.Row="2"
+                      Grid.Column="0"
+                      Grid.ColumnSpan="2">
 
                     <Label Style="{StaticResource TitleStyle}"
+                           Grid.Row="0"
                            Text="{Binding HostName}" />
-                    
-                    <Label Grid.Column="0"
+
+                    <Label Grid.Row="1"
                            Style="{StaticResource ValueStyle}"
                            Text="{Binding SongName}" />
-                    
-                    <Label Grid.Column="1"
-                        Style="{StaticResource ValueStyle}"
-                        Text="{Binding Source={x:Reference SliderAudioPlayer},
-                        Path=Value, StringFormat='Time left: {0:F0}'}"/>
-                </Grid>
-                
+
                     <Slider x:Name="SliderAudioPlayer"
-                        IsEnabled="False"
-                        Value="{Binding Position}"
-                        Maximum="{Binding Duration}" />
+                            Grid.Row="2"
+                            IsEnabled="False"
+                            Value="{Binding Position}"
+                            Maximum="{Binding Duration}" />
 
-                <Label Style="{StaticResource TitleStyle}"
-                       Text="Choose Your Next Song" />
+                    <Grid ColumnDefinitions="*,*,*,*"
+                          Grid.Row="3">
 
-                <Label Grid.Column="1"
-                           Grid.Row="0"
-                           Style="{StaticResource LightValueStyle}"
-                           Text="Kendrick Lamar: Good Kid MaaD city" />
+                        <Label Grid.Column="0"
+                               Style="{StaticResource ValueStyle}"
+                               Text="{Binding Source={x:Reference SliderAudioPlayer},
+                               Path=Value}"/>
 
-                <CheckBox Grid.Column="0"
-                              Grid.Row="0"
-                              x:Name="firstCheckBox"
-                              Color="{StaticResource SilderColor}" />
-                <Grid ColumnDefinitions="*">
-                        <Button Grid.Column="0"
-                            Text="Vote"
-                            Style="{StaticResource voteButton}"
-                            Clicked="VoteBtn_Clicked" />
+                        <Label Grid.Column="4"
+                               Text="{Binding Duration}"
+                               Style="{StaticResource ValueStyle}"/>
                     </Grid>
-                <Grid ColumnDefinitions="*, *, *">
-                    <Button Grid.Column="1"
-                            Text="Leave"
-                            Style="{StaticResource leaveButton}"
-                            Clicked="Left_Button_Clicked" />
+
+                    <Label Style="{StaticResource TitleStyle}"
+                           Grid.Row="4"
+                           Text="Choose Your Next Song" />
+
+                    <Frame  Grid.Row="5"
+                            Margin="-30,0"
+                            VerticalOptions="FillAndExpand"
+                            HasShadow="True"
+                            CornerRadius="40"
+                            BackgroundColor="White">
+
+                        <Grid RowDefinitions="Auto, Auto, Auto, *"
+                              RowSpacing="25">
+                           
+                            <Button Grid.Row="0"
+                                    Style="{StaticResource optionButton}"
+                                    Text="Kendrick Lamar: Good Kid MaaD city" />
+
+                            <!--<Button Grid.Row="1"
+                                    Text="Vote"
+                                    Style="{StaticResource voteButton}"
+                                    Clicked="VoteBtn_Clicked" />-->
+
+                            <Grid ColumnDefinitions="*, *, *"
+                                  Grid.Row="2">
+
+                                <Button Grid.Column="2"
+                                        Text="Leave"
+                                        Style="{StaticResource leaveButton}"
+                                        Clicked="Left_Button_Clicked" />
+                            </Grid>
+
+                        </Grid>
+                    </Frame>
                 </Grid>
             </Grid>
         </ScrollView>

@@ -43,6 +43,14 @@
         <Setter Property="WidthRequest" Value="290"/>
     </Style>
 
+    <Style x:Key="optionButton" TargetType="Button">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="TextColor" Value="Black"/>
+        <Setter Property="CornerRadius" Value="6"/>
+        <Setter Property="BorderColor" Value="#ffb000"/>
+        <Setter Property="BorderWidth" Value="1"/>
+    </Style>
+
     <Style x:Key="leaveButton" TargetType="Button">
         <Setter Property="Background" Value="#223333" />
         <Setter Property="TextColor" Value="White" />

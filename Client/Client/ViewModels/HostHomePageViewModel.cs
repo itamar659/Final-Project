@@ -11,13 +11,40 @@ public class HostHomePageViewModel : BaseViewModel
     private double _duration;
     public double Duration
     {
-        get { return _duration + double.Epsilon; }
+        get => _duration + double.Epsilon;
         set
         {
             _duration = value;
+
             OnPropertyChanged(nameof(Duration));
         }
     }
+
+    //private string _rightLabel;
+    //public string RightLabel
+    //{
+
+    //}
+
+    //private string _timeLeft;
+    //public string TimeLeft
+    //{
+    //    get 
+    //    {
+    //        String retMin = "";
+    //        double mins = _duration / 60;
+    //        if (mins < 10)
+    //            retMin.Insert(0, "0");
+
+    //        retMin.Insert(retMin.Length - 1, mins.ToString()+":00");
+    //        return retMin;
+    //    }
+    //    set 
+    //    {
+    //        _timeLeft = value;
+    //        OnPropertyChanged(nameof(TimeLeft));
+    //    }
+    //}
 
     private double _position;
     public double Position
@@ -76,9 +103,9 @@ public class HostHomePageViewModel : BaseViewModel
         //Position = TimeSpan.FromMilliseconds(details.SongPosition).TotalSeconds;
         //HostName = details.OwnerName;
 
-        SongName = "Kendrick Lamar";
+        SongName = "Kendrick Lamar: ADHD";
         Duration = 182.22;
-        Position = 0;
+        Position = 20;
         HostName = "Bruni";
     }
 
