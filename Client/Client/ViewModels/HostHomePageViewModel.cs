@@ -1,4 +1,5 @@
-﻿using Client.Models.Responses;
+﻿using Client.Models;
+using Client.Models.Responses;
 using Client.Services;
 using System.Windows.Input;
 
@@ -19,32 +20,6 @@ public class HostHomePageViewModel : BaseViewModel
             OnPropertyChanged(nameof(Duration));
         }
     }
-
-    //private string _rightLabel;
-    //public string RightLabel
-    //{
-
-    //}
-
-    //private string _timeLeft;
-    //public string TimeLeft
-    //{
-    //    get 
-    //    {
-    //        String retMin = "";
-    //        double mins = _duration / 60;
-    //        if (mins < 10)
-    //            retMin.Insert(0, "0");
-
-    //        retMin.Insert(retMin.Length - 1, mins.ToString()+":00");
-    //        return retMin;
-    //    }
-    //    set 
-    //    {
-    //        _timeLeft = value;
-    //        OnPropertyChanged(nameof(TimeLeft));
-    //    }
-    //}
 
     private double _position;
     public double Position
@@ -78,18 +53,37 @@ public class HostHomePageViewModel : BaseViewModel
 
     public ICommand LeaveSessionCommand { get; set; }
 
+
+    public System.Collections.ObjectModel.ObservableCollection<Song> SongsToPick { get; set; }
     public HostHomePageViewModel(IServerApi serverApi)
     {
         _serverApi = serverApi;
         _songTimer = new System.Timers.Timer(500);
-        _songTimer.Elapsed += songWorker;
+        startTimer();
 
-        Task.Run(async () =>
+        SongsToPick = new System.Collections.ObjectModel.ObservableCollection<Song>()
         {
-            await fetchSessionDetailsAsync();
-        });
+            new Song { Name = "Kendrick Lamar: ADHD", Path = ""},
+            new Song { Name = "50 Cent: Lolipop", Path = ""},
+            new Song { Name = "Jay-z: 4:44", Path = ""},
+            new Song { Name = "Dr.Dre: Xplicit", Path = ""},
+        };
+    }
 
-        _songTimer.Start();
+    private void startTimer()
+    {
+        if(_songTimer != null)
+        {
+            _songTimer.Elapsed += songWorker;
+
+            Task.Run(async () =>
+            {
+                await fetchSessionDetailsAsync();
+            });
+
+            _songTimer.Start();
+
+        }
     }
 
     private async Task fetchSessionDetailsAsync()
@@ -111,7 +105,7 @@ public class HostHomePageViewModel : BaseViewModel
 
     private async void songWorker(object sender, System.Timers.ElapsedEventArgs e)
     {
-        Position += 0.5;
+        Position += 1.0;
         if (Position >= Duration)
         {
             _songTimer.Stop();

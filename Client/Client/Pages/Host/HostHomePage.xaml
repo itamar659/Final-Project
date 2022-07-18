@@ -46,197 +46,157 @@
             <Setter Property="Margin" Value="10, 0, 0, 0" />
         </Style>
     </ContentPage.Resources>
+    <Grid RowDefinitions="Auto, Auto">
+        <Grid ColumnDefinitions="*,*"
+              RowDefinitions="Auto,Auto"
+              Padding="30,0">
 
-    <Grid RowDefinitions="Auto">
-        <ScrollView Grid.Row="0">
-            <Grid ColumnDefinitions="*,*"
-                  RowDefinitions="Auto,Auto,*"
-                  Padding="30,0">
+            <!-- 2. Header information-->
+            <!-- Profile and background pictures -->
+            <Image Grid.Row="0"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2"
+                   Source="landscape.png"
+                   VerticalOptions="Start"
+                   Margin="-35,-45,-35,0"
+                   HeightRequest="{OnPlatform iOS='250', Android='200'}"
+                   Aspect="AspectFill" />
 
-                <!-- 2. Header information-->
-                <!-- Profile and background pictures -->
-                <Image Grid.Row="0"
-                       Grid.Column="0"
-                       Grid.ColumnSpan="2"
-                       Source="landscape.png"
-                       VerticalOptions="Start"
-                       Margin="-35,-45,-35,0"
-                       HeightRequest="{OnPlatform iOS='250', Android='200'}"
-                       Aspect="AspectFill" />
-                
-                <Frame Grid.Row="1"
-                       Grid.Column="1"
-                       Margin="0,-40,0,0"
-                       BorderColor="White"
-                       VerticalOptions="Start"
-                       HorizontalOptions="End"
-                       WidthRequest="70"
-                       HeightRequest="70"
-                       HasShadow="False"
-                       CornerRadius="35"
-                       Padding="0"
-                       IsClippedToBounds="True">
-                    <Image Source="avatar_icon.png"
-                           Aspect="AspectFill" />
-                </Frame>
+            <Frame Grid.Row="1"
+                   Grid.Column="1"
+                   Margin="0,-40,0,0"
+                   BorderColor="White"
+                   VerticalOptions="Start"
+                   HorizontalOptions="End"
+                   WidthRequest="70"
+                   HeightRequest="70"
+                   HasShadow="False"
+                   CornerRadius="35"
+                   Padding="0"
+                   IsClippedToBounds="True">
+                <Image Source="avatar_icon.png"
+                               Aspect="AspectFill" />
+            </Frame>
+        </Grid>
 
-                <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*"
-                      Grid.Row="2"
-                      Grid.Column="0"
-                      Grid.ColumnSpan="2">
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto"
+              Grid.Row="1">
+            <Label Style="{StaticResource TitleStyle}"
+                   Margin="0,0,0,5"
+                   HorizontalOptions="Center"
+                   Grid.Row="0"
+                   Text="{Binding HostName}" />
+            
+            <Frame Grid.Row="1"
+                   VerticalOptions="FillAndExpand"
+                   HorizontalOptions="Center"
+                   HasShadow="True"
+                   CornerRadius="40"
+                   BackgroundColor="White">
 
-                    <Label Style="{StaticResource TitleStyle}"
-                           Grid.Row="0"
-                           Text="{Binding HostName}" />
-
-                    <Label Grid.Row="1"
+                <Grid RowDefinitions="Auto,Auto,Auto">
+                    <Label Grid.Row="0"
+                           HorizontalOptions="Center"
                            Style="{StaticResource ValueStyle}"
                            Text="{Binding SongName}" />
 
                     <Slider x:Name="SliderAudioPlayer"
-                            Grid.Row="2"
+                            Grid.Row="1"
                             IsEnabled="False"
+                            ThumbColor="#ff8000"
+                            MinimumTrackColor="#ff8000"
+                            MaximumTrackColor="#ff8000"
                             Value="{Binding Position}"
                             Maximum="{Binding Duration}" />
 
                     <Grid ColumnDefinitions="*,*,*,*"
-                          Grid.Row="3">
+                          Grid.Row="2">
 
                         <Label Grid.Column="0"
-                               Style="{StaticResource ValueStyle}"
-                               Text="{Binding Source={x:Reference SliderAudioPlayer},
-                               Path=Value}"/>
-
-                        <Label Grid.Column="4"
-                               Text="{Binding Duration}"
-                               Style="{StaticResource ValueStyle}"/>
-                    </Grid>
-
-                    <Label Style="{StaticResource TitleStyle}"
-                           Grid.Row="4"
-                           Text="Choose Your Next Song" />
-
-                    <Frame  Grid.Row="5"
-                            Margin="-30,0"
-                            VerticalOptions="FillAndExpand"
-                            HasShadow="True"
-                            CornerRadius="40"
-                            BackgroundColor="White">
-
-                        <Grid RowDefinitions="Auto, Auto, Auto, *"
-                              RowSpacing="25">
-                           
-                            <Button Grid.Row="0"
-                                    Style="{StaticResource optionButton}"
-                                    Text="Kendrick Lamar: Good Kid MaaD city" />
-
-                            <!--<Button Grid.Row="1"
-                                    Text="Vote"
-                                    Style="{StaticResource voteButton}"
-                                    Clicked="VoteBtn_Clicked" />-->
-
-                            <Grid ColumnDefinitions="*, *, *"
-                                  Grid.Row="2">
-
-                                <Button Grid.Column="2"
-                                        Text="Leave"
-                                        Style="{StaticResource leaveButton}"
-                                        Clicked="Left_Button_Clicked" />
-                            </Grid>
-
-                        </Grid>
-                    </Frame>
-                </Grid>
-            </Grid>
-        </ScrollView>
-    </Grid>
-</ContentPage>
-
-
-
-<!--<StackLayout>
-    <Label Style="{StaticResource TitleStyle}"
-                       Text="{Binding Host}" />
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="180" />
-            <ColumnDefinition Width="100" />
-        </Grid.ColumnDefinitions>
-        <Label Grid.Column="0"
-                           Style="{StaticResource ValueStyle}"
-                           Text="{Binding Song}" />
-        <Label Grid.Column="1"
                            Style="{StaticResource ValueStyle}"
                            Text="{Binding Source={x:Reference SliderAudioPlayer},
-                        Path=Value,
-                        StringFormat='Time left: {0:F0}' 
-                    }" />
+                           Path=Value}"/>
+
+                        <Label Grid.Column="4"
+                           Text="{Binding Duration}"
+                           Style="{StaticResource ValueStyle}"/>
+                    </Grid>
+                </Grid>
+            </Frame>
+            
+            <Label Style="{StaticResource TitleStyle}"
+                   Margin="0,25,0,5"
+                   HorizontalOptions="Center"
+                   Grid.Row="2"
+                   Text="Choose Your Next Song" />        
+            
+            <!--<Frame  Grid.Row="5"
+                    Margin="0,20,0,20"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="Center"
+                    HasShadow="True"
+                    CornerRadius="40"
+                    BackgroundColor="White">-->
+            <Frame  Grid.Row="3"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="Center"
+                    HasShadow="True"
+                    CornerRadius="40"
+                    BackgroundColor="White">
+                <CollectionView HorizontalScrollBarVisibility="Never"
+                                    Grid.Row="3"
+                                    HorizontalOptions="Center"
+                                    VerticalScrollBarVisibility="Never"
+                                    ItemsSource="{Binding SongsToPick}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border>
+                                <Border.GestureRecognizers>
+
+                                </Border.GestureRecognizers>
+                                <local:HostHomeSongPickControl MaximumWidthRequest="200"
+                                                                   Margin="0,0,0,10"
+                                                                   HorizontalOptions="Center"/>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Frame>
+
+            <!--<Button Style="{StaticResource optionButton}"
+                            TextColor="Black"
+                            HorizontalOptions="Center"
+                            Grid.Row="0"
+                            Text="Kendrick Lamar: Good Kid MaaD city" />
+                    <Button Style="{StaticResource optionButton}"
+                            TextColor="Black"
+                            HorizontalOptions="Center"
+                            Grid.Row="1"
+                            Text="Kendrick Lamar: Good Kid MaaD city" />
+                    <Button Style="{StaticResource optionButton}"
+                            TextColor="Black"
+                            HorizontalOptions="Center"
+                            Grid.Row="2"
+                            Text="Kendrick Lamar: Good Kid MaaD city" />
+                    <Button Style="{StaticResource optionButton}"
+                            TextColor="Black"
+                            HorizontalOptions="Center"
+                            Grid.Row="3"
+                            Margin="0,0,0,-30"
+                            Text="Kendrick Lamar: Good Kid MaaD city" />-->
+
+                <!--<Button Grid.Row="1"
+                                        Text="Vote"
+                                        Style="{StaticResource voteButton}"
+                                        Clicked="VoteBtn_Clicked" />-->
+
+            <!--</Frame>-->
+            <Button Grid.Row="4"
+                    Text="Leave"
+                    Style="{StaticResource leaveButton}"
+                    Clicked="Left_Button_Clicked"
+                    Margin="0,25,25,0"
+                    HorizontalOptions="End"/>
+        </Grid>
     </Grid>
-    <Slider x:Name="SliderAudioPlayer"
-                        Maximum="240"
-                        Minimum="35" />
-
-    <Label Style="{StaticResource TitleStyle}"
-                       Text="Choose Your Next Song" />
-
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="30" />
-            <ColumnDefinition Width="250" />
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
-            <RowDefinition Height="40" />
-        </Grid.RowDefinitions>
-
-        <Label Grid.Column="1"
-                           Grid.Row="0"
-                           Style="{StaticResource LightValueStyle}"
-                           Text="Kendrick Lamar: Good Kid MaaD city" />
-        <CheckBox Grid.Column="0"
-                              Grid.Row="0"
-                              x:Name="firstCheckBox"
-                              Color="{StaticResource SilderColor}" />
-
-        <Label Grid.Column="1"
-                           Grid.Row="1"
-                           Style="{StaticResource LightValueStyle}"
-                           Text="50 cent: CandyShop" />
-        <CheckBox Grid.Column="0"
-                              Grid.Row="1"
-                              x:Name="secondCheckBox"
-                              Color="{StaticResource SilderColor}" />
-
-        <Label Grid.Column="1"
-                           Grid.Row="2"
-                           Style="{StaticResource LightValueStyle}"
-                           Text="Snoop Dog: Doggy Style" />
-        <CheckBox Grid.Column="0"
-                              Grid.Row="2"
-                              x:Name="thirdCheckBox"
-                              Color="{StaticResource SilderColor}" />
-
-        <Label Grid.Column="1"
-                           Grid.Row="3"
-                           Style="{StaticResource LightValueStyle}"
-                           Text="Noa Killer: Kill me" />
-        <CheckBox Grid.Column="0"
-                              Grid.Row="3"
-                              x:Name="fourthCheckBox"
-                              Color="{StaticResource SilderColor}" />
-    </Grid>
-    <Grid ColumnDefinitions="*">
-        <Button Grid.Column="0"
-                            Text="Vote"
-                            Style="{StaticResource voteButton}"
-                            Clicked="Button_Clicked" />
-    </Grid>
-    <Grid ColumnDefinitions="*, *, *">
-        <Button Grid.Column="1"
-                            Text="Leave"
-                            Style="{StaticResource leaveButton}"
-                            Clicked="Left_Button_Clicked" />
-    </Grid>
-</StackLayout>-->
+</ContentPage>
