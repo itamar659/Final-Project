@@ -152,7 +152,9 @@
                         <DataTemplate>
                             <Border>
                                 <Border.GestureRecognizers>
-
+                                    <TapGestureRecognizer Command="{Binding ChooseSongCommand,
+                                    Source={x:RelativeSource AncestorType={x:Type ContentPage}}}"
+                                                      />
                                 </Border.GestureRecognizers>
                                 <local:HostHomeSongPickControl MaximumWidthRequest="200"
                                                                    Margin="0,0,0,10"

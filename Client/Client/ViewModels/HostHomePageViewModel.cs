@@ -53,13 +53,18 @@ public class HostHomePageViewModel : BaseViewModel
 
     public ICommand LeaveSessionCommand { get; set; }
 
-
+    public ICommand ChooseSongCommand { get; set; }
     public System.Collections.ObjectModel.ObservableCollection<Song> SongsToPick { get; set; }
     public HostHomePageViewModel(IServerApi serverApi)
     {
         _serverApi = serverApi;
         _songTimer = new System.Timers.Timer(500);
         startTimer();
+
+        ChooseSongCommand = new Command(async () =>
+        {
+            await Shell.Current.GoToAsync(nameof(HostLastPage));
+        });
 
         SongsToPick = new System.Collections.ObjectModel.ObservableCollection<Song>()
         {
