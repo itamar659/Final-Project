@@ -25,7 +25,7 @@
                                         HorizontalOptions="End">
                     <Label Text="Status :"
                            Style="{StaticResource HeaderLabel}"/>
-                    <Label Text="{Binding MyRoom.IsOpen}"
+                    <Label Text="{Binding Room.IsOpen}"
                            Style="{StaticResource HeaderLabel}"/>
                 </HorizontalStackLayout>
             </Grid>
@@ -72,7 +72,7 @@
                                 Command="{Binding PrevCommand}"
                                 Style="{StaticResource MediaButton}" />
                         <Button Text="{Binding AudioPlayer.IsPlaying, Converter={StaticResource booleanToStringConverter}}"
-                                Command="{Binding StartStopPlayerCommand}"
+                                Command="{Binding StartPausePlayerCommand}"
                                 Style="{StaticResource MediaButton}" />
                         <Button Text=">>"
                                 Command="{Binding NextCommand}"
@@ -93,14 +93,14 @@
                             Style="{StaticResource CardBorder}">
                         <HorizontalStackLayout Spacing="4">
                             <Label Text="Online users:" />
-                            <Label Text="{Binding MyRoom.OnlineUsers}" />
+                            <Label Text="{Binding Room.OnlineUsers}" />
                         </HorizontalStackLayout>
                     </Border>
                     <Border Grid.Row="1"
                             Style="{StaticResource CardBorder}">
                         <HorizontalStackLayout Spacing="4">
                             <Label Text="Live:" />
-                            <Label Text="{Binding MyRoom.LiveTime}" />
+                            <Label Text="{Binding RoomUpdater.LiveTime}" />
                         </HorizontalStackLayout>
                     </Border>
 
@@ -111,13 +111,13 @@
                                                 Spacing="8">
                             <Label Text="Poll:" />
 
-                            <CollectionView ItemsSource="{Binding PollOptions}">
+                            <CollectionView ItemsSource="{Binding Poll.PollOptions}">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="model:PollOption">
-                                        <HorizontalStackLayout Spacing="30">
+                                        <HorizontalStackLayout Spacing="16">
                                             <Label Text="{Binding Id}" />
-                                            <Label Text="{Binding Name}" />
                                             <Label Text="{Binding Votes}" />
+                                            <Label Text="{Binding Name}" />
                                         </HorizontalStackLayout>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
@@ -177,15 +177,15 @@
                                  Margin="0, 30, 0, 0"
                                  HorizontalOptions="Center"
                                  Spacing="6">
-                <Button Text="Open Room"
+                <Button Text="Open/Close Room"
                         Padding="80, 20"
                         Command="{Binding OpenCloseRoomCommand}"/>
 
                 <HorizontalStackLayout Spacing="4"
                                        HorizontalOptions="Center">
-                    <Label Text="Code:"
+                    <Label Text="Pin Code:"
                            TextColor="Gray" />
-                    <Label Text="{Binding MyRoom.PinCode}"
+                    <Label Text="{Binding Room.PinCode}"
                            TextColor="Gray" />
                 </HorizontalStackLayout>
             </VerticalStackLayout>

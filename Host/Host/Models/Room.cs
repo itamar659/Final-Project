@@ -1,4 +1,5 @@
-﻿using Host.Services;
+﻿using Host.Models.Responses;
+using Host.Services;
 
 namespace Host.Models;
 public class Room : BaseViewModel
@@ -78,5 +79,14 @@ public class Room : BaseViewModel
     public async Task ChangePinCodeAsync(string pinCode)
     {
         await _serverAPI.ChangeSessionPinCodeAsync(pinCode);
+    }
+
+    public async Task UpdateRoomAsync()
+    {
+        JukeboxSessionResponse sessionResponse = await _serverAPI.FetchSessionUpdateAsync();
+        if (sessionResponse == null)
+            return;
+
+        OnlineUsers = sessionResponse.ActiveUsers;
     }
 }
