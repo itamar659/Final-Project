@@ -4,14 +4,12 @@
     x:Class="Client.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:controls="clr-namespace:Xaminals.Controls"
-    xmlns:views="clr-namespace:Xaminals.Views"
     xmlns:local="clr-namespace:Client"
      Shell.TabBarIsVisible="False"
     xmlns:profile="clr-namespace:Client.Pages.Users">
 
-    <ShellItem Route="MainPage" FlyoutItemIsVisible="False">
-        <ShellContent ContentTemplate="{DataTemplate local:MainPage}"/>
+    <ShellItem Route="HostHomePage" FlyoutItemIsVisible="False">
+        <ShellContent ContentTemplate="{DataTemplate local:HostHomePage}"/>
     </ShellItem>
     <ShellItem Route="FindHostPage" FlyoutItemIsVisible="False">
         <ShellContent ContentTemplate="{DataTemplate local:FindHostPage}"/>

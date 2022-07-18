@@ -8,7 +8,6 @@ public class HostHomePageViewModel : BaseViewModel
     private readonly IServerApi _serverApi;
     private readonly System.Timers.Timer _songTimer;
 
-
     private double _duration;
     public double Duration
     {
@@ -58,21 +57,29 @@ public class HostHomePageViewModel : BaseViewModel
         _songTimer = new System.Timers.Timer(500);
         _songTimer.Elapsed += songWorker;
 
-        fetchSessionDetailsAsync();
+        Task.Run(async () =>
+        {
+            await fetchSessionDetailsAsync();
+        });
 
         _songTimer.Start();
     }
 
     private async Task fetchSessionDetailsAsync()
     {
-        JukeboxSessionResponse details = await _serverApi.FetchSessionDetailsAsync();
-        if (details == null)
-            return; // Session ended. Return to last page...
+        //JukeboxSessionResponse details = await _serverApi.FetchSessionDetailsAsync();
+        //if (details == null)
+        //    return; // Session ended. Return to last page...
 
-        SongName = details.SongName;
-        Duration = TimeSpan.FromMilliseconds(details.SongDuration).TotalSeconds;
-        Position = TimeSpan.FromMilliseconds(details.SongPosition).TotalSeconds;
-        HostName = details.OwnerName;
+        //SongName = details.SongName;
+        //Duration = TimeSpan.FromMilliseconds(details.SongDuration).TotalSeconds;
+        //Position = TimeSpan.FromMilliseconds(details.SongPosition).TotalSeconds;
+        //HostName = details.OwnerName;
+
+        SongName = "Kendrick Lamar";
+        Duration = 182.22;
+        Position = 0;
+        HostName = "Bruni";
     }
 
     private async void songWorker(object sender, System.Timers.ElapsedEventArgs e)

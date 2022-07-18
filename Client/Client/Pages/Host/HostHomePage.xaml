@@ -47,27 +47,60 @@
         </Style>
     </ContentPage.Resources>
 
-    <local:SecondTemplate>
-        <local:SecondTemplate.PageContent>
-            <StackLayout>
-                <Label Style="{StaticResource TitleStyle}"
-                       Text="{Binding HostName}" />
-                <Grid>
+    <Grid RowDefinitions="Auto">
+        <ScrollView Grid.Row="0">
+            <Grid ColumnDefinitions="*,*"
+                  RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+                  Padding="30,0">
+
+                <!-- 2. Header information-->
+                <!-- Profile and background pictures -->
+                <Image Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       Source="landscape.png"
+                       VerticalOptions="Start"
+                       Margin="-35,-45,-35,0"
+                       HeightRequest="{OnPlatform iOS='250', Android='200'}"
+                       Aspect="AspectFill" />
+                
+                <Frame Grid.Row="1"
+                       Grid.Column="1"
+                       Margin="0,-40,0,0"
+                       BorderColor="White"
+                       VerticalOptions="Start"
+                       HorizontalOptions="End"
+                       WidthRequest="70"
+                       HeightRequest="70"
+                       HasShadow="False"
+                       CornerRadius="35"
+                       Padding="0"
+                       IsClippedToBounds="True">
+                    <Image Source="avatar_icon.png"
+                           Aspect="AspectFill" />
+                </Frame>
+
+                <Grid Grid.Row="2"
+                      Grid.Column="1">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="180" />
                         <ColumnDefinition Width="100" />
                     </Grid.ColumnDefinitions>
+
+                    <Label Style="{StaticResource TitleStyle}"
+                           Text="{Binding HostName}" />
+                    
                     <Label Grid.Column="0"
                            Style="{StaticResource ValueStyle}"
                            Text="{Binding SongName}" />
+                    
                     <Label Grid.Column="1"
-                           Style="{StaticResource ValueStyle}"
-                           Text="{Binding Source={x:Reference SliderAudioPlayer},
-                        Path=Value,
-                        StringFormat='Time left: {0:F0}' 
-                    }" />
+                        Style="{StaticResource ValueStyle}"
+                        Text="{Binding Source={x:Reference SliderAudioPlayer},
+                        Path=Value, StringFormat='Time left: {0:F0}'}"/>
                 </Grid>
-                <Slider x:Name="SliderAudioPlayer"
+                
+                    <Slider x:Name="SliderAudioPlayer"
                         IsEnabled="False"
                         Value="{Binding Position}"
                         Maximum="{Binding Duration}" />
@@ -75,70 +108,30 @@
                 <Label Style="{StaticResource TitleStyle}"
                        Text="Choose Your Next Song" />
 
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30" />
-                        <ColumnDefinition Width="250" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40" />
-                        <RowDefinition Height="40" />
-                        <RowDefinition Height="40" />
-                        <RowDefinition Height="40" />
-                    </Grid.RowDefinitions>
-
-                    <Label Grid.Column="1"
+                <Label Grid.Column="1"
                            Grid.Row="0"
                            Style="{StaticResource LightValueStyle}"
                            Text="Kendrick Lamar: Good Kid MaaD city" />
 
-                    <CheckBox Grid.Column="0"
+                <CheckBox Grid.Column="0"
                               Grid.Row="0"
                               x:Name="firstCheckBox"
                               Color="{StaticResource SilderColor}" />
-
-                    <Label Grid.Column="1"
-                           Grid.Row="1"
-                           Style="{StaticResource LightValueStyle}"
-                           Text="50 cent: CandyShop" />
-                    <CheckBox Grid.Column="0"
-                              Grid.Row="1"
-                              x:Name="secondCheckBox"
-                              Color="{StaticResource SilderColor}" />
-
-                    <Label Grid.Column="1"
-                           Grid.Row="2"
-                           Style="{StaticResource LightValueStyle}"
-                           Text="Snoop Dog: Doggy Style" />
-                    <CheckBox Grid.Column="0"
-                              Grid.Row="2"
-                              x:Name="thirdCheckBox"
-                              Color="{StaticResource SilderColor}" />
-
-                    <Label Grid.Column="1"
-                           Grid.Row="3"
-                           Style="{StaticResource LightValueStyle}"
-                           Text="Noa Killer: Kill me" />
-                    <CheckBox Grid.Column="0"
-                              Grid.Row="3"
-                              x:Name="fourthCheckBox"
-                              Color="{StaticResource SilderColor}" />
-                </Grid>
                 <Grid ColumnDefinitions="*">
-                    <Button Grid.Column="0"
+                        <Button Grid.Column="0"
                             Text="Vote"
                             Style="{StaticResource voteButton}"
                             Clicked="VoteBtn_Clicked" />
-                </Grid>
+                    </Grid>
                 <Grid ColumnDefinitions="*, *, *">
                     <Button Grid.Column="1"
                             Text="Leave"
                             Style="{StaticResource leaveButton}"
                             Clicked="Left_Button_Clicked" />
                 </Grid>
-            </StackLayout>
-        </local:SecondTemplate.PageContent>
-    </local:SecondTemplate>
+            </Grid>
+        </ScrollView>
+    </Grid>
 </ContentPage>
 
 
