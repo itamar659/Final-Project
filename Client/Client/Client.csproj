@@ -78,9 +78,6 @@
 	  <MauiXaml Update="Controls\FindHostPage\FindHostItemControl.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Controls\HostHomePage\HostHomeSongPickControl.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Controls\HostPlayerControl.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

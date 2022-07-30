@@ -23,6 +23,9 @@ public class Poll
 
     public void GeneratePoll(IReadOnlyList<Song> songs)
     {
+        if (songs.Count == 0)
+            return;
+
         for (int i = 0; i < PollSize; i++)
         {
             var chosen = RANDOM.Next(songs.Count);
