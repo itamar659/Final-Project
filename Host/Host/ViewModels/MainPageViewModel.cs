@@ -141,12 +141,19 @@ public class MainPageViewModel : BaseViewModel
         if (!Room.IsOpen)
         {
             await Room.OpenRoomAsync();
-            createPoll();
+            await Poll.UpdateVotesAsync();
+
+            if (Poll.PollOptions != null && Poll.PollOptions[0].Name == "None")
+            {
+                await Poll.RemovePollAsync();
+                createPoll();
+            }
+
         }
         else
         {
-            await Room.CloseRoomAsync();
             await Poll.RemovePollAsync();
+            await Room.CloseRoomAsync();
         }
     }
 

@@ -10,6 +10,6 @@ public interface IServerApi : IDisposable
     Task LeaveSessionAsync();
     Task<JukeboxSessionResponse> FetchSessionDetailsAsync(string sessionKey = null);
     Task<List<JukeboxSessionResponse>> FetchAvailableSessionsAsync();
-    Task<JukeboxPollResponse> FetchPollAsync(string sessionKey);
+    Task<JukeboxPollResponse> FetchPollAsync();
     Task<bool> VoteAsync(int voteOption);
 }

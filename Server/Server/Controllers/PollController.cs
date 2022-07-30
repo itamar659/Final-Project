@@ -123,4 +123,22 @@ public class PollController : ControllerBase
     {
         return await _context.PollOption.ToListAsync();
     }
+
+    [HttpPost("RemoveDev")]
+    public async Task<ActionResult> RemoveDev(string sessionKey)
+    {
+        if (sessionKey == NumberGenerator.Empty)
+            return NotFound();
+
+        var pollOption = _context.PollOption.Where(option => option.SessionKey == sessionKey);
+        if (pollOption.Count() <= 0)
+            return Ok();
+
+        _context.RemoveRange(pollOption);
+
+        await _context.SaveChangesAsync();
+
+        return Ok();
+    }
+
 }

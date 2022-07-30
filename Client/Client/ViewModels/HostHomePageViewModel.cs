@@ -1,6 +1,7 @@
 ﻿using Client.Models;
 using Client.Models.Responses;
 using Client.Services;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Client;
@@ -8,6 +9,10 @@ public class HostHomePageViewModel : BaseViewModel
 {
     private readonly IServerApi _serverApi;
     private readonly System.Timers.Timer _songTimer;
+
+    public Poll Poll { get; set; }
+
+    public ObservableCollection<PollOption> SongsToPick => Poll.PollOptions;
 
     private double _duration;
     public double Duration
@@ -52,24 +57,20 @@ public class HostHomePageViewModel : BaseViewModel
     public ICommand LeaveSessionCommand { get; set; }
 
     public ICommand ChooseSongCommand { get; set; }
-    public System.Collections.ObjectModel.ObservableCollection<Song> SongsToPick { get; set; }
+
     public HostHomePageViewModel(IServerApi serverApi)
     {
         _serverApi = serverApi;
         _songTimer = new System.Timers.Timer(500);
 
-        ChooseSongCommand = new Command(async () =>
+        ChooseSongCommand = new Command(async (object val) =>
         {
-             await Shell.Current.GoToAsync($"{nameof(HostLastPage)}?Duration={Duration}&Position={Position}");
+            await Poll.VoteAsync((int)val);
+            await fetchSessionDetailsAsync();
+             //await Shell.Current.GoToAsync($"{nameof(HostLastPage)}?Duration={Duration}&Position={Position}");
         });
 
-        SongsToPick = new System.Collections.ObjectModel.ObservableCollection<Song>()
-        {
-            new Song { Name = "Kendrick Lamar: ADHD", Path = ""},
-            new Song { Name = "50 Cent: Lolipop", Path = ""},
-            new Song { Name = "Jay-z: 4:44", Path = ""},
-            new Song { Name = "Dr.Dre: Xplicit", Path = ""},
-        };
+        Poll = new Poll(serverApi);
 
         startTimer();
     }
@@ -91,19 +92,21 @@ public class HostHomePageViewModel : BaseViewModel
 
     private async Task fetchSessionDetailsAsync()
     {
-        //JukeboxSessionResponse details = await _serverApi.FetchSessionDetailsAsync();
-        //if (details == null)
-        //    return; // Session ended. Return to last page...
+        JukeboxSessionResponse details = await _serverApi.FetchSessionDetailsAsync();
+        if (details == null)
+            return; // Session ended. Return to last page...
 
-        //SongName = details.SongName;
-        //Duration = TimeSpan.FromMilliseconds(details.SongDuration).TotalSeconds;
-        //Position = TimeSpan.FromMilliseconds(details.SongPosition).TotalSeconds;
-        //HostName = details.OwnerName;
+        SongName = details.SongName;
+        Duration = TimeSpan.FromMilliseconds(details.SongDuration).TotalSeconds;
+        Position = TimeSpan.FromMilliseconds(details.SongPosition).TotalSeconds;
+        HostName = details.OwnerName;
 
-        SongName = "Kendrick Lamar: ADHD";
-        Duration = 182.22;
-        Position = 20;
-        HostName = "Bruni";
+        await Poll.UpdateVotesAsync();
+
+        //SongName = "Kendrick Lamar: ADHD";
+        //Duration = 182.22;
+        //Position = 20;
+        //HostName = "Bruni";
     }
 
     private async void songWorker(object sender, System.Timers.ElapsedEventArgs e)

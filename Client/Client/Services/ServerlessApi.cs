@@ -1,4 +1,5 @@
-﻿using Client.Models.Responses;
+﻿using Client.Models;
+using Client.Models.Responses;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Text;
@@ -114,10 +115,14 @@ public class ServerlessApi : IServerApi
         return sessionNames;
     }
 
-    async Task<JukeboxPollResponse> IServerApi.FetchPollAsync(string sessionKey)
+    async Task<JukeboxPollResponse> IServerApi.FetchPollAsync()
     {
-        var obj = new { SessionKey = sessionKey };
-        JukeboxPollResponse pollResponse = await postResponseOrDefault<JukeboxPollResponse>("/Poll/GetPoll", obj);
+        var obj = new { SessionKey = _sessionKey };
+        List<PollOption> pollOptions = await postResponseOrDefault<List<PollOption>>("/Poll/GetPoll", obj);
+        JukeboxPollResponse pollResponse = new JukeboxPollResponse
+        {
+            Options = pollOptions
+        };
 
         return pollResponse;
     }

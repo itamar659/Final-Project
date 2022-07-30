@@ -21,7 +21,7 @@ public class Poll
         initializePollOptions();
     }
 
-    public void GeneratePoll(IReadOnlyList<Song> songs)
+    public async void GeneratePoll(IReadOnlyList<Song> songs)
     {
         if (songs.Count == 0)
             return;

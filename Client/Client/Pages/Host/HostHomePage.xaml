@@ -142,12 +142,14 @@
                 <CollectionView Grid.Row="3"
                                     ItemsSource="{Binding SongsToPick}">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:Song">
+                        <DataTemplate x:DataType="models:PollOption">
                             <Border>
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding BindingContext.ChooseSongCommand,
-                                    Source={x:RelativeSource AncestorType={x:Type ContentPage}}}"
-                                                      />
+                                                                            Source={x:RelativeSource AncestorType={x:Type ContentPage}}}"
+                                                          CommandParameter="{Binding Id}"/>
+                                    <!--<TapGestureRecognizer Command="{Binding BindingContext.ChooseSongCommand,
+                                    Source={x:RelativeSource AncestorType={x:Type ContentPage}}}" />-->
                                 </Border.GestureRecognizers>
                                 <Label Text="{Binding Name}"
                                        HorizontalOptions="Center"
