@@ -67,7 +67,8 @@ public class HostHomePageViewModel : BaseViewModel
         {
             await Poll.VoteAsync((int)val);
             await fetchSessionDetailsAsync();
-             //await Shell.Current.GoToAsync($"{nameof(HostLastPage)}?Duration={Duration}&Position={Position}");
+
+             await Shell.Current.GoToAsync($"{nameof(HostLastPage)}?Duration={Duration}&Position={Position}");
         });
 
         Poll = new Poll(serverApi);
