@@ -16,7 +16,6 @@ public class HostHomePageViewModel : BaseViewModel
         set
         {
             _duration = value;
-
             OnPropertyChanged(nameof(Duration));
         }
     }
@@ -44,7 +43,6 @@ public class HostHomePageViewModel : BaseViewModel
     }
 
     private string _hostname;
-
     public string HostName
     {
         get { return _hostname; }
@@ -59,7 +57,6 @@ public class HostHomePageViewModel : BaseViewModel
     {
         _serverApi = serverApi;
         _songTimer = new System.Timers.Timer(500);
-        startTimer();
 
         ChooseSongCommand = new Command(async () =>
         {
@@ -73,6 +70,8 @@ public class HostHomePageViewModel : BaseViewModel
             new Song { Name = "Jay-z: 4:44", Path = ""},
             new Song { Name = "Dr.Dre: Xplicit", Path = ""},
         };
+
+        startTimer();
     }
 
     private void startTimer()
@@ -87,7 +86,6 @@ public class HostHomePageViewModel : BaseViewModel
             });
 
             _songTimer.Start();
-
         }
     }
 
@@ -110,7 +108,7 @@ public class HostHomePageViewModel : BaseViewModel
 
     private async void songWorker(object sender, System.Timers.ElapsedEventArgs e)
     {
-        Position += 1.0;
+        Position += 0.5; // timer tick is 500ms
         if (Position >= Duration)
         {
             _songTimer.Stop();

@@ -9,6 +9,10 @@
              BackgroundColor="White">
 
     <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:DoubleMSToTimeStrConverter x:Key="millisecondsToTimeConverter" />
+        </ResourceDictionary>
+        
         <Color x:Key="SilderColor">#ff8000</Color>
         <Color x:Key="TitleColor">#0080ff</Color>
         <Color x:Key="LabelColor">#00161f</Color>
@@ -47,6 +51,7 @@
             <Setter Property="Margin" Value="10, 0, 0, 0" />
         </Style>
     </ContentPage.Resources>
+    
     <Grid RowDefinitions="Auto, Auto">
         <Grid ColumnDefinitions="*,*"
               RowDefinitions="Auto,Auto"
@@ -114,13 +119,12 @@
                           Grid.Row="2">
 
                         <Label Grid.Column="0"
-                           Style="{StaticResource ValueStyle}"
-                           Text="{Binding Source={x:Reference SliderAudioPlayer},
-                           Path=Value}"/>
+                               Style="{StaticResource ValueStyle}"
+                               Text="{Binding Position, Converter={StaticResource millisecondsToTimeConverter}}"/>
 
                         <Label Grid.Column="4"
-                           Text="{Binding Duration}"
-                           Style="{StaticResource ValueStyle}"/>
+                               Style="{StaticResource ValueStyle}"
+                               Text="{Binding Duration, Converter={StaticResource millisecondsToTimeConverter}}" />
                     </Grid>
                 </Grid>
             </Frame>

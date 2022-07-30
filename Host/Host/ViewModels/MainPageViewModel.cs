@@ -19,14 +19,29 @@ public class MainPageViewModel : BaseViewModel
 
     #region Public Properties
 
+    /// <summary>
+    /// Update the UI for everything that related to the audio player
+    /// </summary>
     public AudioPlayerUpdater AudioPlayer { get; set; }
 
+    /// <summary>
+    /// Update the UI for everything that related to the room this host created
+    /// </summary>
     public RoomUpdater RoomUpdater { get; set; }
 
+    /// <summary>
+    /// List available songs in the host
+    /// </summary>
     public ObservableCollection<Song> Songs => _audioPlayer.Songs;
 
+    /// <summary>
+    /// A poll and saync poll methods to update the server
+    /// </summary>
     public Poll Poll { get; set; }
 
+    /// <summary>
+    /// A room and saync poll methods to update the server
+    /// </summary>
     public Room Room { get; set; }
 
     #endregion
