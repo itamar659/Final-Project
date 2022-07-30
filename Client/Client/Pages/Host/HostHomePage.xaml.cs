@@ -10,7 +10,7 @@ public partial class HostHomePage : ContentPage
         InitializeComponent();
 
         _vm = vm;
-        BindingContext = _vm;
+        BindingContext = vm;
     }
 
     private async void VoteBtn_Clicked(object sender, EventArgs e)

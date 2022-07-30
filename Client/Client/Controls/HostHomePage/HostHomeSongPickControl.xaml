@@ -4,23 +4,17 @@
              x:Class="Client.HostHomeSongPickControl"
              xmlns:models="clr-namespace:Client.Models"
              x:DataType="models:Song">
-    <Grid RowDefinitions="Auto" RowSpacing="30">
-        <Frame Grid.Row="0"
-               BorderColor="#ff8600"
+    <Frame     BorderColor="#ff8600"
                HasShadow="False"
                CornerRadius="17"
-               Padding="0"
-               IsClippedToBounds="True">
+               Padding="0">
 
-            <Label Text="{Binding Name}"
+        <Label Text="{Binding Name}"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
                    FontAttributes="Bold"
                    FontSize="14"
                    CharacterSpacing="1"
                    Margin="0,5,0,5" />
-        </Frame>
-
-
-    </Grid>
+    </Frame>
 </ContentView>

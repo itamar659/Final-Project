@@ -1,11 +1,152 @@
-<ContentPage iOS:Page.UseSafeArea="True"
+<?xml version="1.0" encoding="utf-8" ?>
+    <ContentPage 
              x:Class="Client.HostLastPage"
-             Title="HostLastPage"
-             xmlns:charts="clr-namespace:Client"
+             x:DataType="local:HostLastPageViewModel"
+             Title="Thanks For Voting !"
+             xmlns:local="clr-namespace:Client"
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:iOS="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.iOSSpecific;assembly=Microsoft.Maui.Controls">
-    <StackLayout>
-        <charts:PieChart Points="{Binding .}" />
-    </StackLayout>
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" >
+    <ContentPage.Resources>
+        <Color x:Key="SilderColor">#ff8000</Color>
+        <Color x:Key="TitleColor">#0080ff</Color>
+        <Color x:Key="LabelColor">#00161f</Color>
+        <Color x:Key="LightLabelColor">#44461f</Color>
+
+        <Style x:Key="StyleLabel" TargetType="Label">
+            <Setter Property="HorizontalOptions" Value="Center"/>
+            <Setter Property="TextColor" Value="{StaticResource LabelColor}"/>
+        </Style>
+
+        <Style x:Key="TitleStyle" TargetType="Label" BasedOn="{StaticResource StyleLabel}">
+            <Setter Property="FontSize" Value="Large"/>
+            <Setter Property="Margin" Value="20, 0, 10, 0"/>
+        </Style>
+
+        <Style x:Key="ValueStyle" TargetType="Label" BasedOn="{StaticResource StyleLabel}">
+            <Setter Property="FontSize" Value="Small"/>
+            <Setter Property="TextColor" Value="{StaticResource LabelColor}"/>
+        </Style>
+
+        <Style x:Key="LightValueStyle" TargetType="Label" BasedOn="{StaticResource StyleLabel}">
+            <Setter Property="FontSize" Value="Small"/>
+            <Setter Property="TextColor" Value="{StaticResource LightGreyColor}"/>
+            <Setter Property="HorizontalTextAlignment" Value="Start"/>
+            <Setter Property="VerticalTextAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="Slider">
+            <Setter Property="ThumbColor" Value="{StaticResource SilderColor}"/>
+            <Setter Property="MinimumTrackColor" Value="{StaticResource SilderColor}"/>
+            <Setter Property="MaximumTrackColor" Value="{StaticResource SilderColor}"/>
+            <Setter Property="Margin" Value="10, 0, 10, 0" />
+        </Style>
+
+        <Style x:Key="Marger" TargetType="Grid">
+            <Setter Property="Margin" Value="10, 0, 0, 0" />
+        </Style>
+    </ContentPage.Resources>
+    <Grid RowDefinitions="Auto, Auto">
+        <Grid ColumnDefinitions="*,*"
+              RowDefinitions="Auto,Auto"
+              Padding="30,0">
+
+            <!-- 2. Header information-->
+            <!-- Profile and background pictures -->
+            <Image Grid.Row="0"
+                   Grid.Column="0"
+                   Grid.ColumnSpan="2"
+                   Source="landscape.png"
+                   VerticalOptions="Start"
+                   Margin="-35,-45,-35,0"
+                   HeightRequest="{OnPlatform iOS='250', Android='200'}"
+                   Aspect="AspectFill" />
+
+            <Frame Grid.Row="1"
+                   Grid.Column="1"
+                   Margin="0,-40,0,0"
+                   BorderColor="White"
+                   VerticalOptions="Start"
+                   HorizontalOptions="End"
+                   WidthRequest="70"
+                   HeightRequest="70"
+                   HasShadow="False"
+                   CornerRadius="35"
+                   Padding="0"
+                   IsClippedToBounds="True">
+                <Image Source="avatar_icon.png"
+                               Aspect="AspectFill" />
+            </Frame>
+        </Grid>
+
+        <Grid RowDefinitions="Auto,Auto,Auto, Auto"
+              Grid.Row="1">
+            <Label Style="{StaticResource TitleStyle}"
+                   Margin="0,0,0,5"
+                   HorizontalOptions="Center"
+                   Grid.Row="0"
+                   Text="{Binding HostName}" />
+
+            <Frame Grid.Row="1"
+                   VerticalOptions="FillAndExpand"
+                   HorizontalOptions="Center"
+                   HasShadow="True"
+                   CornerRadius="40"
+                   BackgroundColor="White">
+
+                <Grid RowDefinitions="Auto,Auto,Auto">
+                    <Label Grid.Row="0"
+                           HorizontalOptions="Center"
+                           Style="{StaticResource ValueStyle}"
+                           Text="{Binding SongName}" />
+
+                    <Slider x:Name="SliderAudioPlayer"
+                            Grid.Row="1"
+                            IsEnabled="False"
+                            ThumbColor="#ff8000"
+                            MinimumTrackColor="#ff8000"
+                            MaximumTrackColor="#ff8000"
+                            Value="{Binding Position}"
+                            Maximum="{Binding Duration}" />
+
+                    <Grid ColumnDefinitions="*,*,*,*"
+                          Grid.Row="2">
+
+                        <Label Grid.Column="0"
+                           Style="{StaticResource ValueStyle}"
+                           Text="{Binding Source={x:Reference SliderAudioPlayer},
+                           Path=Value}"/>
+
+                        <Label Grid.Column="4"
+                           Text="{Binding Duration}"
+                           Style="{StaticResource ValueStyle}"/>
+                    </Grid>
+                </Grid>
+            </Frame>
+
+
+            <Frame Grid.Row="2"
+                   VerticalOptions="FillAndExpand"
+                   HorizontalOptions="Center"
+                   HasShadow="True"
+                   CornerRadius="40"
+                   Margin="0, 40 ,0 ,0"
+                   BackgroundColor="White">
+                <Grid  RowDefinitions="Auto,Auto">
+                    
+                    <Label Style="{StaticResource TitleStyle}"
+                           Margin="0,0,0,5"
+                           HorizontalOptions="Center"
+                           Grid.Row="0"
+                           Text="Text for voting"/> 
+
+                    <Label Style="{StaticResource TitleStyle}"
+                           Margin="0,0,0,5"
+                           HorizontalOptions="Center"
+                           Grid.Row="1"
+                           Text="You will be redirect shortly"/>
+
+                </Grid>
+            </Frame>
+        </Grid>
+    </Grid>
 </ContentPage>

@@ -130,69 +130,27 @@
                    Grid.Row="2"
                    Text="Choose Your Next Song" />        
             
-            <!--<Frame  Grid.Row="5"
-                    Margin="0,20,0,20"
-                    VerticalOptions="FillAndExpand"
-                    HorizontalOptions="Center"
-                    HasShadow="True"
-                    CornerRadius="40"
-                    BackgroundColor="White">-->
             <Frame  Grid.Row="3"
-                    VerticalOptions="FillAndExpand"
                     HorizontalOptions="Center"
                     HasShadow="True"
-                    CornerRadius="40"
-                    BackgroundColor="White">
-                <CollectionView HorizontalScrollBarVisibility="Never"
-                                    Grid.Row="3"
-                                    HorizontalOptions="Center"
-                                    VerticalScrollBarVisibility="Never"
+                    CornerRadius="40">
+                <CollectionView Grid.Row="3"
                                     ItemsSource="{Binding SongsToPick}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Border>
                                 <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding ChooseSongCommand,
+                                    <TapGestureRecognizer Command="{Binding BindingContext.ChooseSongCommand,
                                     Source={x:RelativeSource AncestorType={x:Type ContentPage}}}"
                                                       />
                                 </Border.GestureRecognizers>
-                                <local:HostHomeSongPickControl MaximumWidthRequest="200"
-                                                                   Margin="0,0,0,10"
-                                                                   HorizontalOptions="Center"/>
+                                <local:HostHomeSongPickControl/>
                             </Border>
+
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </Frame>
-
-            <!--<Button Style="{StaticResource optionButton}"
-                            TextColor="Black"
-                            HorizontalOptions="Center"
-                            Grid.Row="0"
-                            Text="Kendrick Lamar: Good Kid MaaD city" />
-                    <Button Style="{StaticResource optionButton}"
-                            TextColor="Black"
-                            HorizontalOptions="Center"
-                            Grid.Row="1"
-                            Text="Kendrick Lamar: Good Kid MaaD city" />
-                    <Button Style="{StaticResource optionButton}"
-                            TextColor="Black"
-                            HorizontalOptions="Center"
-                            Grid.Row="2"
-                            Text="Kendrick Lamar: Good Kid MaaD city" />
-                    <Button Style="{StaticResource optionButton}"
-                            TextColor="Black"
-                            HorizontalOptions="Center"
-                            Grid.Row="3"
-                            Margin="0,0,0,-30"
-                            Text="Kendrick Lamar: Good Kid MaaD city" />-->
-
-                <!--<Button Grid.Row="1"
-                                        Text="Vote"
-                                        Style="{StaticResource voteButton}"
-                                        Clicked="VoteBtn_Clicked" />-->
-
-            <!--</Frame>-->
             <Button Grid.Row="4"
                     Text="Leave"
                     Style="{StaticResource leaveButton}"

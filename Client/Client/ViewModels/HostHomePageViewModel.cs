@@ -63,7 +63,7 @@ public class HostHomePageViewModel : BaseViewModel
 
         ChooseSongCommand = new Command(async () =>
         {
-            await Shell.Current.GoToAsync(nameof(HostLastPage));
+             await Shell.Current.GoToAsync($"{nameof(HostLastPage)}?Duration={Duration}&Position={Position}");
         });
 
         SongsToPick = new System.Collections.ObjectModel.ObservableCollection<Song>()
