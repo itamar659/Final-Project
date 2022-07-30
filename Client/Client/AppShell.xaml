@@ -8,8 +8,8 @@
      Shell.TabBarIsVisible="False"
     xmlns:profile="clr-namespace:Client.Pages.Users">
 
-    <ShellItem Route="HostHomePage" FlyoutItemIsVisible="False">
-        <ShellContent ContentTemplate="{DataTemplate local:HostHomePage}"/>
+    <ShellItem Route="MainPage" FlyoutItemIsVisible="False">
+        <ShellContent ContentTemplate="{DataTemplate local:MainPage}"/>
     </ShellItem>
     <ShellItem Route="FindHostPage" FlyoutItemIsVisible="False">
         <ShellContent ContentTemplate="{DataTemplate local:FindHostPage}"/>
