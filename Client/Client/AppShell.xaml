@@ -9,7 +9,7 @@
     xmlns:profile="clr-namespace:Client.Pages.Users">
 
     <ShellItem Route="MainPage" FlyoutItemIsVisible="False">
-        <ShellContent ContentTemplate="{DataTemplate local:MainPage}"/>
+        <ShellContent ContentTemplate="{DataTemplate local:LoginPage}"/>
     </ShellItem>
     <ShellItem Route="FindHostPage" FlyoutItemIsVisible="False">
         <ShellContent ContentTemplate="{DataTemplate local:FindHostPage}"/>

@@ -66,6 +66,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="IdentityModel.OidcClient" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Compile Update="Pages\Host\HostFrontPage.xaml.cs">
 	    <DependentUpon>HostFrontPage.xaml</DependentUpon>
 	  </Compile>
@@ -79,6 +83,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Controls\HostPlayerControl.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\Users\ProfilePage.xaml">

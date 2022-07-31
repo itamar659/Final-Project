@@ -1,4 +1,5 @@
-﻿using Client.Pages.Users;
+﻿using Client.Auth0;
+using Client.Pages.Users;
 using Client.Services;
 using Client.ViewModels;
 
@@ -25,6 +26,7 @@ public static class MauiProgram
         builder.Services.AddTransient<HostLastPageViewModel>();
         builder.Services.AddTransient<SongsViewModel>();
 
+        builder.Services.AddSingleton<LoginPage>();
         builder.Services.AddSingleton<MainPage>();
         builder.Services.AddTransient<ProfilePage>();
         builder.Services.AddTransient<FindHostPage>();
@@ -32,6 +34,14 @@ public static class MauiProgram
         builder.Services.AddTransient<HostLastPage>();
         builder.Services.AddTransient<HostNotFoundPage>();
         builder.Services.AddTransient<HostFrontPage>();
+
+        builder.Services.AddSingleton(new Auth0Client(new()
+        {
+            Domain = "dev-csharp-project-final.eu.auth0.com",
+            ClientId = "fxsNZuJbYFzJS8d8xz0dHBkP0aUyhbSK",
+            Scope = "openid profile",
+            RedirectUri = "myapp://callback"
+        }));
 
         return builder.Build();
 	}
