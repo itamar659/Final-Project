@@ -23,6 +23,17 @@ public partial class MainPage : ContentPage
         }
     }
 
+    private async void RemoveSongsBtn_Clicked(object sender, EventArgs e)
+    {
+        await _vm.RemoveSongsAsync(songsList.SelectedItems);
+    }
+
+
+    private async void ClearSongsBtn_Clicked(object sender, EventArgs e)
+    {
+        await _vm.ClearSongsAsync();
+    }
+
     private async void pickFilesAsync()
     {
         var files = await FilePicker.PickMultipleAsync(getFilePickerOptions());

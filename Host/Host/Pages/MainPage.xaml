@@ -139,6 +139,7 @@
                                     Text="Songs:" />
 
                             <CollectionView Grid.Row="4"
+                                            x:Name="songsList"
                                             SelectionMode="Multiple"
                                             ItemsSource="{Binding Songs}"
                                             HorizontalOptions="Center">
@@ -159,8 +160,10 @@
                                          Spacing="4">
                         <Button Text="Add Songs"
                                 Clicked="AddSongsBtn_Clicked"/>
-                        <Button Text="Remove Songs" />
-                        <Button Text="Clear" />
+                        <Button Text="Remove Songs" 
+                                Clicked="RemoveSongsBtn_Clicked" />
+                        <Button Text="Clear"
+                                Clicked="ClearSongsBtn_Clicked" />
                     </VerticalStackLayout>
                 </Grid>
 

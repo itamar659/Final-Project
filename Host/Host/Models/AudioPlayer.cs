@@ -106,6 +106,31 @@ public class AudioPlayer
         }
     }
 
+    public void RemoveFromPlaylist(Song song)
+    {
+        if (song == null)
+            return;
+
+        _playlist.Songs.Remove(song);
+
+        if (_playlist.Songs.Count == 0)
+        {
+            State = PlayerState.Created;
+            SongStateChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
+    public void ClearPlaylist()
+    {
+        _playlist.Songs.Clear();
+
+        if (_playlist.Songs.Count == 0)
+        {
+            State = PlayerState.Created;
+            SongStateChanged?.Invoke(this, EventArgs.Empty);
+        }
+    }
+
     public async Task ChangeSong(string songName)
     {
         if (songName == null)

@@ -100,6 +100,28 @@ public class MainPageViewModel : BaseViewModel
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// /// Remove songs from the list of song by names asynchronous.
+    /// </summary>
+    public Task RemoveSongsAsync(IEnumerable<object> songs)
+    {
+        if (songs != null)
+            foreach (var songName in songs.Select(s => ((Song)s).Name).ToList())
+                _audioPlayer.RemoveFromPlaylist(songName);
+
+        return Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Clear the list of song asynchronous.
+    /// </summary>
+    public Task ClearSongsAsync()
+    {
+        _audioPlayer.ClearPlaylist();
+
+        return Task.CompletedTask;
+    }
+
     #endregion
 
     #region Private Methods
