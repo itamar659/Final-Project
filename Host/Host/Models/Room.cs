@@ -6,6 +6,19 @@ public class Room : BaseViewModel
 {
     private IServerApi _serverAPI;
 
+    private string _ownerName;
+
+    public string OwnerName
+    {
+        get { return _ownerName; }
+        set
+        {
+            _ownerName = value;
+            OnPropertyChanged(nameof(OwnerName));
+        }
+    }
+
+
     private int _onlineUsers;
     public int OnlineUsers
     {
@@ -88,5 +101,6 @@ public class Room : BaseViewModel
             return;
 
         OnlineUsers = sessionResponse.ActiveUsers;
+        OwnerName = sessionResponse.OwnerName;
     }
 }

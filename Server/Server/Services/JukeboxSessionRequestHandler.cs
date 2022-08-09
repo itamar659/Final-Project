@@ -90,6 +90,27 @@ public class JukeboxSessionRequestHandler
         await _context.SaveChangesAsync();
     }
 
+    public async Task ChangeOwnerName(JukeboxHost host, string name)
+    {
+        if (host.SessionKey == NumberGenerator.Empty)
+            return;
+
+        var session = await GetSessionAsync(host.SessionKey);
+        if (session is null)
+            return;
+
+        JukeboxSession newSession = session with
+        {
+            OwnerName = name,
+        };
+
+        _context.Entry(session).State = EntityState.Detached;
+
+        _context.Update(newSession);
+
+        await _context.SaveChangesAsync();
+    }
+
     public async Task JoinSessionAsync(JukeboxClient client, JukeboxSession session)
     {
         if (client.SessionKey != NumberGenerator.Empty)

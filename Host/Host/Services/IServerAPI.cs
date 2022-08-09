@@ -13,5 +13,6 @@ public interface IServerApi : IDisposable
     Task<bool> CreatePollAsync(PollRequest pollRequest);
     Task<bool> RemovePollAsync();
     Task<bool> ChangeSessionPinCodeAsync(string pinCode);
+    Task<bool> ChangeOwnerNameAsync(string ownerName);
     Task UpdateSongAsync(SongUpdateRequest song);
 }

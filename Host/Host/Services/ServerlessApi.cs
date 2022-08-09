@@ -143,4 +143,10 @@ public class ServerlessApi : IServerApi
         var obj = new { Token = _token, SongName = song.SongName, Duration = song.Duration, Position = song.Position };
         await postResponseOrDefault<bool>("/JukeboxHosts/ChangeSong", obj);
     }
+
+    async Task<bool> IServerApi.ChangeOwnerNameAsync(string ownerName)
+    {
+        var obj = new { Token = _token, OwnerName = ownerName };
+        return await postResponseOrDefault<bool>("/JukeboxHosts/ChangeOwnerName", obj);
+    }
 }

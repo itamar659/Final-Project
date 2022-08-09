@@ -1,58 +1,59 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Host"
              x:Class="Host.ProfilePage"
+             x:DataType="local:ProfileViewModel"
              Title="ProfilePage">
     <ScrollView Background="{StaticResource Background}">
-        <Grid ColumnDefinitions="*, *"
-              RowDefinitions="*, auto"
-              ColumnSpacing="90"
-              Padding="60, 30">
-            <Grid Grid.Column="0"
-                  Grid.Row="0"
-                  RowDefinitions="auto, *">
-                <!-- Welcome message -->
-                <VerticalStackLayout Grid.Row="0"
-                                     Margin="0, 0, 0, 90">
-                    <Label Text="Welcome Back,"
-                           Style="{StaticResource HeaderLabel}"/>
-                    <Label Text="[Owner Name]"
-                           Style="{StaticResource HeaderLabel}"/>
-                </VerticalStackLayout>
+        <Grid Grid.Column="0"
+                Grid.Row="0"
+                RowDefinitions="auto, *">
+            <!-- Welcome message -->
+            <VerticalStackLayout Grid.Row="0"
+                                    Margin="0, 0, 0, 90">
+                <Label Text="Welcome Back,"
+                        Style="{StaticResource HeaderLabel}"/>
+                <Label Text="{Binding OwnerName}"
+                        Style="{StaticResource HeaderLabel}"/>
+            </VerticalStackLayout>
 
-                <!-- Edit profile -->
-                <VerticalStackLayout Grid.Row="1"
-                                     Spacing="30">
+            <!-- Edit profile -->
+            <VerticalStackLayout Grid.Row="1"
+                                    Spacing="30">
+                <Border Grid.Row="2"
+                Style="{StaticResource CardBorder}">
                     <VerticalStackLayout>
                         <Label Text="Edit Your Name:" />
                         <Grid ColumnDefinitions="*, auto">
-                            <Entry Placeholder="[Owner Name]" />
+                            <Entry Placeholder="Hostname"
+                                    Text="{Binding OwnerName}"/>
                             <Button Grid.Column="1"
                                     Text="Apply"
                                     CornerRadius="0"
-                                    Padding="26, 10" />
+                                    Padding="26, 10" 
+                                    Command="{Binding ChangeOwnerNameCommand}"/>
                         </Grid>
                     </VerticalStackLayout>
-                    <VerticalStackLayout>
+                </Border>
+                <Border Grid.Row="2"
+                Style="{StaticResource CardBorder}">
+                        <VerticalStackLayout>
                         <Label Text="Generate New Pin Code:" />
                         <Grid ColumnDefinitions="*, auto">
                             <Entry Grid.Column="0"
-                                   Text="[PIN CODE]"
-                                   IsEnabled="False" />
+                                    Placeholder="****"
+                                    TextColor="Black"
+                                    Text="{Binding PinCode}"
+                                    IsEnabled="False" />
                             <Button Grid.Column="1"
                                     Text="Generate"
-                                    CornerRadius="0" />
+                                    CornerRadius="0"
+                                    Command="{Binding ChangePinCodeCommand}" />
                         </Grid>
                     </VerticalStackLayout>
-                </VerticalStackLayout>
-            </Grid>
-
-            <Grid Grid.Column="1"
-                  Grid.Row="0"
-                  Grid.RowSpan="2"
-                  Background="darkorange">
-                <Label Text="Client App view should be represent here" />
-            </Grid>
+                </Border>
+            </VerticalStackLayout>
         </Grid>
     </ScrollView>
 </ContentPage>

@@ -151,6 +151,32 @@ public class JukeboxHostsController : ControllerBase
         return Ok(true);
     }
 
+
+    [HttpPost("ChangeOwnerName")]
+    public async Task<ActionResult<bool>> ChangeOwnerName([Bind("Token,OwnerName")] SessionRequestJukeboxHostDto jukeboxHost)
+    {
+        var host = await _context.JukeboxHost.FindAsync(jukeboxHost.Token);
+        if (host is null)
+            return NotFound(false);
+
+        try
+        {
+            await _jukeboxSessionRequestHandler.ChangeOwnerName(host, jukeboxHost.OwnerName);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (await _context.JukeboxHost.FindAsync(jukeboxHost.Token) is null)
+                return NotFound(false);
+
+            if (await _context.JukeboxSession.FindAsync(host.SessionKey) is null)
+                return NotFound(false);
+
+            throw;
+        }
+
+        return Ok(true);
+    }
+
     // TODO: TESTING PURPOSES
     [HttpGet("All")]
     public async Task<IEnumerable<JukeboxHostDto>> All()
