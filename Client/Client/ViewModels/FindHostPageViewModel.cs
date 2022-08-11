@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Client;
+
+[QueryProperty(nameof(WelcomeMessage), nameof(WelcomeMessage))]
 public class FindHostPageViewModel : BaseViewModel
 {
     private readonly IServerApi _serverApi;

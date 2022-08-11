@@ -1,14 +1,18 @@
-﻿namespace Client;
+﻿using Client.Auth0;
+
+namespace Client;
 
 public partial class MainPage : ContentPage
 {
     private MainPageViewModel _vm;
+    private readonly Auth0Client auth0Client;
 
-    public MainPage(MainPageViewModel vm)
+    public MainPage(MainPageViewModel vm, Auth0Client client)
     {
         InitializeComponent();
 
         _vm = vm;
+        auth0Client = client;
         BindingContext = _vm;
 	}
 
@@ -36,16 +40,16 @@ public partial class MainPage : ContentPage
     {
         try
         {
-            //Uri uri = new Uri("https://www.google.com");
-            //await Browser.Default.OpenAsync(uri, BrowserLaunchMode.SystemPreferred);
+            var loginResult = await auth0Client.LoginAsync();
 
-            WebAuthenticatorResult authResult = await WebAuthenticator.Default.AuthenticateAsync(
-                    //new Uri("https://csharp-project.azurewebsites.net/.auth/login/facebook"),
-                    new Uri("https://csharp-project.azurewebsites.net/.auth/login/google"),
-                    new Uri("myapp://")
-                    );
-
-            string accessToken = authResult?.AccessToken;
+            if (!loginResult.IsError)
+            {
+                await Shell.Current.GoToAsync($"//{nameof(FindHostPage)}?WelcomeMessage={loginResult.User.Identity.Name}");
+            }
+            else
+            {
+                await DisplayAlert("We couldn't connect. try again later.", loginResult.ErrorDescription, "OK");
+            }
         }
         catch(Exception ex)
         {

@@ -24,7 +24,7 @@ public partial class LoginPage : ContentPage
         }
         else
         {
-            await DisplayAlert("Error", loginResult.ErrorDescription, "OK");
+            await DisplayAlert("We couldn't connect. try again later.", loginResult.ErrorDescription, "OK");
         }
     }
 
@@ -39,7 +39,7 @@ public partial class LoginPage : ContentPage
         }
         else
         {
-            await DisplayAlert("Error", logoutResult.ErrorDescription, "OK");
+            await DisplayAlert("We couldn't connect. try again later.", logoutResult.ErrorDescription, "OK");
         }
     }
 }

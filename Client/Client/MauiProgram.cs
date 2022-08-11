@@ -1,4 +1,5 @@
 ﻿using Client.Auth0;
+using Client.Pages;
 using Client.Pages.Users;
 using Client.Services;
 using Client.ViewModels;
@@ -28,6 +29,7 @@ public static class MauiProgram
 
         builder.Services.AddSingleton<LoginPage>();
         builder.Services.AddSingleton<MainPage>();
+        builder.Services.AddTransient<LogoutPage>();
         builder.Services.AddTransient<ProfilePage>();
         builder.Services.AddTransient<FindHostPage>();
         builder.Services.AddTransient<HostHomePage>();

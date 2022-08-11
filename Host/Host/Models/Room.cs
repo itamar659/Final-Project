@@ -69,6 +69,7 @@ public class Room : BaseViewModel
     public Room(IServerApi serverApi)
     {
         _serverAPI = serverApi;
+        ChangePinCodeAsync("123");
     }
 
     public async Task OpenRoomAsync()

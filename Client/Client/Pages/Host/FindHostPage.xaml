@@ -15,7 +15,7 @@
         <!-- 1. Search block-->
         <Label Grid.Row="0"
                Grid.Column="0"
-               Text="Welcome, Find Host"
+               Text="{Binding WelcomeMessage}"
                FontAttributes="Bold"
                FontSize="27"/>
         

@@ -6,10 +6,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:Client"
      Shell.TabBarIsVisible="False"
-    xmlns:profile="clr-namespace:Client.Pages.Users">
+    xmlns:profile="clr-namespace:Client.Pages.Users"
+    xmlns:logout="clr-namespace:Client.Pages">
 
     <ShellItem Route="MainPage" FlyoutItemIsVisible="False">
-        <ShellContent ContentTemplate="{DataTemplate local:LoginPage}"/>
+        <ShellContent ContentTemplate="{DataTemplate local:MainPage}"/>
     </ShellItem>
     <ShellItem Route="FindHostPage" FlyoutItemIsVisible="False">
         <ShellContent ContentTemplate="{DataTemplate local:FindHostPage}"/>
@@ -25,9 +26,9 @@
                   ContentTemplate="{DataTemplate profile:ProfilePage}"/>
     </FlyoutItem>
 
-    <ShellContent Title="Settings"
+    <ShellContent Title="Logout"
                   Icon="settings_icon.png"
-                  ContentTemplate="{DataTemplate  profile:ProfilePage}" />
+                  ContentTemplate="{DataTemplate  logout:LogoutPage}" />
 
     <Shell.ItemTemplate>
         <DataTemplate>
