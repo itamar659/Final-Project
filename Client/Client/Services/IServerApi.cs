@@ -4,7 +4,8 @@ namespace Client.Services;
 
 public interface IServerApi : IDisposable
 {
-    Task<bool> LoginAsync(string password);
+    Task<bool> LoginAsync(string username);
+    Task<bool> CreateAsync(string username);
     Task<bool> AnonymousLoginAsync(string username);
     Task<bool> JoinSessionAsync(string ownerName, string pinCode);
     Task LeaveSessionAsync();

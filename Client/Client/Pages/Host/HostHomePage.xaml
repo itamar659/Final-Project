@@ -147,7 +147,7 @@
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding BindingContext.ChooseSongCommand,
                                                                             Source={x:RelativeSource AncestorType={x:Type ContentPage}}}"
-                                                          CommandParameter="{Binding Id}"/>
+                                                          CommandParameter="{Binding Option}"/>
                                     <!--<TapGestureRecognizer Command="{Binding BindingContext.ChooseSongCommand,
                                     Source={x:RelativeSource AncestorType={x:Type ContentPage}}}" />-->
                                 </Border.GestureRecognizers>

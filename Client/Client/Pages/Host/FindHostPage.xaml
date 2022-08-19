@@ -55,7 +55,7 @@
                         ItemsSource="{Binding FavoriteHosts}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Border>
+                    <Border StrokeThickness="0">
                         <Border.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding BindingContext.ViewHostPageCommand,
                                     Source={x:RelativeSource AncestorType={x:Type ContentPage}}}" />
@@ -81,7 +81,7 @@
                             ItemsSource="{Binding AvailableHosts}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Border>
+                        <Border StrokeThickness="0">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding BindingContext.ViewHostPageCommand,
                                     Source={x:RelativeSource AncestorType={x:Type ContentPage}}}"

@@ -1,4 +1,5 @@
 ﻿using Client.Services;
+using IdentityModel.OidcClient;
 using Microsoft.Maui.Dispatching;
 using System.Windows.Input;
 
@@ -26,7 +27,7 @@ public class MainPageViewModel : BaseViewModel
         {
             if (await _serverApi.AnonymousLoginAsync(Username))
             {
-                await Shell.Current.GoToAsync(nameof(FindHostPage));
+                await Shell.Current.GoToAsync($"//{nameof(FindHostPage)}?WelcomeMessage={Username}");
             }
             else
             {
@@ -41,5 +42,30 @@ public class MainPageViewModel : BaseViewModel
         }
 
         return new (errorOccured, error);
+    }
+
+    public async Task<bool> LoginAsync(string username)
+    {
+        try
+        {
+            if (await _serverApi.LoginAsync(username))
+            {
+                await Shell.Current.GoToAsync($"//{nameof(FindHostPage)}?WelcomeMessage={username}");
+            }
+            else if (await _serverApi.CreateAsync(username))
+            {
+                await Shell.Current.GoToAsync($"//{nameof(FindHostPage)}?WelcomeMessage={username}");
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

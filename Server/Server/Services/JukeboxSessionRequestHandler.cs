@@ -142,23 +142,25 @@ public class JukeboxSessionRequestHandler
             return;
 
         var session = await GetSessionAsync(client.SessionKey);
-        if (session is null)
-            return;
-
-        JukeboxSession newSession = session with
+        if (session is not null)
         {
-            ActiveUsers = session.ActiveUsers - 1,
-        };
+            JukeboxSession newSession = session with
+            {
+                ActiveUsers = session.ActiveUsers - 1,
+            };
+
+            _context.Entry(session).State = EntityState.Detached;
+
+            _context.Update(newSession);
+        }
 
         JukeboxClient newClient = client with
         {
             SessionKey = NumberGenerator.Empty,
         };
 
-        _context.Entry(session).State = EntityState.Detached;
         _context.Entry(client).State = EntityState.Detached;
 
-        _context.Update(newSession);
         _context.Update(newClient);
 
         await _context.SaveChangesAsync();

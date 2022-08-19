@@ -47,8 +47,7 @@
                     <Button Grid.Row="5" 
                             ImageSource="apple_icon.png" 
                             FontSize="17" 
-                            Text="Continue with Apple" 
-                            Clicked="AppleFakeSignIn_Clicked"
+                            Text="Continue with Apple"
                             Style="{StaticResource SocialNetworks}" />
 
                     <Label Grid.Row="6" Margin="0,10,0,0">

@@ -7,7 +7,7 @@ using System.Windows.Input;
 namespace Host;
 public class MainPageViewModel : BaseViewModel
 {
-    public static readonly double SERVER_UPDATE_DELAY = TimeSpan.FromSeconds(10).TotalMilliseconds;
+    public static readonly double SERVER_UPDATE_DELAY = TimeSpan.FromSeconds(4).TotalMilliseconds;
 
     #region Private Members
 
@@ -152,6 +152,12 @@ public class MainPageViewModel : BaseViewModel
     /// </summary>
     private async void updateServerSongAsync(object sender, EventArgs e)
     {
+        var tries = 5;
+        while (_audioPlayer.Duration == double.Epsilon && tries > 0)
+        {
+            tries--;
+            Thread.Sleep(50);
+        }
         await _serverAPI.UpdateSongAsync(new SongUpdateRequest { SongName = _audioPlayer.SongName, Duration = _audioPlayer.Duration, Position = _audioPlayer.Position });
     }
 

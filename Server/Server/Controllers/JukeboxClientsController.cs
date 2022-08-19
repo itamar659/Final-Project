@@ -78,7 +78,7 @@ public class JukeboxClientsController : ControllerBase
 
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(JukeboxClient), new { Token = newClient.Entity.Token }, newClient.Entity);
+        return CreatedAtAction(nameof(JukeboxClient), new { Token = newClient.Entity.Token, SessionKey = newClient.Entity.SessionKey }, newClient.Entity);
     }
 
     [HttpPost("JoinSession")]
@@ -121,22 +121,22 @@ public class JukeboxClientsController : ControllerBase
     }
 
     [HttpPost("LeaveSession")]
-    public async Task<ActionResult<JukeboxClient>> LeaveSession([Bind("Token")] SessionRequestJukeboxClientDto jukeboxClient)
+    public async Task<ActionResult<bool>> LeaveSession([Bind("Token")] SessionRequestJukeboxClientDto jukeboxClient)
     {
         if (!await _context.JukeboxClient.AnyAsync(c => c.Token == jukeboxClient.Token))
-            return NotFound();
+            return NotFound(false);
 
         var client = await _context.FindAsync<JukeboxClient>(jukeboxClient.Token);
 
         try
         {
             await _jukeboxSessionRequestHandler.LeaveSessionAsync(client);
-            return Ok();
+            return Ok(true);
         }
         catch (DbUpdateConcurrencyException)
         {
             if (!await _context.JukeboxClient.AnyAsync(c => c.Token == jukeboxClient.Token))
-                return NotFound();
+                return NotFound(false);
 
             throw;
         }

@@ -48,15 +48,28 @@ public class ServerlessApi : IServerApi
         return default;
     }
 
-    async Task<bool> IServerApi.LoginAsync(string password)
+    async Task<bool> IServerApi.LoginAsync(string username)
     {
-        var obj = new { Password = password };
-        JukeboxClientResponse jukeboxHost = await postResponseOrDefault<JukeboxClientResponse>("/JukeboxClients/Login", obj);
+        var obj = new { Password = username };
+        JukeboxClientResponse jukeboxClient = await postResponseOrDefault<JukeboxClientResponse>("/JukeboxClients/Login", obj);
 
-        if (jukeboxHost is null)
+        if (jukeboxClient is null)
             return false;
 
-        _token = jukeboxHost.Token;
+        _token = jukeboxClient.Token;
+
+        return true;
+    }
+
+    async Task<bool> IServerApi.CreateAsync(string username)
+    {
+        var obj = new { Password = username };
+        JukeboxClientResponse jukeboxClient = await postResponseOrDefault<JukeboxClientResponse>("/JukeboxClients/Create", obj);
+
+        if (jukeboxClient is null)
+            return false;
+
+        _token = jukeboxClient.Token;
 
         return true;
     }
@@ -90,9 +103,8 @@ public class ServerlessApi : IServerApi
     async Task IServerApi.LeaveSessionAsync()
     {
         var obj = new { Token = _token };
-        await postResponseOrDefault<JukeboxJoinSessionResponse>("/JukeboxClients/LeaveSession", obj);
-
-        _sessionKey = string.Empty;
+        if (await postResponseOrDefault<bool>("/JukeboxClients/LeaveSession", obj))
+            _sessionKey = string.Empty;
     }
 
     void IDisposable.Dispose()

@@ -44,7 +44,7 @@ public class ProfileViewModel : BaseViewModel
 
         ChangePinCodeCommand = new Command(() =>
         {
-            PinCode = "Random";
+            PinCode = "1234";
             _serverApi.ChangeSessionPinCodeAsync(PinCode);
         });
 

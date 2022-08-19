@@ -24,18 +24,6 @@ public partial class MainPage : ContentPage
             await DisplayAlert("Error", res.Item2, "OK");
     }
 
-    private async void AppleFakeSignIn_Clicked(object sender, EventArgs e)
-    {
-        try
-        {
-            await Shell.Current.GoToAsync(nameof(FindHostPage));
-        }
-        catch(Exception ex) 
-        {
-            Console.WriteLine(ex.Message);
-        }
-    }
-
     private async void GoogleSignIn_Clicked(object sender, EventArgs e)
     {
         try
@@ -44,7 +32,10 @@ public partial class MainPage : ContentPage
 
             if (!loginResult.IsError)
             {
-                await Shell.Current.GoToAsync($"//{nameof(FindHostPage)}?WelcomeMessage={loginResult.User.Identity.Name}");
+                if (! await _vm.LoginAsync(loginResult.User.Identity.Name))
+                {
+                    await DisplayAlert("We couldn't connect. try again later.", loginResult.ErrorDescription, "OK");
+                }
             }
             else
             {
@@ -55,6 +46,5 @@ public partial class MainPage : ContentPage
         {
             Console.WriteLine(ex.Message);
         }
-        //await Shell.Current.GoToAsync($"//{nameof(FindHostPage)}");
     }
 }

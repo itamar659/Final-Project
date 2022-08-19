@@ -31,9 +31,5 @@ public partial class HostFrontPage : ContentPage
         {
             await DisplayAlert("Error", "Wrong pin code. please try again.", "OK");
         }
-        else if (result == "1234")
-        {
-            await Shell.Current.GoToAsync(nameof(HostHomePage));
-        }
     }
 }
