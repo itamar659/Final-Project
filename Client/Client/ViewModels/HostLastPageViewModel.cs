@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Client.Models.Responses;
+using Client.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +12,7 @@ namespace Client;
 [QueryProperty(nameof(Position), nameof(Position))]
 public class HostLastPageViewModel : BaseViewModel
 {
+    private readonly IServerApi _serverApi;
     private readonly System.Timers.Timer _songTimer;
 
     private double _duration;
@@ -54,8 +57,9 @@ public class HostLastPageViewModel : BaseViewModel
         set { _hostname = value; }
     }
 
-    public HostLastPageViewModel()
+    public HostLastPageViewModel(IServerApi serverApi)
     {
+        _serverApi = serverApi;
         _songTimer = new System.Timers.Timer(500);
         startTimer();
 
@@ -63,19 +67,14 @@ public class HostLastPageViewModel : BaseViewModel
 
     private async Task fetchSessionDetailsAsync()
     {
-        //JukeboxSessionResponse details = await _serverApi.FetchSessionDetailsAsync();
-        //if (details == null)
-        //    return; // Session ended. Return to last page...
+        JukeboxSessionResponse details = await _serverApi.FetchSessionDetailsAsync();
+        if (details == null)
+            return;
 
-        //SongName = details.SongName;
-        //Duration = TimeSpan.FromMilliseconds(details.SongDuration).TotalSeconds;
-        //Position = TimeSpan.FromMilliseconds(details.SongPosition).TotalSeconds;
-        //HostName = details.OwnerName;
-
-        SongName = "Kendrick Lamar: ADHD";
-        Duration = _duration;
-        Position = _position;
-        HostName = "Bruni";
+        SongName = details.SongName;
+        Duration = TimeSpan.FromMilliseconds(details.SongDuration).TotalSeconds;
+        Position = TimeSpan.FromMilliseconds(details.SongPosition).TotalSeconds;
+        HostName = details.OwnerName;
     }
 
     private void startTimer()

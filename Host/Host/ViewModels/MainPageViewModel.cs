@@ -232,6 +232,7 @@ public class MainPageViewModel : BaseViewModel
         var request = new PollRequest() { Options = Poll.PollOptions.ToList() };
 
         // TODO: Check the poll in server, the changes in the model can make problems.
+        await _serverAPI.RemovePollAsync();
         await _serverAPI.CreatePollAsync(request);
     }
 
