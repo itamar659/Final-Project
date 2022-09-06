@@ -140,7 +140,7 @@ public class ServerlessApi : IServerApi
 
     async Task IServerApi.UpdateSongAsync(SongUpdateRequest song)
     {
-        var obj = new { Token = _token, SongName = song.SongName, Duration = song.Duration, Position = song.Position };
+        var obj = new { Token = _token, IsPaused = song.IsPaused, SongName = song.SongName, Duration = song.Duration, Position = song.Position };
         await postResponseOrDefault<bool>("/JukeboxHosts/ChangeSong", obj);
     }
 

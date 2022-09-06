@@ -14,4 +14,6 @@ public class JukeboxSessionResponse
     public double SongDuration { get; set; }
 
     public double SongPosition { get; set; }
+
+    public bool IsPaused { get; set; }
 }

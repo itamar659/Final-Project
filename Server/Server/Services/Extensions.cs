@@ -34,6 +34,7 @@ public static class Extensions
             SongName = session.SongName,
             SongDuration = session.SongDuration,
             SongPosition = session.SongPosition,
+            IsPaused = session.IsPaused,
         };
     }
 }

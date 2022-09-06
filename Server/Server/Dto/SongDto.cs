@@ -9,4 +9,5 @@ public class SongDto
     public string SongName { get; set; }
     public double Duration { get; set; }
     public double Position { get; set; }
+    public bool IsPaused { get; set; }
 }

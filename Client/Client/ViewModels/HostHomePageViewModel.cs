@@ -9,6 +9,7 @@ public class HostHomePageViewModel : BaseViewModel
 {
     private readonly IServerApi _serverApi;
     private readonly System.Timers.Timer _songTimer;
+    private readonly System.Timers.Timer _updateTimer;
 
     public Poll Poll { get; set; }
 
@@ -62,6 +63,10 @@ public class HostHomePageViewModel : BaseViewModel
     {
         _serverApi = serverApi;
         _songTimer = new System.Timers.Timer(500);
+        _songTimer.Elapsed += songWorker;
+        _updateTimer = new System.Timers.Timer(1000);
+        _updateTimer.Elapsed += updateFetcher;
+        _updateTimer.Start();
 
         ChooseSongCommand = new Command(async (object val) =>
         {
@@ -72,23 +77,6 @@ public class HostHomePageViewModel : BaseViewModel
         });
 
         Poll = new Poll(serverApi);
-
-        startTimer();
-    }
-
-    private void startTimer()
-    {
-        if(_songTimer != null)
-        {
-            _songTimer.Elapsed += songWorker;
-
-            Task.Run(async () =>
-            {
-                await fetchSessionDetailsAsync();
-            });
-
-            _songTimer.Start();
-        }
     }
 
     private async Task fetchSessionDetailsAsync()
@@ -110,6 +98,24 @@ public class HostHomePageViewModel : BaseViewModel
         //HostName = "Bruni";
     }
 
+    private async void updateFetcher(object sender, System.Timers.ElapsedEventArgs e)
+    {
+        JukeboxSessionResponse details = await _serverApi.FetchSessionDetailsAsync();
+        if (details == null)
+            return; // Session ended. Return to last page...
+
+        SongName = details.SongName;
+        Duration = TimeSpan.FromMilliseconds(details.SongDuration).TotalSeconds;
+        Position = TimeSpan.FromMilliseconds(details.SongPosition).TotalSeconds;
+        HostName = details.OwnerName;
+
+
+        if (details.IsPaused)
+            _songTimer.Stop();
+        else if (!_songTimer.Enabled)
+            _songTimer.Start();
+    }
+
     private async void songWorker(object sender, System.Timers.ElapsedEventArgs e)
     {
         Position += 0.5; // timer tick is 500ms
@@ -123,6 +129,8 @@ public class HostHomePageViewModel : BaseViewModel
 
     public async Task LeaveSessionAsync()
     {
+        _songTimer.Stop();
+        _updateTimer.Stop();
         await _serverApi.LeaveSessionAsync();
         await Shell.Current.GoToAsync("..");
     }

@@ -23,6 +23,8 @@ public record JukeboxSession
 
     public double SongPosition { get; set; }
 
+    public bool IsPaused { get; set; }
+
     public JukeboxSession()
     {
         SessionKey = NumberGenerator.Empty;

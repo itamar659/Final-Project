@@ -16,4 +16,5 @@ public class JukeboxSessionDto
 
     public double SongPosition { get; set; }
 
+    public bool IsPaused { get; set; }
 }

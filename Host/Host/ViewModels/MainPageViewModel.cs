@@ -7,7 +7,7 @@ using System.Windows.Input;
 namespace Host;
 public class MainPageViewModel : BaseViewModel
 {
-    public static readonly double SERVER_UPDATE_DELAY = TimeSpan.FromSeconds(4).TotalMilliseconds;
+    public static readonly double SERVER_UPDATE_DELAY = TimeSpan.FromSeconds(1).TotalMilliseconds;
 
     #region Private Members
 
@@ -70,6 +70,7 @@ public class MainPageViewModel : BaseViewModel
 
         _updateTimer = new System.Timers.Timer(SERVER_UPDATE_DELAY);
         _updateTimer.Elapsed += fetchViewUpdateAsync;
+        _updateTimer.Elapsed += updateServerAsync;
 
         Poll = new Poll(serverAPI);
         Room = new Room(serverAPI);
@@ -152,13 +153,20 @@ public class MainPageViewModel : BaseViewModel
     /// </summary>
     private async void updateServerSongAsync(object sender, EventArgs e)
     {
-        var tries = 5;
-        while (_audioPlayer.Duration == double.Epsilon && tries > 0)
+        try
         {
-            tries--;
-            Thread.Sleep(50);
+            var tries = 5;
+            while (_audioPlayer.Duration == double.Epsilon && tries > 0)
+            {
+                tries--;
+                Thread.Sleep(50);
+            }
+
+            await _serverAPI.UpdateSongAsync(new SongUpdateRequest { IsPaused = !AudioPlayer.IsPlaying, SongName = _audioPlayer.SongName, Duration = _audioPlayer.Duration, Position = _audioPlayer.Position });
         }
-        await _serverAPI.UpdateSongAsync(new SongUpdateRequest { SongName = _audioPlayer.SongName, Duration = _audioPlayer.Duration, Position = _audioPlayer.Position });
+        catch { 
+
+        }
     }
 
     /// <summary>
@@ -220,6 +228,15 @@ public class MainPageViewModel : BaseViewModel
         await Room.UpdateRoomAsync();
 
         await Poll.UpdateVotesAsync();
+
+    }
+
+    /// <summary>
+    /// Plaster
+    /// </summary>
+    private async void updateServerAsync(object sender, System.Timers.ElapsedEventArgs e)
+    {
+        await _serverAPI.UpdateSongAsync(new SongUpdateRequest { IsPaused = !AudioPlayer.IsPlaying, SongName = _audioPlayer.SongName, Duration = _audioPlayer.Duration, Position = _audioPlayer.Position });
     }
 
     /// <summary>

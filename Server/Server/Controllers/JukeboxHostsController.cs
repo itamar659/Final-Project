@@ -92,7 +92,8 @@ public class JukeboxHostsController : ControllerBase
         {
             SongName = songDto.SongName,
             SongDuration = songDto.Duration,
-            SongPosition = songDto.Position
+            SongPosition = songDto.Position,
+            IsPaused = songDto.IsPaused
         };
 
         _context.Entry(session).State = EntityState.Detached;
