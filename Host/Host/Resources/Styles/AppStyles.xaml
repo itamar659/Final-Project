@@ -78,6 +78,20 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <Style x:Key="SkipButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{StaticResource DarkCyan}" />
+        <Setter Property="FontSize" Value="10" />
+        <Setter Property="WidthRequest" Value="90" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="Shadow">
+            <Setter.Value>
+                <Shadow Brush="{StaticResource DarkCyan}"
+                                Radius="10"
+                                Opacity="0.8" />
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <!-- Card Border -->
     <Style x:Key="CardBorder" TargetType="Border">

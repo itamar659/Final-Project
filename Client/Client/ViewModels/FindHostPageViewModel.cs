@@ -27,11 +27,14 @@ public class FindHostPageViewModel : BaseViewModel
 
     public ICommand ViewHostPageCommand { get; set; }
 
-    public FindHostPageViewModel(IServerApi serverApi)
+    public FindHostPageViewModel(IServerApi serverApi, UserSingleton user)
     {
         _serverApi = serverApi;
         FavoriteHosts = new ObservableCollection<Host>();
         AvailableHosts = new ObservableCollection<Host>();
+
+        if (user != null)
+            _name = "Welcome " + user.username;
 
         InitFavoriteHosts();
 

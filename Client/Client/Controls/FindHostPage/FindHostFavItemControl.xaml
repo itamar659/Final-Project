@@ -21,14 +21,6 @@
                          Aspect="AspectFill" />
         </Frame>
 
-        <Ellipse Grid.Row="1"
-                 HorizontalOptions="Start"
-                 Margin="30,-10,30,0"
-                 Fill="#1ad32e"
-                 VerticalOptions="End"
-                 HeightRequest="10"
-                 WidthRequest="10"
-                 StrokeThickness="0" />
 
         <Label Grid.Row="2"
                Grid.Column="0"

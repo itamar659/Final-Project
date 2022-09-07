@@ -9,8 +9,8 @@ namespace Client.Services;
 
 public class ServerlessApi : IServerApi
 {
-    //private readonly string _apiBaseUrl = "https://csharp-project.azurewebsites.net/jukeboxhosts";
-    private readonly string _apiBaseUrl = DeviceInfo.Platform == DevicePlatform.WinUI ? "http://localhost:5230" : "http://10.0.2.2:5230";
+    private readonly string _apiBaseUrl = "https://csharp-project.azurewebsites.net/jukeboxhosts";
+    //private readonly string _apiBaseUrl = DeviceInfo.Platform == DevicePlatform.WinUI ? "http://localhost:5230" : "http://10.0.2.2:5230";
 
     private readonly HttpClient _client;
     private string _token;

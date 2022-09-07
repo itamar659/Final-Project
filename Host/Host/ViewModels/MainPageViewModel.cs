@@ -55,6 +55,7 @@ public class MainPageViewModel : BaseViewModel
     public ICommand PrevCommand { get; set; }
 
     public ICommand NextCommand { get; set; }
+    public ICommand SkipToEndCommand { get; set; }
 
     #endregion
 
@@ -126,6 +127,7 @@ public class MainPageViewModel : BaseViewModel
     #endregion
 
     #region Private Methods
+
 
     /// <summary>
     /// Fetch the last results about the poll, change the song in the audio player.

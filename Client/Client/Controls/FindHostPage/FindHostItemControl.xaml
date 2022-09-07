@@ -28,6 +28,7 @@
 
         <Label Grid.Row="0"
                Grid.Column="1"
+               TextColor="Black"
                Text="{Binding Name}"
                FontAttributes="Bold" />
 

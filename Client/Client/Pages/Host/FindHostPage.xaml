@@ -15,32 +15,30 @@
         <!-- 1. Search block-->
         <Label Grid.Row="0"
                Grid.Column="0"
+               TextColor="Black"
                Text="{Binding WelcomeMessage}"
                FontAttributes="Bold"
                FontSize="27"/>
-        
-        <Button Grid.Row="0"
-                Grid.Column="1"
-                CornerRadius="7"
-                ImageSource="medal.png"
-                BackgroundColor="Black"
-                HeightRequest="35"
-                WidthRequest="35"/>
-        
-        <SearchBar Grid.Row="1"
+
+        <Border Grid.Row="1"
                    Grid.Column="0"
+                IsVisible="true"
                    Grid.ColumnSpan="2"
+            BackgroundColor="Black">
+        <SearchBar 
                    TextColor="#818181"
                    PlaceholderColor="#818181"
                    Placeholder="Search"
                    BackgroundColor="Transparent"
                    Margin="0,10"/>
-        
+        </Border>
+
         <!-- Favorite list-->
         <Label Grid.Row="2"
                Grid.Column="0"
                Text="Favorites"
                FontAttributes="Bold"
+               TextColor="Black"
                FontSize="20"
                CharacterSpacing="1"
                Margin="0,0,0,20"/>
@@ -81,7 +79,8 @@
                             ItemsSource="{Binding AvailableHosts}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Border StrokeThickness="0">
+                        <Border StrokeThickness="0"
+                                BackgroundColor="AliceBlue">
                             <Border.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding BindingContext.ViewHostPageCommand,
                                     Source={x:RelativeSource AncestorType={x:Type ContentPage}}}"
