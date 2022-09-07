@@ -8,10 +8,11 @@
     <ScrollView Background="{StaticResource Background}">
         <Grid Grid.Column="0"
                 Grid.Row="0"
-                RowDefinitions="auto, *">
+                RowDefinitions="auto, *"
+              Margin="30">
             <!-- Welcome message -->
             <VerticalStackLayout Grid.Row="0"
-                                    Margin="0, 0, 0, 90">
+                                    Margin="0, 0, 0, 60">
                 <Label Text="Welcome Back,"
                         Style="{StaticResource HeaderLabel}"/>
                 <Label Text="{Binding OwnerName}"
@@ -20,7 +21,8 @@
 
             <!-- Edit profile -->
             <VerticalStackLayout Grid.Row="1"
-                                    Spacing="30">
+                                    Spacing="30"
+                                 Margin="60, 0">
                 <Border Grid.Row="2"
                 Style="{StaticResource CardBorder}">
                     <VerticalStackLayout>
