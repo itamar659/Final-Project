@@ -87,7 +87,6 @@ public class HostLastPageViewModel : BaseViewModel
                 await fetchSessionDetailsAsync();
             });
             _songTimer.Start();
-
         }
     }
 

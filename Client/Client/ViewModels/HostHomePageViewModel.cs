@@ -15,6 +15,19 @@ public class HostHomePageViewModel : BaseViewModel
 
     public ObservableCollection<PollOption> SongsToPick => Poll.PollOptions;
 
+    private bool _canVote;
+
+    public bool CanVote
+    {
+        get { return _canVote; }
+        set
+        {
+            _canVote = value;
+            OnPropertyChanged(nameof(CanVote));
+        }
+    }
+
+
     private double _duration;
     public double Duration
     {
@@ -61,6 +74,7 @@ public class HostHomePageViewModel : BaseViewModel
 
     public HostHomePageViewModel(IServerApi serverApi)
     {
+        CanVote = true;
         _serverApi = serverApi;
         _songTimer = new System.Timers.Timer(500);
         _songTimer.Elapsed += songWorker;
@@ -70,10 +84,9 @@ public class HostHomePageViewModel : BaseViewModel
 
         ChooseSongCommand = new Command(async (object val) =>
         {
-            await Poll.VoteAsync((int)val);
+            var isVoted = await Poll.VoteAsync((int)val);
+            CanVote = !isVoted;
             await fetchSessionDetailsAsync();
-
-             await Shell.Current.GoToAsync($"{nameof(HostLastPage)}?Duration={Duration}&Position={Position}");
         });
 
         Poll = new Poll(serverApi);
@@ -109,7 +122,9 @@ public class HostHomePageViewModel : BaseViewModel
         else if (!_songTimer.Enabled)
             _songTimer.Start();
 
-        await Poll.UpdateVotesAsync();
+        var isChanged = await Poll.UpdateVotesAsync();
+        if (isChanged)
+            CanVote = true;
     }
 
     private void songWorker(object sender, System.Timers.ElapsedEventArgs e)

@@ -12,6 +12,9 @@
         <ResourceDictionary>
             <local:DoubleMSToTimeStrConverter x:Key="millisecondsToTimeConverter" />
         </ResourceDictionary>
+        <ResourceDictionary>
+            <local:InverseBooleanConverter x:Key="inverseBooleanConverter" />
+        </ResourceDictionary>
         
         <Color x:Key="SilderColor">#ff8000</Color>
         <Color x:Key="TitleColor">#0080ff</Color>
@@ -138,7 +141,8 @@
             <Frame  Grid.Row="3"
                     HorizontalOptions="Center"
                     HasShadow="True"
-                    CornerRadius="40">
+                    CornerRadius="40"
+                    IsVisible="{Binding CanVote}">
                 <CollectionView Grid.Row="3"
                                     ItemsSource="{Binding SongsToPick}">
                     <CollectionView.ItemTemplate>
@@ -164,6 +168,15 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </Frame>
+            
+            <Frame   Grid.Row="3"
+                    HorizontalOptions="Center"
+                    HasShadow="True"
+                    CornerRadius="40"
+                    IsVisible="{Binding CanVote, Converter={StaticResource inverseBooleanConverter}}">
+                <Label Text="Thanks for voting!" />
+            </Frame>
+            
             <Button Grid.Row="4"
                     Text="Leave"
                     Style="{StaticResource leaveButton}"

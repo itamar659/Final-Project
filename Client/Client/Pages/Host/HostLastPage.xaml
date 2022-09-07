@@ -7,6 +7,10 @@
              xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" >
     <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:DoubleMSToTimeStrConverter x:Key="millisecondsToTimeConverter" />
+        </ResourceDictionary>
+        
         <Color x:Key="SilderColor">#ff8000</Color>
         <Color x:Key="TitleColor">#0080ff</Color>
         <Color x:Key="LabelColor">#00161f</Color>
@@ -112,13 +116,12 @@
                           Grid.Row="2">
 
                         <Label Grid.Column="0"
-                           Style="{StaticResource ValueStyle}"
-                           Text="{Binding Source={x:Reference SliderAudioPlayer},
-                           Path=Value}"/>
+                               Style="{StaticResource ValueStyle}"
+                               Text="{Binding Position, Converter={StaticResource millisecondsToTimeConverter}}"/>
 
                         <Label Grid.Column="4"
-                           Text="{Binding Duration}"
-                           Style="{StaticResource ValueStyle}"/>
+                               Style="{StaticResource ValueStyle}"
+                               Text="{Binding Duration, Converter={StaticResource millisecondsToTimeConverter}}" />
                     </Grid>
                 </Grid>
             </Frame>
