@@ -44,7 +44,8 @@ public class PollController : ControllerBase
                 Option = option.Id,
                 SessionKey = host.SessionKey,
                 Name = option.Name,
-                Votes = 0
+                Votes = 0,
+                Timestamp = option.Timestamp
             };
 
             await _context.AddAsync(pollOption);

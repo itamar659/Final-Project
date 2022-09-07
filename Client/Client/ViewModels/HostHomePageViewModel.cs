@@ -91,11 +91,6 @@ public class HostHomePageViewModel : BaseViewModel
         HostName = details.OwnerName;
 
         await Poll.UpdateVotesAsync();
-
-        //SongName = "Kendrick Lamar: ADHD";
-        //Duration = 182.22;
-        //Position = 20;
-        //HostName = "Bruni";
     }
 
     private async void updateFetcher(object sender, System.Timers.ElapsedEventArgs e)
@@ -109,22 +104,17 @@ public class HostHomePageViewModel : BaseViewModel
         Position = TimeSpan.FromMilliseconds(details.SongPosition).TotalSeconds;
         HostName = details.OwnerName;
 
-
         if (details.IsPaused)
             _songTimer.Stop();
         else if (!_songTimer.Enabled)
             _songTimer.Start();
+
+        await Poll.UpdateVotesAsync();
     }
 
-    private async void songWorker(object sender, System.Timers.ElapsedEventArgs e)
+    private void songWorker(object sender, System.Timers.ElapsedEventArgs e)
     {
-        Position += 0.5; // timer tick is 500ms
-        if (Position >= Duration)
-        {
-            _songTimer.Stop();
-            await fetchSessionDetailsAsync();
-            _songTimer.Start();
-        }
+        Position += 0.5;
     }
 
     public async Task LeaveSessionAsync()

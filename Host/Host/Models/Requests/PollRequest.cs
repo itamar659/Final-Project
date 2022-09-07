@@ -8,6 +8,13 @@ using static Host.Models.Responses.PollResponse;
 namespace Host.Models.Requests;
 public class PollRequest
 {
+    public static int Timestamp { get; set; } = 0;
+
     public string Token { get; set; }
     public List<PollOption> Options { get; set; }
+
+    public PollRequest()
+    {
+        Timestamp++;
+    }
 }

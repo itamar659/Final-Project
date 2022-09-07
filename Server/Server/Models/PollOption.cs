@@ -17,6 +17,8 @@ public record PollOption
 
     public int Votes { get; set; }
 
+    public int Timestamp { get; set; }
+
     public PollOption()
     {
         SessionKey = NumberGenerator.Empty;

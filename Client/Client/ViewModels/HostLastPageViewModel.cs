@@ -93,7 +93,7 @@ public class HostLastPageViewModel : BaseViewModel
 
     private async void songWorker(object sender, System.Timers.ElapsedEventArgs e)
     {
-        Position += 1.0;
+        Position += 0.5;
         if (Position >= Duration)
         {
             _songTimer.Stop();

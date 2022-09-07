@@ -35,4 +35,6 @@ public class PollOption : BaseViewModel
             OnPropertyChanged(nameof(Votes));
         }
     }
+
+    public int Timestamp { get; set; }
 }

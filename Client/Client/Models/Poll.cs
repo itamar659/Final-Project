@@ -20,12 +20,15 @@ public class Poll
     {
         JukeboxPollResponse pollResponse = await _serverAPI.FetchPollAsync();
 
-        PollOptions.Clear();
-        if (pollResponse == null)
+        if (pollResponse.Options == null || pollResponse.Options.Count == 0)
             return;
 
-        foreach (var option in pollResponse.Options)
-            PollOptions.Add(option);
+        if (PollOptions.Count == 0 || PollOptions[0].Timestamp != pollResponse.Options[0].Timestamp)
+        {
+            PollOptions.Clear();
+            foreach (var option in pollResponse.Options)
+                PollOptions.Add(option);
+        }
     }
 
     public async Task VoteAsync(int option)

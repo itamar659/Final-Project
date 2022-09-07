@@ -247,6 +247,8 @@ public class MainPageViewModel : BaseViewModel
         Poll.GeneratePoll(_audioPlayer.Songs);
 
         var request = new PollRequest() { Options = Poll.PollOptions.ToList() };
+        foreach (var option in Poll.PollOptions)
+            option.Timestamp = PollRequest.Timestamp;
 
         // TODO: Check the poll in server, the changes in the model can make problems.
         await _serverAPI.RemovePollAsync();
