@@ -9,6 +9,8 @@ using System.Windows.Input;
 namespace Host;
 public class ProfileViewModel : BaseViewModel
 {
+    private static Random random = new Random();
+
     private IServerApi _serverApi;
 
     private string _ownerName;
@@ -44,7 +46,7 @@ public class ProfileViewModel : BaseViewModel
 
         ChangePinCodeCommand = new Command(() =>
         {
-            PinCode = "1234";
+            PinCode = RandomString(4);
             _serverApi.ChangeSessionPinCodeAsync(PinCode);
         });
 
@@ -56,5 +58,12 @@ public class ProfileViewModel : BaseViewModel
         var session = await _serverApi.FetchSessionUpdateAsync();
 
         OwnerName = session?.OwnerName;
+    }
+
+    public static string RandomString(int length)
+    {
+        const string chars = "0123456789";
+        return new string(Enumerable.Repeat(chars, length)
+            .Select(s => s[random.Next(s.Length)]).ToArray());
     }
 }
