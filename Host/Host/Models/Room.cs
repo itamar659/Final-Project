@@ -74,7 +74,7 @@ public class Room : BaseViewModel
         }
     }
 
-    public TimeSpan LiveTime => _openingTime != DateTime.MinValue ? DateTime.Now - OpeningTime : TimeSpan.Zero;
+    public string LiveTime => (_openingTime != DateTime.MinValue ? DateTime.Now - OpeningTime : TimeSpan.Zero).ToString(@"hh\:mm\:ss");
 
     public string RoomId { get; private set; }
 

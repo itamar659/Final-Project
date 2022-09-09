@@ -4,6 +4,10 @@ using static Host.Models.AudioPlayer;
 namespace Host.Models;
 public class AudioPlayerActive : BaseViewModel, IDisposable
 {
+    public event EventHandler SongStateChanged;
+
+    public event EventHandler SongEnded;
+
     private const double _delay = 500;
 
     private System.Timers.Timer _viewNotifyTimer;
@@ -21,16 +25,14 @@ public class AudioPlayerActive : BaseViewModel, IDisposable
 
     public ObservableCollection<Song> Songs => _audioPlayer.Songs;
 
-    public event EventHandler SongStateChanged;
-
-    public event EventHandler SongEnded;
-
     public AudioPlayerActive(AudioPlayer audioPlayer)
 	{
 		_audioPlayer = audioPlayer;
+        _audioPlayer.SongEnded += (s, e) => { SongEnded?.Invoke(s, e); };
+        _audioPlayer.SongStateChanged += (s, e) => { SongStateChanged?.Invoke(s, e); };
         _audioPlayer.SongStateChanged += _audioPlayer_SongStateChanged;
 
-		_viewNotifyTimer = new System.Timers.Timer(_delay);
+        _viewNotifyTimer = new System.Timers.Timer(_delay);
 		_viewNotifyTimer.Elapsed += _updateTimer_Elapsed;
         _viewNotifyTimer.Start();
 	}

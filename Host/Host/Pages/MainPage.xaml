@@ -100,7 +100,7 @@
                             Style="{StaticResource CardBorder}">
                         <HorizontalStackLayout Spacing="4">
                             <Label Text="Live:" />
-                            <Label Text="{Binding RoomUpdater.LiveTime}" />
+                            <Label Text="{Binding Room.LiveTime}" />
                         </HorizontalStackLayout>
                     </Border>
 

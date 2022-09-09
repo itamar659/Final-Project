@@ -1,10 +1,6 @@
 ﻿using Host.Models.Requests;
 using Host.Services;
-using Microsoft.Maui.Graphics.Text;
-using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using static Android.Content.ClipData;
 
 namespace Host.Models;
 public class Poll
@@ -42,7 +38,7 @@ public class Poll
 
     private void generatePoll(IReadOnlyList<Song> songs)
     {
-        if (songs.Count != 0)
+        if (songs.Count == 0)
             return;
 
         PollOptions.Clear();

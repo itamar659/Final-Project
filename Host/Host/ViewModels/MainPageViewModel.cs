@@ -11,8 +11,6 @@ namespace Host;
 
 /* TODO:
  * _updateTimer:
- *   update online users counter
- *   update votes live
  *   update SongUpdateRequest in the server
  * update song when the audio player change song (use hub)
  * notify all the time about the audio player -> the position, is paused, and so on...
@@ -147,7 +145,6 @@ public class MainPageViewModel : BaseViewModel
 
     #region Private Methods
 
-
     /// <summary>
     /// Fetch the last results about the poll, change the song in the audio player.
     /// </summary>
@@ -156,6 +153,15 @@ public class MainPageViewModel : BaseViewModel
         if (Room.IsOpen)
         {
             await AudioPlayer.ChangeSong(Poll.TopRated.SongName);
+
+            await HubService.UpdateSong(new SongUpdateRequest
+            {
+                SongName = AudioPlayer.SongName,
+                Duration = AudioPlayer.Duration,
+                Position = AudioPlayer.Position,
+                IsPlaying = AudioPlayer.IsPlaying
+            });
+
             await Poll.CreatePollAsync(AudioPlayer.Songs);
         }
         else
