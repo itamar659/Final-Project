@@ -1,11 +1,15 @@
-﻿using Host.Services;
+﻿using Host.Models.Requests;
+using Host.Services;
+using Microsoft.Maui.Graphics.Text;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using static Android.Content.ClipData;
 
 namespace Host.Models;
 public class Poll
 {
-    public static readonly Random RANDOM = new Random();
+    private readonly Random _rand = new Random();
 
     private readonly IServerApi _serverAPI;
 
@@ -13,75 +17,71 @@ public class Poll
 
     public ObservableCollection<PollOption> PollOptions { get; set; }
 
+    public PollOption? TopRated => PollOptions?.Max(new MaxOption());
+
     public Poll(IServerApi serverAPI)
     {
         PollSize = 4;
         _serverAPI = serverAPI;
 
-        initializePollOptions();
+        PollOptions = new ObservableCollection<PollOption>();
     }
 
-    public async void GeneratePoll(IReadOnlyList<Song> songs)
+    public async Task CreatePollAsync(IReadOnlyList<Song> songs)
     {
-        if (songs.Count == 0)
+        generatePoll(songs);
+
+        var request = new PollRequest()
+        {
+            Options = PollOptions.ToList()
+        };
+
+        await _serverAPI.RemovePollAsync();
+        await _serverAPI.CreatePollAsync(request);
+    }
+
+    private void generatePoll(IReadOnlyList<Song> songs)
+    {
+        if (songs.Count != 0)
             return;
+
+        PollOptions.Clear();
 
         for (int i = 0; i < PollSize; i++)
         {
-            var chosen = RANDOM.Next(songs.Count);
+            var chosen = songs[_rand.Next(songs.Count)];
 
-            PollOptions[i].SongName = songs[chosen].Name;
-            PollOptions[i].Votes = 0;
+            PollOptions.Add(new PollOption
+            {
+                SongName = chosen.Name,
+                PollId = i,
+                Votes = 0
+            });
         }
     }
 
-    public async Task UpdateVotesAsync()
+    public void UpdateVotes(ICollection<PollOption> options)
     {
-        var pollResponse = await _serverAPI.FetchPollAsync();
-        if (pollResponse == null)
-            return;
+        foreach (var op in options)
+            PollOptions
+                .First(p => p.PollId == op.PollId)
+                .Votes = op.Votes;
 
-        for (int i = 0; i < pollResponse.Options.Count && i < PollSize; i++)
-            PollOptions[i].Votes = pollResponse.Options[i].Votes;
+        PollOptions = new ObservableCollection<PollOption>(PollOptions.OrderByDescending(o => o.Votes));
     }
 
     public async Task RemovePollAsync()
     {
         await _serverAPI.RemovePollAsync();
 
-        for (int i = 0; i < PollSize; i++)
-        {
-            PollOptions[i].SongName = "None";
-            PollOptions[i].Votes = 0;
-        }
+        PollOptions.Clear();
     }
 
-    public string GetMostVotedName()
+    public class MaxOption : IComparer<PollOption>
     {
-        int max = 0;
-        int option = 1;
-
-        foreach (var item in PollOptions)
+        int IComparer<PollOption>.Compare(PollOption x, PollOption y)
         {
-            if (item.Votes > max)
-            {
-                max = item.Votes;
-                option = item.PollId;
-            }
+            return y.Votes - x.Votes;
         }
-
-        return PollOptions[option - 1].SongName;
-    }
-
-    private void initializePollOptions()
-    {
-        PollOptions = new ObservableCollection<PollOption>();
-
-        while (PollOptions.Count < PollSize)
-            PollOptions.Add(new PollOption()
-            {
-                PollId = PollOptions.Count + 1,
-                SongName = "None"
-            });
     }
 }

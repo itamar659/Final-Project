@@ -7,6 +7,7 @@ public class HostProfile
         Token = string.Empty;
         Hostname = string.Empty;
         RoomId = string.Empty;
+        PinCode = string.Empty;
         Summary = string.Empty;
         Description = string.Empty;
         BannerUrl = string.Empty;
@@ -18,6 +19,8 @@ public class HostProfile
     public string Hostname { get; set; }
 
     public string RoomId { get; set; }
+
+    public string PinCode { get; set; }
 
     public string Summary { get; set; }
 

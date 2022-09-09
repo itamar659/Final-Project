@@ -1,9 +1,11 @@
-﻿using Host.Models.Responses;
-using Host.Services;
+﻿using Host.Services;
 
 namespace Host.Models;
 public class Room : BaseViewModel
 {
+    public const double _delay = 500;
+
+    private System.Timers.Timer _updateLiveTimeTimer;
     private IServerApi _serverAPI;
 
     private string _hostname;
@@ -15,6 +17,10 @@ public class Room : BaseViewModel
     public Room(IServerApi serverApi)
     {
         _serverAPI = serverApi;
+
+        _updateLiveTimeTimer = new System.Timers.Timer(_delay);
+        _updateLiveTimeTimer.Elapsed += (s, e) => OnPropertyChanged(nameof(LiveTime));
+        _updateLiveTimeTimer.Start();
     }
 
     public string Hostname
@@ -90,18 +96,17 @@ public class Room : BaseViewModel
         IsOpen = false;
     }
 
-    public async Task ChangePinCodeAsync()
+    public void UpdateRoom(HostProfile profile)
     {
-        PinCode = await _serverAPI.ChangeRoomPinCodeAsync();
-    }
+        OnlineUsers = OnlineUsers;
+        Hostname = profile.Hostname;
 
-    public async Task UpdateRoomAsync()
-    {
-        RoomResponse room = await _serverAPI.FetchRoomUpdateAsync();
-        if (room == null)
-            return;
+        //TODO: update and display:
 
-        OnlineUsers = room.OnlineUsers;
-        Hostname = room.Hostname;
+        //Summary
+        //Description
+        //BannerUrl
+        //AvatarUrl
+
     }
 }

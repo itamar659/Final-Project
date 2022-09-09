@@ -1,4 +1,5 @@
 ﻿using Host.Models;
+using Host.Models.Requests;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Host.Services;
@@ -11,6 +12,7 @@ public class HubService
     private const string HostProfileUpdatedInvoke = "UpdateHostProfile";
     private const string PollVotesUpdatedInvoke = "UpdatePollVotes";
     private const string PollCreatedInvoke = "CreatePoll";
+    private const string UpdateSongInvoke = "UpdateSong";
 
     // on methods
     private const string ClientJoinedMethod = "ClientJoined";
@@ -19,6 +21,7 @@ public class HubService
     private const string HostProfileUpdatedMethod = "HostProfileUpdated";
     private const string PollVotesUpdatedMethod = "PollVotesUpdated";
     private const string PollCreatedMethod = "PollCreated";
+    private const string SongUpdatedMethod = "SongUpdated";
 
     private readonly string _apiBaseUrl = Configuration.ServerBaseUrl;
 
@@ -39,6 +42,7 @@ public class HubService
         _connection.On<HostProfile>(HostProfileUpdatedMethod, (profile) => HostProfileUpdatedHandler?.Invoke(profile));
         _connection.On<ICollection<PollOption>>(PollVotesUpdatedMethod, (poll) => PollVotesUpdatedHandler?.Invoke(poll));
         _connection.On<ICollection<PollOption>>(PollCreatedMethod, (poll) => PollCreatedHandler?.Invoke(poll));
+        _connection.On<SongUpdateRequest>(SongUpdatedMethod, (song) => SongUpdatedHandler?.Invoke(song));
     }
 
     // handlers for on methods
@@ -49,6 +53,7 @@ public class HubService
     public Action<HostProfile> HostProfileUpdatedHandler { get; set; }
     public Action<ICollection<PollOption>> PollVotesUpdatedHandler { get; set; }
     public Action<ICollection<PollOption>> PollCreatedHandler { get; set; }
+    public Action<SongUpdateRequest> SongUpdatedHandler { get; set; }
 
     // public methods
 
@@ -63,9 +68,65 @@ public class HubService
         {
             await _connection.InvokeAsync(ClientJoinedInvoke, roomId);
         }
-        catch(Exception)
+        catch (Exception)
         {
-
         }
     }
+
+    public async Task LeaveRoom(string roomId)
+    {
+        try
+        {
+            await _connection.InvokeAsync(ClientLeavedInvoke, roomId);
+            await _connection.InvokeAsync(RoomClosedInvoke, roomId);
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    public async Task HostProfileUpdated(HostProfile profile)
+    {
+        try
+        {
+            await _connection.InvokeAsync(HostProfileUpdatedInvoke, profile);
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    public async Task PollVotesUpdated(ICollection<PollOption> options)
+    {
+        try
+        {
+            await _connection.InvokeAsync(PollVotesUpdatedInvoke, options);
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    public async Task PollCreated(ICollection<PollOption> options)
+    {
+        try
+        {
+            await _connection.InvokeAsync(PollCreatedInvoke, options);
+        }
+        catch (Exception)
+        {
+        }
+    }
+
+    public async Task UpdateSong(SongUpdateRequest song)
+    {
+        try
+        {
+            await _connection.InvokeAsync(UpdateSongInvoke, song);
+        }
+        catch (Exception)
+        {
+        }
+    }
+
 }

@@ -19,9 +19,10 @@ public static class MauiProgram
 			.AddCustomServices();
 
 		builder.Services.AddSingleton<IServerApi, ServerlessApi>();
-		builder.Services.AddSingleton<AudioPlayer>();
+        builder.Services.AddSingleton<AudioPlayer>();
+        builder.Services.AddSingleton<AudioPlayerActive>();
 
-		builder.Services.AddTransient<MainPageViewModel>();
+        builder.Services.AddTransient<MainPageViewModel>();
 		builder.Services.AddTransient<LoginViewModel>();
 		builder.Services.AddTransient<ProfileViewModel>();
 

@@ -7,6 +7,12 @@ public partial class MainPage : ContentPage
 {
     private MainPageViewModel _vm;
 
+    protected override void OnNavigatedFrom(NavigatedFromEventArgs args)
+    {
+        base.OnNavigatedFrom(args);
+
+        // TODO: Tell the view model to update the UI. ( could edit profile before navigated to here)
+    }
     public MainPage(MainPageViewModel vm)
 	{
 		InitializeComponent();
