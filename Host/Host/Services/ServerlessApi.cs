@@ -2,24 +2,21 @@
 using Host.Models.Requests;
 using Host.Models.Responses;
 using Host.Services;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Host;
+
 public class ServerlessApi : IServerApi
 {
-    private readonly string _apiBaseUrl = "https://csharp-project.azurewebsites.net/jukeboxhosts";
-    //private readonly string _apiBaseUrl = DeviceInfo.Platform == DevicePlatform.WinUI ? "http://localhost:5230" : "http://10.0.2.2:5230";
+    //private readonly string _apiBaseUrl = "https://csharp-project.azurewebsites.net/jukeboxhosts";
+    private readonly string _apiBaseUrl = DeviceInfo.Platform == DevicePlatform.WinUI ?
+        "http://localhost:5038" : "http://10.0.2.2:5038";
 
     private readonly HttpClient _client;
     private string _token;
-    private string _sessionKey;
+    private string _roomId;
 
     public ServerlessApi()
     {
@@ -29,7 +26,7 @@ public class ServerlessApi : IServerApi
         };
 
         _token = string.Empty;
-        _sessionKey = string.Empty;
+        _roomId = string.Empty;
     }
 
     private async Task<T> postResponseOrDefault<T>(string url, object jsonObj)
@@ -45,108 +42,100 @@ public class ServerlessApi : IServerApi
                 return await response.Content.ReadFromJsonAsync<T>();
 
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            Debug.WriteLine(ex); // TODO: For Testing only, not for production
         }
 
         return default;
     }
 
-    async Task<bool> IServerApi.ConnectAsync(string password)
+    public async Task EditProfileAsync(HostProfile profile)
     {
-        var obj = new { Password = password };
-        JukeboxHostResponse jukeboxHost = await postResponseOrDefault<JukeboxHostResponse>("/JukeboxHosts/Connect", obj);
-
-        if (jukeboxHost is null)
-            return false;
-
-        _token = jukeboxHost.Token;
-
-        return true;
+        profile.Token = _token;
+        await postResponseOrDefault<bool>("/Host/EditProfile", profile);
     }
 
-    async Task<bool> IServerApi.OpenSessionAsync()
+    public async Task<string> ChangeRoomPinCodeAsync()
     {
         var obj = new { Token = _token };
-        JukeboxNewSessionResponse jukeboxSession = await postResponseOrDefault<JukeboxNewSessionResponse>("/JukeboxHosts/OpenSession", obj);
-
-        if (jukeboxSession is null)
-            return false;
-
-        _sessionKey = jukeboxSession.SessionKey;
-
-        return true;
+        return await postResponseOrDefault<string>("/Room/ChangePinCode", obj);
     }
 
-    async Task IServerApi.CloseSessionAsync()
+    public async Task CloseRoomAsync()
     {
         var obj = new { Token = _token };
-        await postResponseOrDefault<JukeboxNewSessionResponse>("/JukeboxHosts/CloseSession", obj);
-
-        _sessionKey = string.Empty;
+        await postResponseOrDefault<string>("/Host/CloseRoom", obj);
     }
 
-    string IServerApi.GetSessionKey()
+    public async Task<HostProfile?> ConnectAsync(string username)
     {
-        return _sessionKey;
+        var obj = new { Username = username };
+        var profile = await postResponseOrDefault<HostProfile>("/Host/Connect", obj);
+
+        if (profile != null)
+            _token = profile.Token;
+
+        return profile;
     }
 
-    void IDisposable.Dispose()
+    public async Task CreatePollAsync(PollRequest pollRequest)
+    {
+        pollRequest.Token = _token;
+        await postResponseOrDefault<bool>("/Room/CreatePoll", pollRequest);
+    }
+
+    public void Dispose()
     {
         _client.Dispose();
     }
 
-    async Task<JukeboxSessionResponse> IServerApi.FetchSessionUpdateAsync()
+    public async Task<PollResponse> FetchPollAsync()
     {
-        var obj = new { SessionKey = _sessionKey };
-        JukeboxSessionResponse session = await postResponseOrDefault<JukeboxSessionResponse>("/JukeboxSessions/GetSession", obj);
-
-        return session;
-    }
-
-    async Task<bool> IServerApi.ChangeSessionPinCodeAsync(string pinCode)
-    {
-        var obj = new { Token = _token, PinCode = pinCode };
-        return await postResponseOrDefault<bool>("/JukeboxHosts/ChangePinCode", obj);
-    }
-
-    async Task<PollResponse> IServerApi.FetchPollAsync()
-    {
-        var obj = new { SessionKey = _sessionKey };
-        List<PollOption> poll = await postResponseOrDefault<List<PollOption>>("/Poll/GetPoll", obj);
+        var obj = new { RoomId = _roomId };
+        List<PollOption> poll = await postResponseOrDefault<List<PollOption>>("/Room/GetPoll", obj);
 
         if (poll == null)
             return null;
 
         return new PollResponse
         {
-             Options = poll
+            Options = poll
         };
     }
 
-    async Task<bool> IServerApi.CreatePollAsync(PollRequest pollRequest)
+    public async Task<RoomResponse> FetchRoomUpdateAsync()
     {
-        pollRequest.Token = _token;
+        var obj = new { RoomId = _roomId };
+        RoomResponse room = await postResponseOrDefault<RoomResponse>("/Room/Get", obj);
 
-        return await postResponseOrDefault<bool>("/Poll/Create", pollRequest);
+        return room;
     }
 
-    async Task<bool> IServerApi.RemovePollAsync()
+    public string GetRoomId()
+    {
+        return _roomId;
+    }
+
+    public async Task<string> OpenRoomAsync()
     {
         var obj = new { Token = _token };
-        return await postResponseOrDefault<bool>("/Poll/Remove", obj);
+        RoomResponse room = await postResponseOrDefault<RoomResponse>("/Host/OpenRoom", obj);
+
+        if (room != null)
+            _roomId = room.RoomId;
+
+        return _roomId;
     }
 
-    async Task IServerApi.UpdateSongAsync(SongUpdateRequest song)
+    public async Task RemovePollAsync()
     {
-        var obj = new { Token = _token, IsPaused = song.IsPaused, SongName = song.SongName, Duration = song.Duration, Position = song.Position };
-        await postResponseOrDefault<bool>("/JukeboxHosts/ChangeSong", obj);
+        var obj = new { Token = _token };
+        await postResponseOrDefault<bool>("/Room/RemovePoll", obj);
     }
 
-    async Task<bool> IServerApi.ChangeOwnerNameAsync(string ownerName)
+    public async Task UpdateSongAsync(SongUpdateRequest song)
     {
-        var obj = new { Token = _token, OwnerName = ownerName };
-        return await postResponseOrDefault<bool>("/JukeboxHosts/ChangeOwnerName", obj);
+        var obj = new { };
+        await postResponseOrDefault<bool>("/Room/ChangeSong", obj);
     }
 }

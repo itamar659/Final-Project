@@ -1,7 +1,9 @@
 ﻿using Host.Models;
 using Host.Models.Requests;
 using Host.Services;
+using Microsoft.AspNetCore.SignalR.Client;
 using System.Collections.ObjectModel;
+using System.Data.Common;
 using System.Windows.Input;
 
 namespace Host;
@@ -19,15 +21,17 @@ public class MainPageViewModel : BaseViewModel
 
     #region Public Properties
 
+    public HubService HubService { get; set; }
+
     /// <summary>
     /// Update the UI for everything that related to the audio player
     /// </summary>
-    public AudioPlayerUpdater AudioPlayer { get; set; }
+    public AudioPlayerUpdater AudioPlayer { get; set; } // plaster
 
     /// <summary>
     /// Update the UI for everything that related to the room this host created
     /// </summary>
-    public RoomUpdater RoomUpdater { get; set; }
+    public RoomUpdater RoomUpdater { get; set; } // plaster
 
     /// <summary>
     /// List available songs in the host
@@ -55,7 +59,6 @@ public class MainPageViewModel : BaseViewModel
     public ICommand PrevCommand { get; set; }
 
     public ICommand NextCommand { get; set; }
-    public ICommand SkipToEndCommand { get; set; }
 
     #endregion
 
@@ -63,27 +66,37 @@ public class MainPageViewModel : BaseViewModel
 
     public MainPageViewModel(IServerApi serverAPI, AudioPlayer audioPlayer)
     {
+        // init private members
         _serverAPI = serverAPI;
-
         _audioPlayer = audioPlayer;
         _audioPlayer.SongStateChanged += updateServerSongAsync;
         _audioPlayer.SongEnded += changeSongAsync;
 
+        // init update timers
         _updateTimer = new System.Timers.Timer(SERVER_UPDATE_DELAY);
         _updateTimer.Elapsed += fetchViewUpdateAsync;
         _updateTimer.Elapsed += updateServerAsync;
 
+        // init properties
         Poll = new Poll(serverAPI);
         Room = new Room(serverAPI);
+        HubService = new HubService();
         AudioPlayer = new AudioPlayerUpdater(_audioPlayer);
         RoomUpdater = new RoomUpdater(Room);
 
+        // init commands
         OpenCloseRoomCommand = new Command(openCloseRoomAsync);
         StartPausePlayerCommand = new Command(startPausePlayerAsync);
         PrevCommand = new Command(prevAsync);
         NextCommand = new Command(nextAsync);
 
+        // start timer
         _updateTimer.Start();
+
+        // set hub handlers
+        HubService.PollCreatedHandler = (poll) => {
+            
+        };
     }
 
     #endregion
@@ -179,9 +192,10 @@ public class MainPageViewModel : BaseViewModel
         if (!Room.IsOpen)
         {
             await Room.OpenRoomAsync();
+            await HubService.JoinRoom(Room.RoomId);
             await Poll.UpdateVotesAsync();
 
-            if (Poll.PollOptions != null && Poll.PollOptions[0].Name == "None")
+            if (Poll.PollOptions != null && Poll.PollOptions[0].SongName == "None")
             {
                 await Poll.RemovePollAsync();
                 createPoll();
@@ -249,10 +263,7 @@ public class MainPageViewModel : BaseViewModel
         Poll.GeneratePoll(_audioPlayer.Songs);
 
         var request = new PollRequest() { Options = Poll.PollOptions.ToList() };
-        foreach (var option in Poll.PollOptions)
-            option.Timestamp = PollRequest.Timestamp;
 
-        // TODO: Check the poll in server, the changes in the model can make problems.
         await _serverAPI.RemovePollAsync();
         await _serverAPI.CreatePollAsync(request);
     }

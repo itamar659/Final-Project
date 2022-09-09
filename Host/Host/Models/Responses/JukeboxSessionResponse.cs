@@ -1,9 +1,9 @@
 ﻿namespace Host.Models.Responses;
-public class JukeboxSessionResponse
+public class RoomResponse
 {
-    public string OwnerName { get; set; }
+    public string RoomId { get; set; }
 
-    public int TotalUsers { get; set; }
+    public string Hostname { get; set; }
 
-    public int ActiveUsers { get; set; }
+    public int OnlineUsers { get; set; }
 }

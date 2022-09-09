@@ -7,7 +7,7 @@ public class LoginViewModel : BaseViewModel
     private readonly IServerApi _serverAPI;
     private string _errorMsgHolder;
 
-    public string Token { get; set; }
+    public string Username { get; set; }
     public string ErrorMsgHolder
     {
         get => _errorMsgHolder;
@@ -30,7 +30,7 @@ public class LoginViewModel : BaseViewModel
     {
         ErrorMsgHolder = string.Empty;
 
-        if (await _serverAPI.ConnectAsync(Token))
+        if (await _serverAPI.ConnectAsync(Username) != null)
         {
             await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
         }

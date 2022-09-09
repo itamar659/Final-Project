@@ -26,8 +26,8 @@
                     <Border.StrokeShape>
                         <RoundRectangle CornerRadius="5" />
                     </Border.StrokeShape>
-                    <Entry Placeholder="Password"
-                           Text="{Binding Token, Mode=OneWayToSource}" />
+                    <Entry Placeholder="Username"
+                           Text="{Binding Username, Mode=OneWayToSource}" />
                 </Border>
                 <Button Text="Login"
                         Command="{Binding LoginCommand}" 

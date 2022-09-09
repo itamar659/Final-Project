@@ -1,4 +1,5 @@
-﻿using Host.Services;
+﻿using Host.Models;
+using Host.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,12 +43,11 @@ public class ProfileViewModel : BaseViewModel
     {
         _serverApi = serverApi;
 
-        ChangeOwnerNameCommand = new Command(() => _serverApi.ChangeOwnerNameAsync(OwnerName));
+        ChangeOwnerNameCommand = new Command(() => _serverApi.EditProfileAsync(new HostProfile { Hostname = OwnerName }));
 
-        ChangePinCodeCommand = new Command(() =>
+        ChangePinCodeCommand = new Command(async () =>
         {
-            PinCode = RandomString(4);
-            _serverApi.ChangeSessionPinCodeAsync(PinCode);
+            PinCode = await _serverApi.ChangeRoomPinCodeAsync();
         });
 
         fetchInfo();
@@ -55,9 +55,9 @@ public class ProfileViewModel : BaseViewModel
 
     public async Task fetchInfo()
     {
-        var session = await _serverApi.FetchSessionUpdateAsync();
+        var session = await _serverApi.FetchRoomUpdateAsync();
 
-        OwnerName = session?.OwnerName;
+        OwnerName = session?.Hostname;
     }
 
     public static string RandomString(int length)

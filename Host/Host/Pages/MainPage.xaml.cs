@@ -1,14 +1,22 @@
-﻿namespace Host;
+﻿using Host.Services;
+using Microsoft.Maui.Storage;
+
+namespace Host;
 
 public partial class MainPage : ContentPage
 {
     private MainPageViewModel _vm;
+
     public MainPage(MainPageViewModel vm)
 	{
 		InitializeComponent();
 
         _vm = vm;
 		BindingContext = vm;
+
+        Task.Run(() =>
+            Dispatcher.Dispatch(async () =>
+                await vm.HubService.StartAsync()));
     }
 
     private async void AddSongsBtn_Clicked(object sender, EventArgs e)
@@ -27,7 +35,6 @@ public partial class MainPage : ContentPage
     {
         await _vm.RemoveSongsAsync(songsList.SelectedItems);
     }
-
 
     private async void ClearSongsBtn_Clicked(object sender, EventArgs e)
     {

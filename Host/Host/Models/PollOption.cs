@@ -3,25 +3,25 @@
 namespace Host.Models;
 public class PollOption : BaseViewModel
 {
-    private int _id;
-    public int Id
+    private int _pollId;
+    public int PollId
     {
-        get { return _id; }
+        get { return _pollId; }
         set
         {
-            _id = value;
-            OnPropertyChanged(nameof(Id));
+            _pollId = value;
+            OnPropertyChanged(nameof(PollId));
         }
     }
 
-    private string _name;
-    public string Name
+    private string _songName;
+    public string SongName
     {
-        get { return _name; }
+        get { return _songName; }
         set
         {
-            _name = value;
-            OnPropertyChanged(nameof(Name));
+            _songName = value;
+            OnPropertyChanged(nameof(SongName));
         }
     }
 
@@ -35,6 +35,4 @@ public class PollOption : BaseViewModel
             OnPropertyChanged(nameof(Votes));
         }
     }
-
-    public int Timestamp { get; set; }
 }

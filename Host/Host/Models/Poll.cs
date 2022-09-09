@@ -30,7 +30,7 @@ public class Poll
         {
             var chosen = RANDOM.Next(songs.Count);
 
-            PollOptions[i].Name = songs[chosen].Name;
+            PollOptions[i].SongName = songs[chosen].Name;
             PollOptions[i].Votes = 0;
         }
     }
@@ -51,7 +51,7 @@ public class Poll
 
         for (int i = 0; i < PollSize; i++)
         {
-            PollOptions[i].Name = "None";
+            PollOptions[i].SongName = "None";
             PollOptions[i].Votes = 0;
         }
     }
@@ -66,11 +66,11 @@ public class Poll
             if (item.Votes > max)
             {
                 max = item.Votes;
-                option = item.Id;
+                option = item.PollId;
             }
         }
 
-        return PollOptions[option - 1].Name;
+        return PollOptions[option - 1].SongName;
     }
 
     private void initializePollOptions()
@@ -80,8 +80,8 @@ public class Poll
         while (PollOptions.Count < PollSize)
             PollOptions.Add(new PollOption()
             {
-                Id = PollOptions.Count + 1,
-                Name = "None"
+                PollId = PollOptions.Count + 1,
+                SongName = "None"
             });
     }
 }

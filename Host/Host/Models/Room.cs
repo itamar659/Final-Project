@@ -6,20 +6,27 @@ public class Room : BaseViewModel
 {
     private IServerApi _serverAPI;
 
-    private string _ownerName;
+    private string _hostname;
+    private int _onlineUsers;
+    private bool _isOpen;
+    private string _pinCode;
+    private DateTime _openingTime;
 
-    public string OwnerName
+    public Room(IServerApi serverApi)
     {
-        get { return _ownerName; }
+        _serverAPI = serverApi;
+    }
+
+    public string Hostname
+    {
+        get { return _hostname; }
         set
         {
-            _ownerName = value;
-            OnPropertyChanged(nameof(OwnerName));
+            _hostname = value;
+            OnPropertyChanged(nameof(Hostname));
         }
     }
 
-
-    private int _onlineUsers;
     public int OnlineUsers
     {
         get { return _onlineUsers; }
@@ -30,7 +37,6 @@ public class Room : BaseViewModel
         }
     }
 
-    private bool _isOpen;
     public bool IsOpen
     {
         get { return _isOpen; }
@@ -41,66 +47,61 @@ public class Room : BaseViewModel
         }
     }
 
-    private string _PinCode;
     public string PinCode
     {
-        get { return _PinCode; }
+        get { return _pinCode; }
         set
         {
-            _PinCode = value;
+            _pinCode = value;
             OnPropertyChanged(nameof(PinCode));
         }
     }
 
-    private DateTime _openningTime;
-    public DateTime OpenningTime
+    public DateTime OpeningTime
     {
-        get { return _openningTime; }
+        get { return _openingTime; }
         set
         {
-            _openningTime = value;
-            OnPropertyChanged(nameof(OpenningTime));
+            _openingTime = value;
+            OnPropertyChanged(nameof(OpeningTime));
             OnPropertyChanged(nameof(LiveTime));
         }
     }
 
-    public TimeSpan LiveTime => _openningTime != DateTime.MinValue ? DateTime.Now - OpenningTime : TimeSpan.Zero;
+    public TimeSpan LiveTime => _openingTime != DateTime.MinValue ? DateTime.Now - OpeningTime : TimeSpan.Zero;
 
-    public Room(IServerApi serverApi)
-    {
-        _serverAPI = serverApi;
-    }
+    public string RoomId { get; private set; }
 
     public async Task OpenRoomAsync()
     {
-        await _serverAPI.OpenSessionAsync();
+        RoomId = await _serverAPI.OpenRoomAsync();
 
         OnlineUsers = 0;
-        OpenningTime = DateTime.Now;
+        OpeningTime = DateTime.Now;
         IsOpen = true;
     }
 
     public async Task CloseRoomAsync()
     {
-        await _serverAPI.CloseSessionAsync();
+        await _serverAPI.CloseRoomAsync();
 
         OnlineUsers = 0;
-        OpenningTime = DateTime.MinValue;
+        OpeningTime = DateTime.MinValue;
         IsOpen = false;
     }
 
-    public async Task ChangePinCodeAsync(string pinCode)
+    public async Task ChangePinCodeAsync()
     {
-        await _serverAPI.ChangeSessionPinCodeAsync(pinCode);
+        PinCode = await _serverAPI.ChangeRoomPinCodeAsync();
     }
 
     public async Task UpdateRoomAsync()
     {
-        JukeboxSessionResponse sessionResponse = await _serverAPI.FetchSessionUpdateAsync();
-        if (sessionResponse == null)
+        RoomResponse room = await _serverAPI.FetchRoomUpdateAsync();
+        if (room == null)
             return;
 
-        OnlineUsers = sessionResponse.ActiveUsers;
-        OwnerName = sessionResponse.OwnerName;
+        OnlineUsers = room.OnlineUsers;
+        Hostname = room.Hostname;
     }
 }

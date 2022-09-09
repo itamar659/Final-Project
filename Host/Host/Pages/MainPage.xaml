@@ -32,7 +32,7 @@
 
             <!-- Host Name -->
             <Label Grid.Row="1"
-                   Text="{Binding Room.OwnerName}"
+                   Text="{Binding Room.Hostname}"
                    Style="{StaticResource HeaderLabel}"
                    HorizontalOptions="Center"
                    Margin="0, 0, 0, 60" />
@@ -115,9 +115,9 @@
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="model:PollOption">
                                         <HorizontalStackLayout Spacing="16">
-                                            <Label Text="{Binding Id}" />
+                                            <Label Text="{Binding PollId}" />
                                             <Label Text="{Binding Votes}" />
-                                            <Label Text="{Binding Name}" />
+                                            <Label Text="{Binding SongName}" />
                                         </HorizontalStackLayout>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
