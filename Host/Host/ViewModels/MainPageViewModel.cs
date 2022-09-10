@@ -5,25 +5,8 @@ using System.Windows.Input;
 
 namespace Host;
 
-
-/* TODO:
- * _updateTimer:
- *   update SongUpdateRequest in the server
- * update song when the audio player change song (use hub)
- * 
- */
-
-
 public class MainPageViewModel : BaseViewModel
 {
-    public static readonly double SERVER_UPDATE_DELAY = TimeSpan.FromSeconds(1).TotalMilliseconds;
-
-    #region Private Members
-
-    private IServerApi _serverAPI;
-
-    #endregion
-
     #region Public Properties
 
     /// <summary>
@@ -65,7 +48,6 @@ public class MainPageViewModel : BaseViewModel
     public MainPageViewModel(IServerApi serverAPI, AudioPlayerActive audioPlayer)
     {
         // init private members
-        _serverAPI = serverAPI;
         AudioPlayer = audioPlayer;
         AudioPlayer.SongStateChanged += updateStateChangesAsync;
         AudioPlayer.SongEnded += changeSongAsync;
