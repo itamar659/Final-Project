@@ -1,9 +1,6 @@
 ﻿using Host.Models;
 using Host.Models.Requests;
 using Host.Services;
-using Microsoft.AspNetCore.SignalR.Client;
-using System.Collections.ObjectModel;
-using System.Data.Common;
 using System.Windows.Input;
 
 namespace Host;
@@ -71,6 +68,7 @@ public class MainPageViewModel : BaseViewModel
         // init private members
         _serverAPI = serverAPI;
         AudioPlayer = audioPlayer;
+        AudioPlayer.SongStateChanged += updateStateChangesAsync;
         AudioPlayer.SongEnded += changeSongAsync;
 
         // init properties
@@ -114,8 +112,6 @@ public class MainPageViewModel : BaseViewModel
             foreach (var file in files)
                 AudioPlayer.AddToPlaylist(file.FullPath);
 
-
-
         return Task.CompletedTask;
     }
 
@@ -145,6 +141,17 @@ public class MainPageViewModel : BaseViewModel
 
     #region Private Methods
 
+    private async void updateStateChangesAsync(object sender, EventArgs e)
+    {
+        await HubService.UpdateSong(new SongUpdateRequest
+        {
+            SongName = AudioPlayer.SongName,
+            Duration = AudioPlayer.Duration,
+            Position = AudioPlayer.Position,
+            IsPlaying = AudioPlayer.IsPlaying
+        });
+    }
+
     /// <summary>
     /// Fetch the last results about the poll, change the song in the audio player.
     /// </summary>
@@ -152,16 +159,12 @@ public class MainPageViewModel : BaseViewModel
     {
         if (Room.IsOpen)
         {
-            await AudioPlayer.ChangeSong(Poll.TopRated.SongName);
+            if (Poll.TopRated != null)
+                await AudioPlayer.ChangeSong(Poll.TopRated.SongName);
+            else
+                await AudioPlayer.NextAsync();
 
-            await HubService.UpdateSong(new SongUpdateRequest
-            {
-                SongName = AudioPlayer.SongName,
-                Duration = AudioPlayer.Duration,
-                Position = AudioPlayer.Position,
-                IsPlaying = AudioPlayer.IsPlaying
-            });
-
+            await Poll.RemovePollAsync();
             await Poll.CreatePollAsync(AudioPlayer.Songs);
         }
         else
@@ -192,8 +195,7 @@ public class MainPageViewModel : BaseViewModel
         }
         else
         {
-            //await Poll.RemovePollAsync(); // no need, the server doing it already
-
+            await Poll.RemovePollAsync();
             await HubService.LeaveRoom(Room.RoomId);
             await Room.CloseRoomAsync();
         }

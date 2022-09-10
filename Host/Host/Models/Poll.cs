@@ -32,7 +32,6 @@ public class Poll
             Options = PollOptions.ToList()
         };
 
-        await _serverAPI.RemovePollAsync();
         await _serverAPI.CreatePollAsync(request);
     }
 

@@ -28,6 +28,8 @@ public class AudioPlayer
 
     public ObservableCollection<Song> Songs => _playlist.Songs;
 
+    public event EventHandler BufferingEnded;
+
     public event EventHandler SongStateChanged;
 
     public event EventHandler SongEnded;
@@ -36,6 +38,7 @@ public class AudioPlayer
     {
         _audioService = audioService;
         _audioService.SongEnded += (s, e) => { SongEnded?.Invoke(s, e); };
+        _audioService.BufferingEnded += (s, e) => { BufferingEnded?.Invoke(s, e); };
         _playlist = new Playlist();
 
         State = PlayerState.Created;
@@ -51,7 +54,7 @@ public class AudioPlayer
         await _audioService.PlayAsync();
 
         State = PlayerState.Play;
-        SongStateChanged?.Invoke(this, EventArgs.Empty);
+        OnSongStateChanged();
     }
 
     public async Task PauseAsync()
@@ -59,7 +62,7 @@ public class AudioPlayer
         await _audioService.PauseAsync();
 
         State = PlayerState.Pause;
-        SongStateChanged?.Invoke(this, EventArgs.Empty);
+        OnSongStateChanged();
     }
 
     public async Task StopAsync()
@@ -67,7 +70,7 @@ public class AudioPlayer
         await _audioService.StopAsync();
 
         State = PlayerState.Stop;
-        SongStateChanged?.Invoke(this, EventArgs.Empty);
+        OnSongStateChanged();
     }
 
     public void AddToPlaylist(string path)
@@ -84,7 +87,7 @@ public class AudioPlayer
         if (_playlist.Songs.Count == 1 && State == PlayerState.Created)
         {
             State = PlayerState.Stop;
-            SongEnded?.Invoke(this, EventArgs.Empty);
+            OnSongEnded();
         }
     }
 
@@ -102,7 +105,7 @@ public class AudioPlayer
         if (_playlist.Songs.Count == 0)
         {
             State = PlayerState.Created;
-            SongStateChanged?.Invoke(this, EventArgs.Empty);
+            OnSongStateChanged();
         }
     }
 
@@ -116,7 +119,7 @@ public class AudioPlayer
         if (_playlist.Songs.Count == 0)
         {
             State = PlayerState.Created;
-            SongStateChanged?.Invoke(this, EventArgs.Empty);
+            OnSongStateChanged();
         }
     }
 
@@ -124,11 +127,8 @@ public class AudioPlayer
     {
         _playlist.Songs.Clear();
 
-        if (_playlist.Songs.Count == 0)
-        {
-            State = PlayerState.Created;
-            SongStateChanged?.Invoke(this, EventArgs.Empty);
-        }
+        State = PlayerState.Created;
+        OnSongStateChanged();
     }
 
     public async Task ChangeSong(string songName)
@@ -180,6 +180,16 @@ public class AudioPlayer
             await PlayAsync();
         else
             await StopAsync();
+    }
+
+    protected virtual void OnSongStateChanged()
+    {
+        SongStateChanged?.Invoke(this, EventArgs.Empty);
+    }
+
+    protected virtual void OnSongEnded()
+    {
+        SongEnded?.Invoke(this, EventArgs.Empty);
     }
 
     private string getNameFromPath(string path)

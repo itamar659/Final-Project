@@ -3,6 +3,7 @@
 public interface IAudioService
 {
     event EventHandler SongEnded;
+    event EventHandler BufferingEnded;
     double Position { get; }
     double Duration { get; }
     bool IsPlaying { get; }
