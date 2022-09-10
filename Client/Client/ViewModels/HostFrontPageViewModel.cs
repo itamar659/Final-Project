@@ -121,6 +121,7 @@ public class HostFrontPageViewModel : BaseViewModel
         HubService service = new HubService();
         if (success)
         {
+            UserProfile.Instance.RoomId = RoomId;
             await UserProfile.Instance.Hub.JoinRoom(RoomId);
             await Shell.Current.GoToAsync(($"../{nameof(HostHomePage)}"));
         }

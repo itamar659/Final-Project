@@ -16,7 +16,7 @@ public class HostPoll : BaseViewModel
         Options = new ObservableCollection<PollOption>();
     }
 
-    public ObservableCollection<PollOption> Options { get; set; }
+    public ObservableCollection<PollOption> Options { get; }
 
     public bool CanVote
     {
@@ -44,11 +44,11 @@ public class HostPoll : BaseViewModel
 
     internal void SetPollProperties(ICollection<PollOption> poll)
     {
-        var newOptions = new ObservableCollection<PollOption>();
-        foreach (var item in poll)
-            newOptions.Add(item);
+        Options.Clear();
 
-        Options = newOptions;
+        foreach (var item in poll)
+            Options.Add(item);
+
         CanVote = true;
     }
 }

@@ -26,14 +26,10 @@ public class HostHomePageViewModel : BaseViewModel
         });
 
         // set hub handlers
-
-        // current thread dispatcher to be able to invoke hub methods from different thread
-        // var dispatcher = Dispatcher.GetForCurrentThread(); // TODO: Check if dispatcher is needed.
-
         _hub.RoomClosedHandler = async () =>
         {
             _hub.ClearHandlers();
-            await LeaveSessionAsync();
+            await LeaveRoomAsync();
         };
 
         _hub.SongUpdatedHandler = (song) =>
@@ -51,8 +47,6 @@ public class HostHomePageViewModel : BaseViewModel
 
     public HostPoll Poll { get; set; }
 
-    public ObservableCollection<PollOption> Options => Poll.Options;
-
     public ICommand LeaveSessionCommand { get; set; }
 
     public ICommand ChooseSongCommand { get; set; }
@@ -63,10 +57,11 @@ public class HostHomePageViewModel : BaseViewModel
         await Room.FetchRoom();
     }
 
-    public async Task LeaveSessionAsync()
+    public async Task LeaveRoomAsync()
     {
-        Room.Dispose();
+        await _hub.LeaveRoom(Room.RoomId);
         await _serverApi.LeaveRoomAsync();
+        Room.Dispose();
         await Shell.Current.GoToAsync("..");
     }
 }

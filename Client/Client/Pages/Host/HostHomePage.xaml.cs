@@ -26,7 +26,7 @@ public partial class HostHomePage : ContentPage
                                "Are you sure wanna leave ?",
                                "Yes", "No"))
         {
-            await _vm.LeaveSessionAsync();
+            await _vm.LeaveRoomAsync();
         }
     }
 }

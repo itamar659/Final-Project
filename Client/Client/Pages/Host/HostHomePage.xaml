@@ -141,9 +141,10 @@
             <Frame  Grid.Row="3"
                     HorizontalOptions="Center"
                     HasShadow="True"
-                    CornerRadius="40">
+                    CornerRadius="40"
+                    IsVisible="{Binding Poll.CanVote}">
                 <CollectionView Grid.Row="3"
-                                    ItemsSource="{Binding Options}">
+                                    ItemsSource="{Binding Poll.Options}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:PollOption">
                             <Border>
@@ -169,7 +170,7 @@
                     HorizontalOptions="Center"
                     HasShadow="True"
                     CornerRadius="40"
-                    IsVisible="False">
+                    IsVisible="{Binding Poll.CanVote, Converter={StaticResource inverseBooleanConverter}}">
                 <Label Text="Thanks for voting!" />
             </Frame>
             
