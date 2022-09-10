@@ -144,7 +144,7 @@ public class ServerlessApi : IServerApi
 
     public async Task UpdateSongAsync(SongMessage song)
     {
-        var obj = new { };
-        await postResponseOrDefault<bool>("/Room/ChangeSong", obj);
+        var obj = new { Token = _token, SongName = song.SongName, Duration = song.Duration, Position = song.Position, IsPlaying = song.IsPlaying };
+        await postResponseOrDefault<bool>("/Room/UpdateSong", obj);
     }
 }

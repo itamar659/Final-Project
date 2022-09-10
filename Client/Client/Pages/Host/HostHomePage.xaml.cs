@@ -13,6 +13,13 @@ public partial class HostHomePage : ContentPage
         BindingContext = vm;
     }
 
+    protected override async void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
+
+        await _vm.FetchUpdates();
+    }
+
     private async void Left_Button_Clicked(object sender, EventArgs e)
     {
         if (await DisplayAlert("Leaving already?",

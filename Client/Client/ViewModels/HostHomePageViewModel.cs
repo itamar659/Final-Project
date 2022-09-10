@@ -1,24 +1,7 @@
 ﻿using Client.Models;
 using Client.Services;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
-
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
-// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
 
 namespace Client;
 public class HostHomePageViewModel : BaseViewModel
@@ -68,9 +51,17 @@ public class HostHomePageViewModel : BaseViewModel
 
     public HostPoll Poll { get; set; }
 
+    public ObservableCollection<PollOption> Options => Poll.Options;
+
     public ICommand LeaveSessionCommand { get; set; }
 
     public ICommand ChooseSongCommand { get; set; }
+
+    public async Task FetchUpdates()
+    {
+        await Poll.FetchPoll(Room.RoomId);
+        await Room.FetchRoom();
+    }
 
     public async Task LeaveSessionAsync()
     {

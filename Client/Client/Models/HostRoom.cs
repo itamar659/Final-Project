@@ -80,26 +80,23 @@ public class HostRoom : BaseViewModel, IDisposable
 
     public string RoomId { get; }
 
-    public async Task UpdateRoomAsync()
+    public async Task FetchRoom()
     {
-        //TODO: update and display:
-        //var profile = await _serverAPI.FetchHostProfileAsync(Configuration.Token);
-        //if (profile == null)
-        //    return;
+        var room = await _serverAPI.FetchRoomUpdateAsync(RoomId);
+        if (room == null)
+            return;
+
+        Hostname = room.Hostname;
+        SongName = room.SongName;
+        Duration = room.Duration.TotalSeconds;
+        Position = room.Position.TotalSeconds;
+        OpeningTime = room.OpeningTime;
 
         //Summary = profile.Summary
         //Description = profile.Desc...
         //BannerUrl
         //AvatarUrl
 
-        var room = await _serverAPI.FetchRoomUpdateAsync(RoomId);
-        if (room == null)
-            return;
-
-        Hostname = room.Hostname;
-        OpeningTime = room.OpeningTime;
-        Position = room.Position.TotalSeconds;
-        Duration = room.Duration.TotalSeconds;
 
         if (room.IsPlaying && !_updateLiveTimeTimer.Enabled)
         {

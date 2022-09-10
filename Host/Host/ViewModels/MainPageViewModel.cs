@@ -75,6 +75,7 @@ public class MainPageViewModel : BaseViewModel
         {
             Room.OnlineUsers++;
             updateStateChangesAsync(this, EventArgs.Empty);
+
         };
 
         HubService.ClientLeavedHandler = () =>

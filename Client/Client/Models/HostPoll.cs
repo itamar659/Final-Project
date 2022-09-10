@@ -28,6 +28,15 @@ public class HostPoll : BaseViewModel
         }
     }
 
+    public async Task FetchPoll(string roomId)
+    {
+        var poll = await _serverAPI.FetchPollAsync(roomId);
+        if (poll is null)
+            return;
+
+        SetPollProperties(poll.Options);
+    }
+
     public async Task VoteAsync(int option)
     {
         await _serverAPI.VoteAsync(Options[option].PollId);
