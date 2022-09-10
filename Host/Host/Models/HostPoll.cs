@@ -1,4 +1,4 @@
-﻿using Host.Models.Requests;
+﻿using Host.Models.ServerMessages;
 using Host.Services;
 using System.Collections.ObjectModel;
 
@@ -27,7 +27,7 @@ public class HostPoll
     {
         generatePoll(songs);
 
-        var request = new PollRequest()
+        var request = new PollMessage()
         {
             Options = PollOptions.ToList()
         };

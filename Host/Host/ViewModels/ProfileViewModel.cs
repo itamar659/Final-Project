@@ -1,4 +1,4 @@
-﻿using Host.Models;
+﻿using Host.Models.ServerMessages;
 using Host.Services;
 using System.Windows.Input;
 
@@ -10,12 +10,12 @@ public class ProfileViewModel : BaseViewModel
     private IServerApi _serverAPI;
 
     private string _hostname;
-    public string Hosname
+    public string Hostname
     {
         get { return _hostname; }
         set
         {
-            _hostname = value; OnPropertyChanged(nameof(Hosname));
+            _hostname = value; OnPropertyChanged(nameof(Hostname));
         }
     }
 
@@ -38,26 +38,24 @@ public class ProfileViewModel : BaseViewModel
     {
         _serverAPI = serverApi;
 
-        ChangeOwnerNameCommand = new Command(() => _serverAPI.EditProfileAsync(new HostProfile { Hostname = Hosname }));
+        ChangeOwnerNameCommand = new Command(() => _serverAPI.EditProfileAsync(new HostMessage { Hostname = Hostname }));
 
         ChangePinCodeCommand = new Command(async () =>
         {
             PinCode = await _serverAPI.ChangeRoomPinCodeAsync();
         });
-
-        FetchInfo();
     }
 
     public async Task FetchProfile()
     {
         var profile = await _serverAPI.FetchHostProfileAsync(Configuration.Token);
-    }
 
-    public async Task FetchInfo()
-    {
-        var session = await _serverAPI.FetchRoomUpdateAsync();
+        Hostname = profile?.Hostname;
+        // desc, summary, banner image...
 
-        Hosname = session?.Hostname;
+        var room = await _serverAPI.FetchRoomUpdateAsync();
+
+        PinCode = room?.PinCode;
     }
 
     public static string RandomString(int length)

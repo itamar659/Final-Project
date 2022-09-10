@@ -1,5 +1,5 @@
 ﻿using Host.Models;
-using Host.Models.Requests;
+using Host.Models.ServerMessages;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Host.Services;
@@ -39,10 +39,10 @@ public class HubService
         _connection.On(ClientJoinedMethod, () => ClientJoinedHandler?.Invoke());
         _connection.On(ClientLeavedMethod, () => ClientLeavedHandler?.Invoke());
         _connection.On(RoomClosedMethod, () => RoomClosedHandler?.Invoke());
-        _connection.On<HostProfile>(HostProfileUpdatedMethod, (profile) => HostProfileUpdatedHandler?.Invoke(profile));
+        _connection.On<HostMessage>(HostProfileUpdatedMethod, (profile) => HostProfileUpdatedHandler?.Invoke(profile));
         _connection.On<ICollection<PollOption>>(PollVotesUpdatedMethod, (poll) => PollVotesUpdatedHandler?.Invoke(poll));
         _connection.On<ICollection<PollOption>>(PollCreatedMethod, (poll) => PollCreatedHandler?.Invoke(poll));
-        _connection.On<SongUpdateRequest>(SongUpdatedMethod, (song) => SongUpdatedHandler?.Invoke(song));
+        _connection.On<SongMessage>(SongUpdatedMethod, (song) => SongUpdatedHandler?.Invoke(song));
     }
 
     // handlers for on methods
@@ -50,10 +50,10 @@ public class HubService
     public Action ClientJoinedHandler { get; set; }
     public Action ClientLeavedHandler { get; set; }
     public Action RoomClosedHandler { get; set; }
-    public Action<HostProfile> HostProfileUpdatedHandler { get; set; }
+    public Action<HostMessage> HostProfileUpdatedHandler { get; set; }
     public Action<ICollection<PollOption>> PollVotesUpdatedHandler { get; set; }
     public Action<ICollection<PollOption>> PollCreatedHandler { get; set; }
-    public Action<SongUpdateRequest> SongUpdatedHandler { get; set; }
+    public Action<SongMessage> SongUpdatedHandler { get; set; }
 
     // public methods
 
@@ -85,7 +85,7 @@ public class HubService
         }
     }
 
-    public async Task HostProfileUpdated(HostProfile profile)
+    public async Task HostProfileUpdated(HostMessage profile)
     {
         try
         {
@@ -118,7 +118,7 @@ public class HubService
         }
     }
 
-    public async Task UpdateSong(SongUpdateRequest song)
+    public async Task UpdateSong(SongMessage song)
     {
         try
         {

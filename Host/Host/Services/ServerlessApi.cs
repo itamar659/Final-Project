@@ -1,6 +1,5 @@
 ﻿using Host.Models;
-using Host.Models.Requests;
-using Host.Models.Responses;
+using Host.Models.ServerMessages;
 using Host.Services;
 using System.Net.Http.Json;
 using System.Text;
@@ -49,7 +48,7 @@ public class ServerlessApi : IServerApi
         return default;
     }
 
-    public async Task EditProfileAsync(HostProfile profile)
+    public async Task EditProfileAsync(HostMessage profile)
     {
         profile.Token = _token;
         await postResponseOrDefault<bool>("/Host/EditProfile", profile);
@@ -67,10 +66,10 @@ public class ServerlessApi : IServerApi
         await postResponseOrDefault<string>("/Host/CloseRoom", obj);
     }
 
-    public async Task<HostProfile?> ConnectAsync(string username)
+    public async Task<HostMessage?> ConnectAsync(string username)
     {
         var obj = new { Username = username };
-        var profile = await postResponseOrDefault<HostProfile>("/Host/Connect", obj);
+        var profile = await postResponseOrDefault<HostMessage>("/Host/Connect", obj);
 
         if (profile != null)
             _token = profile.Token;
@@ -78,7 +77,7 @@ public class ServerlessApi : IServerApi
         return profile;
     }
 
-    public async Task CreatePollAsync(PollRequest pollRequest)
+    public async Task CreatePollAsync(PollMessage pollRequest)
     {
         pollRequest.Token = _token;
         await postResponseOrDefault<bool>("/Room/CreatePoll", pollRequest);
@@ -89,10 +88,10 @@ public class ServerlessApi : IServerApi
         _client.Dispose();
     }
 
-    public async Task<HostProfile> FetchHostProfileAsync(string token)
+    public async Task<HostMessage> FetchHostProfileAsync(string token)
     {
         var obj = new { Token = token };
-        HostProfile profile = await postResponseOrDefault<HostProfile>("/Host/Get", obj);
+        HostMessage profile = await postResponseOrDefault<HostMessage>("/Host/Get", obj);
 
         if (profile != null)
             _token = profile.Token;
@@ -100,7 +99,7 @@ public class ServerlessApi : IServerApi
         return profile;
     }
 
-    public async Task<PollResponse> FetchPollAsync()
+    public async Task<PollMessage> FetchPollAsync()
     {
         var obj = new { RoomId = _roomId };
         List<PollOption> poll = await postResponseOrDefault<List<PollOption>>("/Room/GetPoll", obj);
@@ -108,16 +107,16 @@ public class ServerlessApi : IServerApi
         if (poll == null)
             return null;
 
-        return new PollResponse
+        return new PollMessage
         {
             Options = poll
         };
     }
 
-    public async Task<RoomResponse> FetchRoomUpdateAsync()
+    public async Task<RoomMessage> FetchRoomUpdateAsync()
     {
         var obj = new { RoomId = _roomId };
-        RoomResponse room = await postResponseOrDefault<RoomResponse>("/Room/Get", obj);
+        RoomMessage room = await postResponseOrDefault<RoomMessage>("/Room/Get", obj);
 
         return room;
     }
@@ -130,7 +129,7 @@ public class ServerlessApi : IServerApi
     public async Task<string> OpenRoomAsync()
     {
         var obj = new { Token = _token };
-        RoomResponse room = await postResponseOrDefault<RoomResponse>("/Host/OpenRoom", obj);
+        RoomMessage room = await postResponseOrDefault<RoomMessage>("/Host/OpenRoom", obj);
 
         if (room != null)
             _roomId = room.RoomId;
@@ -144,7 +143,7 @@ public class ServerlessApi : IServerApi
         await postResponseOrDefault<bool>("/Room/RemovePoll", obj);
     }
 
-    public async Task UpdateSongAsync(SongUpdateRequest song)
+    public async Task UpdateSongAsync(SongMessage song)
     {
         var obj = new { };
         await postResponseOrDefault<bool>("/Room/ChangeSong", obj);

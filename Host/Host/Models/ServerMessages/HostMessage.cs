@@ -1,13 +1,12 @@
-﻿namespace Host.Models;
+﻿namespace Host.Models.ServerMessages;
 
-public class HostProfile
+public class HostMessage
 {
-    public HostProfile()
+    public HostMessage()
     {
         Token = string.Empty;
         Hostname = string.Empty;
         RoomId = string.Empty;
-        PinCode = string.Empty;
         Summary = string.Empty;
         Description = string.Empty;
         BannerUrl = string.Empty;

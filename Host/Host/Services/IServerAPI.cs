@@ -1,6 +1,4 @@
-﻿using Host.Models;
-using Host.Models.Requests;
-using Host.Models.Responses;
+﻿using Host.Models.ServerMessages;
 
 namespace Host.Services;
 
@@ -8,14 +6,14 @@ public interface IServerApi : IDisposable
 {
     Task<string> ChangeRoomPinCodeAsync();
     Task CloseRoomAsync();
-    Task<HostProfile> ConnectAsync(string username);
-    Task CreatePollAsync(PollRequest pollRequest);
-    Task EditProfileAsync(HostProfile profile);
-    Task<HostProfile> FetchHostProfileAsync(string token);
-    Task<PollResponse> FetchPollAsync();
-    Task<RoomResponse> FetchRoomUpdateAsync();
+    Task<HostMessage> ConnectAsync(string username);
+    Task CreatePollAsync(PollMessage pollRequest);
+    Task EditProfileAsync(HostMessage profile);
+    Task<HostMessage> FetchHostProfileAsync(string token);
+    Task<PollMessage> FetchPollAsync();
+    Task<RoomMessage> FetchRoomUpdateAsync();
     string GetRoomId();
     Task<string> OpenRoomAsync();
     Task RemovePollAsync();
-    Task UpdateSongAsync(SongUpdateRequest song);
+    Task UpdateSongAsync(SongMessage song);
 }

@@ -1,4 +1,4 @@
-﻿using Host.Models.Requests;
+﻿using Host.Models.ServerMessages;
 using Host.Services;
 using System.Windows.Input;
 using Host.Models;
@@ -130,7 +130,7 @@ public class MainPageViewModel : BaseViewModel
 
     private async void updateStateChangesAsync(object sender, EventArgs e)
     {
-        await HubService.UpdateSong(new SongUpdateRequest
+        await HubService.UpdateSong(new SongMessage
         {
             SongName = AudioPlayer.SongName,
             Duration = AudioPlayer.Duration,
@@ -170,7 +170,7 @@ public class MainPageViewModel : BaseViewModel
             await Room.OpenRoomAsync();
             await HubService.JoinRoom(Room.RoomId);
 
-            await HubService.UpdateSong(new SongUpdateRequest {
+            await HubService.UpdateSong(new SongMessage {
                 SongName = AudioPlayer.SongName,
                 Duration = AudioPlayer.Duration,
                 Position = AudioPlayer.Position,
