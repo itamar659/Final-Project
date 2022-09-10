@@ -28,7 +28,9 @@ public partial class MainPage : ContentPage
     {
         try
         {
-            await Task.Run(pickFilesAsync);
+            // required dispatcher to change the poll in UI.
+            Dispatcher.Dispatch(async () =>
+                await pickFilesAsync());
         }
         catch
         {
@@ -46,7 +48,7 @@ public partial class MainPage : ContentPage
         await _vm.ClearSongsAsync();
     }
 
-    private async void pickFilesAsync()
+    private async Task pickFilesAsync()
     {
         var files = await FilePicker.PickMultipleAsync(getFilePickerOptions());
 

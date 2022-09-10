@@ -9,7 +9,7 @@ public interface IServerApi : IDisposable
     Task<HostMessage> ConnectAsync(string username);
     Task CreatePollAsync(PollMessage pollRequest);
     Task EditProfileAsync(HostMessage profile);
-    Task<HostMessage> FetchHostProfileAsync(string token);
+    Task<RoomMessage> FetchHostProfileAsync(string token);
     Task<PollMessage> FetchPollAsync();
     Task<RoomMessage> FetchRoomUpdateAsync();
     string GetRoomId();

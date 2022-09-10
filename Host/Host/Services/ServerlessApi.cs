@@ -55,7 +55,8 @@ public class ServerlessApi : IServerApi
     public async Task<string> ChangeRoomPinCodeAsync()
     {
         var obj = new { Token = _token };
-        return await postResponseOrDefault<string>("/Room/ChangePinCode", obj);
+        var room = await postResponseOrDefault<RoomMessage>("/Room/ChangePinCode", obj);
+        return room.PinCode;
     }
 
     public async Task CloseRoomAsync()
@@ -86,13 +87,13 @@ public class ServerlessApi : IServerApi
         _client.Dispose();
     }
 
-    public async Task<HostMessage> FetchHostProfileAsync(string token)
+    public async Task<RoomMessage> FetchHostProfileAsync(string token)
     {
         var obj = new { Token = token };
-        HostMessage profile = await postResponseOrDefault<HostMessage>("/Host/Get", obj);
+        RoomMessage profile = await postResponseOrDefault<RoomMessage>("/Host/Get", obj);
 
         if (profile != null)
-            _token = profile.Token;
+            _token = token;
 
         return profile;
     }

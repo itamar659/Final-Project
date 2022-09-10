@@ -48,14 +48,12 @@ public class ProfileViewModel : BaseViewModel
 
     public async Task FetchProfile()
     {
-        var profile = await _serverAPI.FetchHostProfileAsync(Configuration.Token);
+        var room = await _serverAPI.FetchHostProfileAsync(Configuration.Token);
 
-        Hostname = profile?.Hostname;
+        Hostname = room?.Hostname;
+        PinCode = room?.PinCode;
         // desc, summary, banner image...
 
-        var room = await _serverAPI.FetchRoomUpdateAsync();
-
-        PinCode = room?.PinCode;
     }
 
     public static string RandomString(int length)

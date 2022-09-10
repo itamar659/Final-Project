@@ -98,7 +98,8 @@ public class HostRoom : BaseViewModel
 
     public async Task UpdateRoom()
     {
-        var room = await _serverAPI.FetchRoomUpdateAsync();
+        //TODO: update and display:
+        var room = await _serverAPI.FetchHostProfileAsync(Configuration.Token);
         if (room == null)
             return;
 
@@ -110,6 +111,5 @@ public class HostRoom : BaseViewModel
         //Description = profile.Desc...
         //BannerUrl
         //AvatarUrl
-
     }
 }
