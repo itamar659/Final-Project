@@ -10,7 +10,6 @@ namespace Host;
  * _updateTimer:
  *   update SongUpdateRequest in the server
  * update song when the audio player change song (use hub)
- * notify all the time about the audio player -> the position, is paused, and so on...
  * 
  */
 
@@ -91,6 +90,7 @@ public class MainPageViewModel : BaseViewModel
         HubService.ClientJoinedHandler = () =>
         {
             Room.OnlineUsers++;
+            updateStateChangesAsync(this, EventArgs.Empty);
         };
 
         HubService.ClientLeavedHandler = () =>
