@@ -5,4 +5,12 @@ public static class Configuration
 {
     public static string ServerBaseUrl => DeviceInfo.Platform == DevicePlatform.WinUI
         ? "http://localhost:5038" : "http://10.0.2.2:5038";
+
+    public static string Token
+    {
+        get => Preferences.Get("Token", default(string));
+        set { Preferences.Set("Token", value); }
+    }
+
+    public static bool HasToken => Preferences.ContainsKey("Token");
 }

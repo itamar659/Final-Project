@@ -160,7 +160,7 @@ public class AudioPlayer
         bool autoPlay = State == PlayerState.Play;
 
         _playlist.PrevSong();
-        
+
         if (autoPlay)
             await PlayAsync();
         else

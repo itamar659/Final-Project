@@ -7,12 +7,6 @@ public partial class MainPage : ContentPage
 {
     private MainPageViewModel _vm;
 
-    protected override void OnNavigatedFrom(NavigatedFromEventArgs args)
-    {
-        base.OnNavigatedFrom(args);
-
-        // TODO: Tell the view model to update the UI. ( could edit profile before navigated to here)
-    }
     public MainPage(MainPageViewModel vm)
 	{
 		InitializeComponent();
@@ -23,6 +17,11 @@ public partial class MainPage : ContentPage
         Task.Run(() =>
             Dispatcher.Dispatch(async () =>
                 await vm.HubService.StartAsync()));
+    }
+
+    protected override async void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        await _vm.FetchProfile();
     }
 
     private async void AddSongsBtn_Clicked(object sender, EventArgs e)

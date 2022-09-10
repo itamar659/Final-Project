@@ -1,10 +1,5 @@
 ﻿using Host.Models;
 using Host.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace Host;
@@ -12,15 +7,15 @@ public class ProfileViewModel : BaseViewModel
 {
     private static Random random = new Random();
 
-    private IServerApi _serverApi;
+    private IServerApi _serverAPI;
 
-    private string _ownerName;
-    public string OwnerName
+    private string _hostname;
+    public string Hosname
     {
-        get { return _ownerName; }
+        get { return _hostname; }
         set
         {
-            _ownerName = value; OnPropertyChanged(nameof(OwnerName));
+            _hostname = value; OnPropertyChanged(nameof(Hosname));
         }
     }
 
@@ -41,23 +36,28 @@ public class ProfileViewModel : BaseViewModel
 
     public ProfileViewModel(IServerApi serverApi)
     {
-        _serverApi = serverApi;
+        _serverAPI = serverApi;
 
-        ChangeOwnerNameCommand = new Command(() => _serverApi.EditProfileAsync(new HostProfile { Hostname = OwnerName }));
+        ChangeOwnerNameCommand = new Command(() => _serverAPI.EditProfileAsync(new HostProfile { Hostname = Hosname }));
 
         ChangePinCodeCommand = new Command(async () =>
         {
-            PinCode = await _serverApi.ChangeRoomPinCodeAsync();
+            PinCode = await _serverAPI.ChangeRoomPinCodeAsync();
         });
 
-        fetchInfo();
+        FetchInfo();
     }
 
-    public async Task fetchInfo()
+    public async Task FetchProfile()
     {
-        var session = await _serverApi.FetchRoomUpdateAsync();
+        var profile = await _serverAPI.FetchHostProfileAsync(Configuration.Token);
+    }
 
-        OwnerName = session?.Hostname;
+    public async Task FetchInfo()
+    {
+        var session = await _serverAPI.FetchRoomUpdateAsync();
+
+        Hosname = session?.Hostname;
     }
 
     public static string RandomString(int length)

@@ -26,12 +26,24 @@ public class LoginViewModel : BaseViewModel
         LoginCommand = new Command(connect);
     }
 
+    public async Task TryAutoConnectAsync()
+    {
+        if (Configuration.HasToken)
+        {
+            var profile = await _serverAPI.FetchHostProfileAsync(Configuration.Token);
+            if (profile != null)
+                await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
+        }
+    }
+
     private async void connect()
     {
         ErrorMsgHolder = string.Empty;
+        var profile = await _serverAPI.ConnectAsync(Username);
 
-        if (await _serverAPI.ConnectAsync(Username) != null)
+        if (profile != null)
         {
+            Configuration.Token = profile.Token;
             await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
         }
         else

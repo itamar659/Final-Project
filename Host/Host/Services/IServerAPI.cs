@@ -11,6 +11,7 @@ public interface IServerApi : IDisposable
     Task<HostProfile> ConnectAsync(string username);
     Task CreatePollAsync(PollRequest pollRequest);
     Task EditProfileAsync(HostProfile profile);
+    Task<HostProfile> FetchHostProfileAsync(string token);
     Task<PollResponse> FetchPollAsync();
     Task<RoomResponse> FetchRoomUpdateAsync();
     string GetRoomId();

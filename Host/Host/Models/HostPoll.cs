@@ -3,7 +3,7 @@ using Host.Services;
 using System.Collections.ObjectModel;
 
 namespace Host.Models;
-public class Poll
+public class HostPoll
 {
     private readonly Random _rand = new Random();
 
@@ -13,9 +13,9 @@ public class Poll
 
     public ObservableCollection<PollOption> PollOptions { get; set; }
 
-    public PollOption? TopRated => PollOptions?.Max(new MaxOption());
+    public PollOption TopRated => PollOptions?.Max(new MaxOption());
 
-    public Poll(IServerApi serverAPI)
+    public HostPoll(IServerApi serverAPI)
     {
         PollSize = 4;
         _serverAPI = serverAPI;

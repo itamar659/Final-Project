@@ -89,6 +89,17 @@ public class ServerlessApi : IServerApi
         _client.Dispose();
     }
 
+    public async Task<HostProfile> FetchHostProfileAsync(string token)
+    {
+        var obj = new { Token = token };
+        HostProfile profile = await postResponseOrDefault<HostProfile>("/Host/Get", obj);
+
+        if (profile != null)
+            _token = profile.Token;
+
+        return profile;
+    }
+
     public async Task<PollResponse> FetchPollAsync()
     {
         var obj = new { RoomId = _roomId };

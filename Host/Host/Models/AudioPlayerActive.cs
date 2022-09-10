@@ -14,15 +14,15 @@ public class AudioPlayerActive : BaseViewModel, IDisposable
     public event EventHandler SongEnded;
 
     public AudioPlayerActive(AudioPlayer audioPlayer)
-	{
-		_audioPlayer = audioPlayer;
+    {
+        _audioPlayer = audioPlayer;
         _audioPlayer.SongEnded += (s, e) => { SongEnded?.Invoke(s, e); };
         _audioPlayer.SongStateChanged += (s, e) => { SongStateChanged?.Invoke(s, e); };
         _audioPlayer.BufferingEnded += _audioPlayer_SongStateChanged;
         _audioPlayer.SongStateChanged += _audioPlayer_SongStateChanged;
 
         _viewNotifyTimer = new System.Timers.Timer(_delay);
-		_viewNotifyTimer.Elapsed += _updateTimer_Elapsed;
+        _viewNotifyTimer.Elapsed += _updateTimer_Elapsed;
         _viewNotifyTimer.Start();
     }
 

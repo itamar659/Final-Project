@@ -15,7 +15,7 @@
                                     Margin="0, 0, 0, 60">
                 <Label Text="Welcome Back,"
                         Style="{StaticResource HeaderLabel}"/>
-                <Label Text="{Binding OwnerName}"
+                <Label Text="{Binding Hosname}"
                         Style="{StaticResource HeaderLabel}"/>
             </VerticalStackLayout>
 
@@ -29,7 +29,7 @@
                         <Label Text="Edit Your Name:" />
                         <Grid ColumnDefinitions="*, auto">
                             <Entry Placeholder="Hostname"
-                                    Text="{Binding OwnerName}"/>
+                                    Text="{Binding Hosname}"/>
                             <Button Grid.Column="1"
                                     Text="Apply"
                                     CornerRadius="0"

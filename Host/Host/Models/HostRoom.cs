@@ -1,7 +1,7 @@
 ﻿using Host.Services;
 
 namespace Host.Models;
-public class Room : BaseViewModel
+public class HostRoom : BaseViewModel
 {
     public const double _delay = 500;
 
@@ -14,7 +14,7 @@ public class Room : BaseViewModel
     private string _pinCode;
     private DateTime _openingTime;
 
-    public Room(IServerApi serverApi)
+    public HostRoom(IServerApi serverApi)
     {
         _serverAPI = serverApi;
 
@@ -96,10 +96,14 @@ public class Room : BaseViewModel
         IsOpen = false;
     }
 
-    public void UpdateRoom(HostProfile profile)
+    public async Task UpdateRoom()
     {
-        OnlineUsers = OnlineUsers;
+        var profile = await _serverAPI.FetchHostProfileAsync(Configuration.Token);
+        if (profile == null)
+            return;
+
         Hostname = profile.Hostname;
+        PinCode = profile.PinCode;
 
         //TODO: update and display:
 

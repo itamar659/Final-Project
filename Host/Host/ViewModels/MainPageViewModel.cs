@@ -1,7 +1,7 @@
-﻿using Host.Models;
-using Host.Models.Requests;
+﻿using Host.Models.Requests;
 using Host.Services;
 using System.Windows.Input;
+using Host.Models;
 
 namespace Host;
 
@@ -22,12 +22,12 @@ public class MainPageViewModel : BaseViewModel
     /// <summary>
     /// A poll and saync poll methods to update the server
     /// </summary>
-    public Poll Poll { get; set; }
+    public HostPoll Poll { get; set; }
 
     /// <summary>
     /// A room and saync poll methods to update the server
     /// </summary>
-    public Room Room { get; set; }
+    public HostRoom Room { get; set; }
 
     #endregion
 
@@ -53,8 +53,8 @@ public class MainPageViewModel : BaseViewModel
         AudioPlayer.SongEnded += changeSongAsync;
 
         // init properties
-        Poll = new Poll(serverAPI);
-        Room = new Room(serverAPI);
+        Poll = new HostPoll(serverAPI);
+        Room = new HostRoom(serverAPI);
         HubService = new HubService();
 
         // init commands
@@ -84,6 +84,11 @@ public class MainPageViewModel : BaseViewModel
     #endregion
 
     #region Public Methods
+
+    public async Task FetchProfile()
+    {
+        await Room.UpdateRoom();
+    }
 
     /// <summary>
     /// Add a list of song to the playlist asynchronous.
