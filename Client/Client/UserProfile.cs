@@ -4,9 +4,9 @@ namespace Client;
 public sealed class UserProfile
 {
     private static readonly object _lock = new object();
-    private static UserProfile _instance = null;
+    private static volatile UserProfile _instance = null;
 
-    public UserProfile()
+    private UserProfile()
     {
         Hub = new HubService();
         Dispatcher.GetForCurrentThread()?.Dispatch(async () => await Hub.StartAsync());
@@ -16,7 +16,7 @@ public sealed class UserProfile
     {
         get
         {
-            if (_lock is null)
+            if (_instance is null)
             {
                 lock(_lock)
                 {

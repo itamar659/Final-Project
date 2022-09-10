@@ -2,6 +2,24 @@
 using Client.Services;
 using System.Windows.Input;
 
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+// TODO: Fetch the poll from the server, update the host song, fetch the song from the serever
+
 namespace Client;
 public class HostHomePageViewModel : BaseViewModel
 {

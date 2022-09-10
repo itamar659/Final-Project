@@ -43,7 +43,7 @@ public class AudioService : IAudioService
             };
 
             mediaPlayer.MediaEnded += OnSongEnded;
-            mediaPlayer.BufferingEnded += OnBufferingEnded;
+            mediaPlayer.MediaOpened += OnBufferingEnded;
         }
         else
         {

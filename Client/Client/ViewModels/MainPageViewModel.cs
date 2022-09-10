@@ -66,6 +66,7 @@ public class MainPageViewModel : BaseViewModel
 
     public async Task TryAutoConnectAsync()
     {
+        Preferences.Remove("Token");
         if (Configuration.HasToken)
         {
             var profile = await _serverApi.FetchClientProfileAsync(Configuration.Token);

@@ -122,7 +122,7 @@ public class HostFrontPageViewModel : BaseViewModel
         if (success)
         {
             await UserProfile.Instance.Hub.JoinRoom(RoomId);
-            await Shell.Current.GoToAsync(($"..{nameof(HostHomePage)}"));
+            await Shell.Current.GoToAsync(($"../{nameof(HostHomePage)}"));
         }
 
         return success;

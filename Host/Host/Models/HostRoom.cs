@@ -1,4 +1,5 @@
-﻿using Host.Services;
+﻿using Host.Models.ServerMessages;
+using Host.Services;
 
 namespace Host.Models;
 public class HostRoom : BaseViewModel
@@ -111,5 +112,10 @@ public class HostRoom : BaseViewModel
         //Description = profile.Desc...
         //BannerUrl
         //AvatarUrl
+    }
+
+    public async Task updateServer(SongMessage song)
+    {
+        await _serverAPI.UpdateSongAsync(song);
     }
 }

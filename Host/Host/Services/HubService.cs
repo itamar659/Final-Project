@@ -33,6 +33,7 @@ public class HubService
     {
         _connection = new HubConnectionBuilder()
             .WithUrl($"{_apiBaseUrl}/RoomHub")
+            .WithAutomaticReconnect()
             .Build();
 
         // set on methods
@@ -85,44 +86,44 @@ public class HubService
         }
     }
 
-    public async Task HostProfileUpdated(HostMessage profile)
+    public async Task HostProfileUpdated(string roomId, HostMessage profile)
     {
         try
         {
-            await _connection.InvokeAsync(HostProfileUpdatedInvoke, profile);
+            await _connection.InvokeAsync(HostProfileUpdatedInvoke, roomId, profile);
         }
         catch (Exception)
         {
         }
     }
 
-    public async Task PollVotesUpdated(ICollection<PollOption> options)
+    public async Task PollVotesUpdated(string roomId, ICollection<PollOption> options)
     {
         try
         {
-            await _connection.InvokeAsync(PollVotesUpdatedInvoke, options);
+            await _connection.InvokeAsync(PollVotesUpdatedInvoke, roomId, options);
         }
         catch (Exception)
         {
         }
     }
 
-    public async Task PollCreated(ICollection<PollOption> options)
+    public async Task PollCreated(string roomId, ICollection<PollOption> options)
     {
         try
         {
-            await _connection.InvokeAsync(PollCreatedInvoke, options);
+            await _connection.InvokeAsync(PollCreatedInvoke, roomId, options);
         }
         catch (Exception)
         {
         }
     }
 
-    public async Task UpdateSong(SongMessage song)
+    public async Task UpdateSong(string roomId, SongMessage song)
     {
         try
         {
-            await _connection.InvokeAsync(UpdateSongInvoke, song);
+            await _connection.InvokeAsync(UpdateSongInvoke, roomId, song);
         }
         catch (Exception)
         {

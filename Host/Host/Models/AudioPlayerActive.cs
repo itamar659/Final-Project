@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using Host.Models.ServerMessages;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using static Host.Models.AudioPlayer;
 
 namespace Host.Models;
@@ -13,12 +15,14 @@ public class AudioPlayerActive : BaseViewModel, IDisposable
 
     public event EventHandler SongEnded;
 
+    public event EventHandler BufferingEnded;
+
     public AudioPlayerActive(AudioPlayer audioPlayer)
     {
         _audioPlayer = audioPlayer;
         _audioPlayer.SongEnded += (s, e) => { SongEnded?.Invoke(s, e); };
         _audioPlayer.SongStateChanged += (s, e) => { SongStateChanged?.Invoke(s, e); };
-        _audioPlayer.BufferingEnded += _audioPlayer_SongStateChanged;
+        _audioPlayer.BufferingEnded += (s, e) => { BufferingEnded?.Invoke(s, e); };
         _audioPlayer.SongStateChanged += _audioPlayer_SongStateChanged;
 
         _viewNotifyTimer = new System.Timers.Timer(_delay);
@@ -37,6 +41,12 @@ public class AudioPlayerActive : BaseViewModel, IDisposable
     public string SongName => _audioPlayer.SongName;
 
     public ObservableCollection<Song> Songs => _audioPlayer.Songs;
+
+    public SongMessage SongMessage => new SongMessage {
+            SongName = SongName,
+            Duration = TimeSpan.FromMilliseconds(Duration),
+            Position = TimeSpan.FromMilliseconds(Position),
+            IsPlaying = IsPlaying };
 
     public async Task PlayAsync()
     {

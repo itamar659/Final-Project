@@ -34,6 +34,7 @@ public class HubService
     {
         _connection = new HubConnectionBuilder()
             .WithUrl($"{_apiBaseUrl}/RoomHub")
+            .WithAutomaticReconnect()
             .Build();
 
         // set on methods

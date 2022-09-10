@@ -22,8 +22,7 @@ public class HostRoom : BaseViewModel, IDisposable
         RoomId = roomId;
 
         _updateLiveTimeTimer = new System.Timers.Timer(_delay);
-        _updateLiveTimeTimer.Elapsed += (s, e) => OnPropertyChanged(nameof(LiveTime));
-        _updateLiveTimeTimer.Start();
+        _updateLiveTimeTimer.Elapsed += updatePosition;
     }
 
     public string Hostname
@@ -113,11 +112,11 @@ public class HostRoom : BaseViewModel, IDisposable
         _updateLiveTimeTimer.Dispose();
     }
 
-    internal void SetSongProperties(SongMessage song)
+    public void SetSongProperties(SongMessage song)
     {
         SongName = song.SongName;
-        Position = song.Position;
-        Duration = song.Duration;
+        Position = song.Position.TotalSeconds;
+        Duration = song.Duration.TotalSeconds;
 
         if (song.IsPlaying && !_updateLiveTimeTimer.Enabled)
         {
@@ -127,5 +126,11 @@ public class HostRoom : BaseViewModel, IDisposable
         {
             _updateLiveTimeTimer.Stop();
         }
+    }
+
+    private void updatePosition(object sender, System.Timers.ElapsedEventArgs e)
+    {
+        Position += 0.5;
+        OnPropertyChanged(nameof(Position));
     }
 }

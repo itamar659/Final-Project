@@ -5,6 +5,7 @@ using Host.Models;
 
 namespace Host;
 
+// TODO: Update UI (pincode) after opening/closing room
 public class MainPageViewModel : BaseViewModel
 {
     #region Public Properties
@@ -51,6 +52,7 @@ public class MainPageViewModel : BaseViewModel
         AudioPlayer = audioPlayer;
         AudioPlayer.SongStateChanged += updateStateChangesAsync;
         AudioPlayer.SongEnded += changeSongAsync;
+        AudioPlayer.BufferingEnded += updateStateChangesAsync;
 
         // init properties
         Poll = new HostPoll(serverAPI);
@@ -130,13 +132,8 @@ public class MainPageViewModel : BaseViewModel
 
     private async void updateStateChangesAsync(object sender, EventArgs e)
     {
-        await HubService.UpdateSong(new SongMessage
-        {
-            SongName = AudioPlayer.SongName,
-            Duration = AudioPlayer.Duration,
-            Position = AudioPlayer.Position,
-            IsPlaying = AudioPlayer.IsPlaying
-        });
+        await Room.updateServer(AudioPlayer.SongMessage);
+        await HubService.UpdateSong(Room.RoomId, AudioPlayer.SongMessage);
     }
 
     /// <summary>
@@ -170,12 +167,7 @@ public class MainPageViewModel : BaseViewModel
             await Room.OpenRoomAsync();
             await HubService.JoinRoom(Room.RoomId);
 
-            await HubService.UpdateSong(new SongMessage {
-                SongName = AudioPlayer.SongName,
-                Duration = AudioPlayer.Duration,
-                Position = AudioPlayer.Position,
-                IsPlaying = AudioPlayer.IsPlaying
-            });
+            await HubService.UpdateSong(Room.RoomId, AudioPlayer.SongMessage);
 
             await Poll.RemovePollAsync();
             await Poll.CreatePollAsync(AudioPlayer.Songs);

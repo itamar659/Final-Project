@@ -16,7 +16,6 @@ public partial class HostFrontPage : ContentPage
     {
         base.OnNavigatedTo(args);
 
-        // TODO: breackpoint - check if the RoomId query already injected.
         await _vm.FetchRoomDetailsAsync();
     }
 
