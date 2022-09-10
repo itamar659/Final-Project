@@ -1,21 +1,39 @@
-﻿using Client.Services;
-using IdentityModel.OidcClient;
-using Microsoft.Maui.Dispatching;
-using System.Windows.Input;
+﻿using Client.Models.ServerMessages;
+using Client.Services;
 
 namespace Client;
 public class MainPageViewModel : BaseViewModel
 {
     private readonly IServerApi _serverApi;
 
-    public string Username { get; set; }
-
     public MainPageViewModel(IServerApi serverAPI)
     {
-        //Preferences.Default.Set("Token", 123); // Save token for next startup
-
         _serverApi = serverAPI;
-        //SignInCommand = new Command(async () => await Shell.Current.GoToAsync($"{nameof(FindHostPage)}"));
+    }
+
+    public string Username { get; set; }
+
+    public async Task<bool> LoginAsync(string username)
+    {
+        try
+        {
+            var profile = await _serverApi.LoginAsync(username);
+
+            if (profile is not null)
+            {
+                await changePageAfterLogin(profile);
+            }
+            else
+            {
+                return false;
+            }
+        }
+        catch (NullReferenceException e)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public async Task<Tuple<bool, string>> AnonymousConnectAsync()
@@ -25,9 +43,11 @@ public class MainPageViewModel : BaseViewModel
 
         try
         {
-            if (await _serverApi.AnonymousLoginAsync(Username))
+            var profile = await _serverApi.AnonymousLoginAsync(Username);
+
+            if (profile is not null)
             {
-                await Shell.Current.GoToAsync($"//{nameof(FindHostPage)}?WelcomeMessage={Username}");
+                await changePageAfterLogin(profile);
             }
             else
             {
@@ -44,28 +64,24 @@ public class MainPageViewModel : BaseViewModel
         return new (errorOccured, error);
     }
 
-    public async Task<bool> LoginAsync(string username)
+    public async Task TryAutoConnectAsync()
     {
-        try
+        if (Configuration.HasToken)
         {
-            if (await _serverApi.LoginAsync(username))
+            var profile = await _serverApi.FetchClientProfileAsync(Configuration.Token);
+            if (profile != null)
             {
-                await Shell.Current.GoToAsync($"//{nameof(FindHostPage)}?WelcomeMessage={username}");
-            }
-            else if (await _serverApi.CreateAsync(username))
-            {
-                await Shell.Current.GoToAsync($"//{nameof(FindHostPage)}?WelcomeMessage={username}");
-            }
-            else
-            {
-                return false;
+                await changePageAfterLogin(profile);
             }
         }
-        catch (NullReferenceException e)
-        {
-            return false;
-        }
+    }
 
-        return true;
+    private async Task changePageAfterLogin(ClientMessage profile)
+    {
+        Configuration.Token = profile.Token;
+        UserProfile.Instance.Username = profile.Username;
+        UserProfile.Instance.Token = profile.Token;
+        UserProfile.Instance.AvatarUrl = profile.AvatarUrl;
+        await Shell.Current.GoToAsync($"//{nameof(FindHostPage)}");
     }
 }

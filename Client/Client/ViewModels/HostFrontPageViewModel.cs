@@ -1,88 +1,21 @@
 ﻿using Client.Models;
-using Client.Models.Responses;
+using Client.Models.ServerMessages;
 using Client.Services;
 using System.Collections.ObjectModel;
 
 namespace Client;
 
-[QueryProperty(nameof(SessionKey), nameof(SessionKey))]
+[QueryProperty(nameof(RoomId), nameof(RoomId))]
 public class HostFrontPageViewModel : BaseViewModel
 {
     private readonly IServerApi _serverApi;
 
-    public ObservableCollection<Song> Songs { get; set; }
-    public ObservableCollection<HostInformation> Information { get; set; }
-
-    private string _sessionKey;
-    public string SessionKey
-    {
-        get { return _sessionKey; }
-        set
-        {
-            if (_sessionKey != value)
-            {
-                _sessionKey = value;
-                OnPropertyChanged(nameof(SessionKey));
-                FetchSessionDetailsAsync();
-            }
-        }
-    }
-
-    private string _avatarIconUrl;
-    public string AvatarIconUrl
-    {
-        get { return _avatarIconUrl; }
-        set
-        {
-            _avatarIconUrl = value;
-            OnPropertyChanged(nameof(AvatarIconUrl));
-        }
-    }
-
-    private string _hostSummary;
-    public string HostSummary
-    {
-        get { return _hostSummary; }
-        set
-        {
-            _hostSummary = value;
-            OnPropertyChanged(nameof(HostSummary));
-        }
-    }
-
-    private string _hostDescription;
-    public string HostDescription
-    {
-        get { return _hostDescription; }
-        set
-        {
-            _hostDescription = value;
-            OnPropertyChanged(nameof(HostDescription));
-        }
-    }
-
-    private string _bannerImageUrl;
-    public string BannerImageUrl
-    {
-        get { return _bannerImageUrl; }
-        set
-        {
-            _bannerImageUrl = value;
-            OnPropertyChanged(nameof(BannerImageUrl));
-        }
-    }
-
-
+    private string _roomId;
     private string _hostname;
-    public string HostName
-    {
-        get { return _hostname; }
-        set
-        {
-            _hostname = value;
-            OnPropertyChanged(nameof(HostName));
-        }
-    }
+    private string _hostSummary;
+    private string _hostDescription;
+    private string _avatarIconUrl;
+    private string _bannerImageUrl;
 
     public HostFrontPageViewModel(IServerApi serverApi)
     {
@@ -98,29 +31,99 @@ public class HostFrontPageViewModel : BaseViewModel
         HostDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
     }
 
-    public async void FetchSessionDetailsAsync()
+    public ObservableCollection<Song> Songs { get; set; }
+
+    public ObservableCollection<HostInformation> Information { get; set; }
+
+    public string RoomId
     {
-        JukeboxSessionResponse details = await _serverApi.FetchSessionDetailsAsync(SessionKey);
-        if (details == null)
+        get { return _roomId; }
+        set
+        {
+            if (_roomId != value)
+            {
+                _roomId = value;
+                OnPropertyChanged(nameof(RoomId));
+            }
+        }
+    }
+
+    public string HostName
+    {
+        get { return _hostname; }
+        set
+        {
+            _hostname = value;
+            OnPropertyChanged(nameof(HostName));
+        }
+    }
+
+    public string HostSummary
+    {
+        get { return _hostSummary; }
+        set
+        {
+            _hostSummary = value;
+            OnPropertyChanged(nameof(HostSummary));
+        }
+    }
+
+    public string HostDescription
+    {
+        get { return _hostDescription; }
+        set
+        {
+            _hostDescription = value;
+            OnPropertyChanged(nameof(HostDescription));
+        }
+    }
+
+    public string AvatarIconUrl
+    {
+        get { return _avatarIconUrl; }
+        set
+        {
+            _avatarIconUrl = value;
+            OnPropertyChanged(nameof(AvatarIconUrl));
+        }
+    }
+
+    public string BannerImageUrl
+    {
+        get { return _bannerImageUrl; }
+        set
+        {
+            _bannerImageUrl = value;
+            OnPropertyChanged(nameof(BannerImageUrl));
+        }
+    }
+
+    public async Task FetchRoomDetailsAsync()
+    {
+        var room = await _serverApi.FetchRoomUpdateAsync(RoomId);
+        if (room == null)
             return;
 
-        HostName = details.OwnerName;
+        HostName = room.Hostname;
         HostSummary = "No Summary";
         HostDescription = "Empty Description";
         AvatarIconUrl = "profile_icon";
         BannerImageUrl = "landscape";
 
         Information.Clear();
-        Information.Add(new HostInformation { Icon = "info_icon", Title = "Active Users", Details = details.ActiveUsers.ToString() });
-        Information.Add(new HostInformation { Icon = "info_icon", Title = "Total Users", Details = details.TotalUsers.ToString() });
-        Information.Add(new HostInformation { Icon = "info_icon", Title = "Song", Details = details.SongName });
+        Information.Add(new HostInformation { Icon = "info_icon", Title = "Online Users", Details = room.OnlineUsers.ToString() });
+        Information.Add(new HostInformation { Icon = "info_icon", Title = "Song", Details = room.SongName });
     }
 
-    public async Task<bool> JoinSessionAsync(string pinCode)
+    public async Task<bool> JoinRoomAsync(string pinCode)
     {
-        var success = await _serverApi.JoinSessionAsync(HostName, pinCode);
+        var success = await _serverApi.JoinRoomAsync(RoomId, pinCode);
+        HubService service = new HubService();
         if (success)
-            await Shell.Current.GoToAsync(nameof(HostHomePage));
+        {
+            await UserProfile.Instance.Hub.JoinRoom(RoomId);
+            await Shell.Current.GoToAsync(($"..{nameof(HostHomePage)}"));
+        }
 
         return success;
     }

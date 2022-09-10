@@ -1,142 +1,64 @@
 ﻿using Client.Models;
-using Client.Models.Responses;
+using Client.Models.ServerMessages;
 using Client.Services;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Client;
 public class HostHomePageViewModel : BaseViewModel
 {
     private readonly IServerApi _serverApi;
-    private readonly System.Timers.Timer _songTimer;
-    private readonly System.Timers.Timer _updateTimer;
+    private readonly HubService _hub;
 
-    public Poll Poll { get; set; }
-
-    public ObservableCollection<PollOption> SongsToPick => Poll.PollOptions;
-
-    private bool _canVote;
-
-    public bool CanVote
+    public HostHomePageViewModel(IServerApi serverApi)
     {
-        get { return _canVote; }
-        set
+        // init private members
+        _serverApi = serverApi;
+        _hub = UserProfile.Instance.Hub;
+
+        // init properties
+        Poll = new HostPoll(serverApi);
+        Room = new HostRoom(serverApi, UserProfile.Instance.RoomId);
+
+        // init commands
+        ChooseSongCommand = new Command(async (object val) =>
         {
-            _canVote = value;
-            OnPropertyChanged(nameof(CanVote));
-        }
-    }
+            await Poll.VoteAsync((int)val);
+        });
 
+        // set hub handlers
 
-    private double _duration;
-    public double Duration
-    {
-        get => _duration + double.Epsilon;
-        set
+        // current thread dispatcher to be able to invoke hub methods from different thread
+        // var dispatcher = Dispatcher.GetForCurrentThread(); // TODO: Check if dispatcher is needed.
+
+        _hub.RoomClosedHandler = async () =>
         {
-            _duration = value;
-            OnPropertyChanged(nameof(Duration));
-        }
-    }
+            _hub.ClearHandlers();
+            await LeaveSessionAsync();
+        };
 
-    private double _position;
-    public double Position
-    {
-        get { return _position; }
-        set
+        _hub.SongUpdatedHandler = (song) =>
         {
-            _position = value;
-            OnPropertyChanged(nameof(Position));
-        }
-    }
+            Room.SetSongProperties(song);
+        };
 
-    private string _songName;
-    public string SongName
-    {
-        get { return _songName; }
-        set
+        _hub.PollCreatedHandler = (poll) =>
         {
-            _songName = value;
-            OnPropertyChanged(nameof(SongName));
-        }
+            Poll.SetPollProperties(poll);
+        };
     }
 
-    private string _hostname;
-    public string HostName
-    {
-        get { return _hostname; }
-        set { _hostname = value; }
-    }
+    public HostRoom Room { get; set; }
+
+    public HostPoll Poll { get; set; }
 
     public ICommand LeaveSessionCommand { get; set; }
 
     public ICommand ChooseSongCommand { get; set; }
 
-    public HostHomePageViewModel(IServerApi serverApi)
-    {
-        CanVote = true;
-        _serverApi = serverApi;
-        _songTimer = new System.Timers.Timer(500);
-        _songTimer.Elapsed += songWorker;
-        _updateTimer = new System.Timers.Timer(1000);
-        _updateTimer.Elapsed += updateFetcher;
-        _updateTimer.Start();
-
-        ChooseSongCommand = new Command(async (object val) =>
-        {
-            var isVoted = await Poll.VoteAsync((int)val);
-            CanVote = !isVoted;
-            await fetchSessionDetailsAsync();
-        });
-
-        Poll = new Poll(serverApi);
-    }
-
-    private async Task fetchSessionDetailsAsync()
-    {
-        JukeboxSessionResponse details = await _serverApi.FetchSessionDetailsAsync();
-        if (details == null)
-            return; // Session ended. Return to last page...
-
-        SongName = details.SongName;
-        Duration = TimeSpan.FromMilliseconds(details.SongDuration).TotalSeconds;
-        Position = TimeSpan.FromMilliseconds(details.SongPosition).TotalSeconds;
-        HostName = details.OwnerName;
-
-        await Poll.UpdateVotesAsync();
-    }
-
-    private async void updateFetcher(object sender, System.Timers.ElapsedEventArgs e)
-    {
-        JukeboxSessionResponse details = await _serverApi.FetchSessionDetailsAsync();
-        if (details == null)
-            return; // Session ended. Return to last page...
-
-        SongName = details.SongName;
-        Duration = TimeSpan.FromMilliseconds(details.SongDuration).TotalSeconds;
-        Position = TimeSpan.FromMilliseconds(details.SongPosition).TotalSeconds;
-        HostName = details.OwnerName;
-
-        if (details.IsPaused)
-            _songTimer.Stop();
-        else if (!_songTimer.Enabled)
-            _songTimer.Start();
-
-        var isChanged = await Poll.UpdateVotesAsync();
-        if (isChanged)
-            CanVote = true;
-    }
-
-    private void songWorker(object sender, System.Timers.ElapsedEventArgs e)
-    {
-        Position += 0.5;
-    }
-
     public async Task LeaveSessionAsync()
     {
-        _songTimer.Stop();
-        _updateTimer.Stop();
-        await _serverApi.LeaveSessionAsync();
+        Room.Dispose();
+        await _serverApi.LeaveRoomAsync();
         await Shell.Current.GoToAsync("..");
     }
 }

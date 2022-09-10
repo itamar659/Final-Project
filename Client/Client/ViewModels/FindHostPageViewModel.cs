@@ -1,19 +1,18 @@
 ﻿using Client.Models;
-using Client.Models.Responses;
+using Client.Models.ServerMessages;
 using Client.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace Client;
 
-[QueryProperty(nameof(WelcomeMessage), nameof(WelcomeMessage))]
 public class FindHostPageViewModel : BaseViewModel
 {
     private readonly IServerApi _serverApi;
     private string _name;
 
-    public ObservableCollection<Host> FavoriteHosts { get; set; }
-    public ObservableCollection<Host> AvailableHosts { get; set; }
+    public ObservableCollection<Room> FavoriteHosts { get; set; }
+    public ObservableCollection<Room> AvailableRooms { get; set; }
 
     public string WelcomeMessage
     {
@@ -21,7 +20,7 @@ public class FindHostPageViewModel : BaseViewModel
         set
         {
             _name = "Welcome " + value;
-            OnPropertyChanged(nameof(WelcomeMessage));
+            OnPropertyChanged(nameof(UserProfile.Username));
         }
     }
 
@@ -30,8 +29,8 @@ public class FindHostPageViewModel : BaseViewModel
     public FindHostPageViewModel(IServerApi serverApi, UserSingleton user)
     {
         _serverApi = serverApi;
-        FavoriteHosts = new ObservableCollection<Host>();
-        AvailableHosts = new ObservableCollection<Host>();
+        FavoriteHosts = new ObservableCollection<Room>();
+        AvailableRooms = new ObservableCollection<Room>();
 
         if (user != null)
             _name = "Welcome " + user.username;
@@ -40,61 +39,62 @@ public class FindHostPageViewModel : BaseViewModel
 
         ViewHostPageCommand = new Command(async (host) =>
         {
-            if (host is Host hs)
+            if (host is Room hs)
             {
-                await Shell.Current.GoToAsync($"{nameof(HostFrontPage)}?SessionKey={hs.SessionKey}");
+                await Shell.Current.GoToAsync($"{nameof(HostFrontPage)}?RoomId={hs.RoomId}");
             }
         });
 
-        updateAvailableSessions();
+        updateAvailableSessionsAsync();
     }
 
-    private async void updateAvailableSessions()
+    private async void updateAvailableSessionsAsync()
     {
-        List<JukeboxSessionResponse> availableSessions = null;
+        List<RoomMessage> availableRooms = null;
+
         try
         {
-             availableSessions = await _serverApi.FetchAvailableSessionsAsync();
+             availableRooms = await _serverApi.FetchOpenedRoomsAsync();
         }
         catch(Exception ex)
         {
             Console.WriteLine("Couldn't fetch Available Hosts");
         }
        
-        AvailableHosts.Clear();
+        AvailableRooms.Clear();
 
-        if (availableSessions != null)
+        if (availableRooms != null)
         {
-            foreach (var session in availableSessions)
+            foreach (var room in availableRooms)
             {
-                AvailableHosts.Add(new Host
+                AvailableRooms.Add(new Room
                 {
-                    SessionKey = session.SessionKey,
+                    RoomId = room.RoomId,
 
-                    OnlineUsers = session.ActiveUsers,
-                    Name = session.OwnerName,
+                    OnlineUsers = room.OnlineUsers,
+                    Name = room.Hostname,
                     IsOnline = true,
                     Picture = "host_icon",
                     StatusComment = "Online"
                 });
             }
-            if(availableSessions.Count == 0)
+            if(availableRooms.Count == 0)
             {
-                addDefaultAvailableHost();
+                addNotAvailableHost();
             }
         }
         else
         {
-            addDefaultAvailableHost();
+            addNotAvailableHost();
         }
 
     }
 
-    private void addDefaultAvailableHost()
+    private void addNotAvailableHost()
     {
-        AvailableHosts.Add(new Host
+        AvailableRooms.Add(new Room
         {
-            SessionKey = "",
+            RoomId = "",
             OnlineUsers = 0,
             Name = "No Hosts Available",
             Picture = "error_icon",
@@ -105,9 +105,9 @@ public class FindHostPageViewModel : BaseViewModel
     private void InitFavoriteHosts()
     {
         FavoriteHosts.Clear();
-        FavoriteHosts.Add(new Host
+        FavoriteHosts.Add(new Room
         {
-            SessionKey = "",
+            RoomId = "",
             OnlineUsers = 12,
             Name = "ADD",
             IsOnline = false,

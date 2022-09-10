@@ -1,8 +1,9 @@
-﻿using Host.Models;
-using Host.Models.ServerMessages;
-using Microsoft.AspNetCore.SignalR.Client;
+﻿using Microsoft.AspNetCore.SignalR.Client;
+using Client.Models.ServerMessages;
+using Client.Models;
 
-namespace Host.Services;
+namespace Client.Services;
+
 public class HubService
 {
     // invokes methods
@@ -56,6 +57,17 @@ public class HubService
     public Action<SongMessage> SongUpdatedHandler { get; set; }
 
     // public methods
+
+    public void ClearHandlers()
+    {
+        ClientJoinedHandler = null;
+        ClientLeavedHandler = null;
+        RoomClosedHandler = null;
+        HostProfileUpdatedHandler = null;
+        PollVotesUpdatedHandler = null;
+        PollCreatedHandler = null;
+        SongUpdatedHandler = null;
+    }
 
     public async Task StartAsync()
     {

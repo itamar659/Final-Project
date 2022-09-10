@@ -1,4 +1,4 @@
-﻿namespace Host;
+﻿namespace Client;
 public static class Configuration
 {
     public static string DevelopServer => DeviceInfo.Platform == DevicePlatform.WinUI

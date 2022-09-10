@@ -4,7 +4,7 @@ namespace Client;
 
 public partial class MainPage : ContentPage
 {
-    private MainPageViewModel _vm;
+    private readonly MainPageViewModel _vm;
     private readonly Auth0Client auth0Client;
     private readonly UserSingleton _user;
 
@@ -18,6 +18,13 @@ public partial class MainPage : ContentPage
         BindingContext = _vm;
 	}
 
+    protected override async void OnHandlerChanged()
+    {
+        base.OnHandlerChanged();
+
+        await _vm.TryAutoConnectAsync();
+    }
+
     private async void AnonymousSignIn_Clicked(object sender, EventArgs e)
     {
         var res = await _vm.AnonymousConnectAsync();
@@ -26,31 +33,35 @@ public partial class MainPage : ContentPage
             await DisplayAlert("Error", res.Item2, "OK");
     }
 
-    private async void GoogleSignIn_Clicked(object sender, EventArgs e)
+    private async void SocialSignIn_Clicked(object sender, EventArgs e)
     {
-        try
-        {
-            var loginResult = await auth0Client.LoginAsync();
+        // breakpoint - check what information you can gather from login result.
+        var loginResult = await auth0Client.LoginAsync();
+        int x = 0;
 
-            if (!loginResult.IsError)
-            {
-                if (!await _vm.LoginAsync(loginResult.User.Identity.Name))
-                {
-                    await DisplayAlert("We couldn't connect. try again later.", loginResult.ErrorDescription, "OK");
-                }
-                else
-                {
-                    _user.fillUser(loginResult);
-                }
-            }
-            else
-            {
-                await DisplayAlert("We couldn't connect. try again later.", loginResult.ErrorDescription, "OK");
-            }
-        }
-        catch(Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-        }
+        //    try
+        //    {
+        //        var loginResult = await auth0Client.LoginAsync();
+
+        //        if (!loginResult.IsError)
+        //        {
+        //            if (!await _vm.LoginAsync(loginResult.User.Identity.Name))
+        //            {
+        //                await DisplayAlert("We couldn't connect. try again later.", loginResult.ErrorDescription, "OK");
+        //            }
+        //            else
+        //            {
+        //                _user.fillUser(loginResult);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            await DisplayAlert("We couldn't connect. try again later.", loginResult.ErrorDescription, "OK");
+        //        }
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        Console.WriteLine(ex.Message);
+        //    }
     }
 }

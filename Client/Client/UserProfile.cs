@@ -1,0 +1,40 @@
+﻿using Client.Services;
+
+namespace Client;
+public sealed class UserProfile
+{
+    private static readonly object _lock = new object();
+    private static UserProfile _instance = null;
+
+    public UserProfile()
+    {
+        Hub = new HubService();
+        Dispatcher.GetForCurrentThread()?.Dispatch(async () => await Hub.StartAsync());
+    }
+
+    public static UserProfile Instance
+    {
+        get
+        {
+            if (_lock is null)
+            {
+                lock(_lock)
+                {
+                    _instance ??= new UserProfile();
+                }
+            }
+
+            return _instance;
+        }
+    }
+
+    public HubService Hub { get; set; }
+
+    public string Token { get; set; }
+
+    public string Username { get; set; }
+
+    public string RoomId { get; set; }
+
+    public string AvatarUrl { get; set; }
+}

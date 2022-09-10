@@ -9,9 +9,7 @@ namespace Host;
 
 public class ServerlessApi : IServerApi
 {
-    //private readonly string _apiBaseUrl = "https://csharp-project.azurewebsites.net/jukeboxhosts";
-    private readonly string _apiBaseUrl = DeviceInfo.Platform == DevicePlatform.WinUI ?
-        "http://localhost:5038" : "http://10.0.2.2:5038";
+    private readonly string _apiBaseUrl = Configuration.DevelopServer;
 
     private readonly HttpClient _client;
     private string _token;
@@ -102,14 +100,14 @@ public class ServerlessApi : IServerApi
     public async Task<PollMessage> FetchPollAsync()
     {
         var obj = new { RoomId = _roomId };
-        List<PollOption> poll = await postResponseOrDefault<List<PollOption>>("/Room/GetPoll", obj);
+        List<PollOption> pollOptions = await postResponseOrDefault<List<PollOption>>("/Room/GetPoll", obj);
 
-        if (poll == null)
+        if (pollOptions == null)
             return null;
 
         return new PollMessage
         {
-            Options = poll
+            Options = pollOptions
         };
     }
 

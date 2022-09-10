@@ -1,4 +1,4 @@
-﻿using Client.Models.Responses;
+﻿using Client.Models.ServerMessages;
 using Client.Services;
 using System;
 using System.Collections.Generic;
@@ -67,7 +67,7 @@ public class HostLastPageViewModel : BaseViewModel
 
     private async Task fetchSessionDetailsAsync()
     {
-        JukeboxSessionResponse details = await _serverApi.FetchSessionDetailsAsync();
+        HostMessage details = await _serverApi.FetchSessionDetailsAsync();
         if (details == null)
             return;
 

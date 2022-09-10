@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Client.Models
 {
-    public record Host
+    public record Room
     {
-        public string SessionKey { get; set; }
+        public string RoomId { get; set; }
         public string Name { get; set; }
         public int OnlineUsers { get; set; }
         public int TotalUsers { get; set; }

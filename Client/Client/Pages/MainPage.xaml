@@ -42,7 +42,7 @@
                     <Button Grid.Row="3" 
                             FontSize="17" 
                             Text="Use your Social Account"
-                            Clicked="GoogleSignIn_Clicked"
+                            Clicked="SocialSignIn_Clicked"
                             Style="{StaticResource SocialNetworks}"/>
 
                     <Label Grid.Row="4" Margin="0,10,0,0">
