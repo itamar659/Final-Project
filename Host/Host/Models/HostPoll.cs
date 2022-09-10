@@ -3,7 +3,7 @@ using Host.Services;
 using System.Collections.ObjectModel;
 
 namespace Host.Models;
-public class HostPoll
+public class HostPoll : BaseViewModel
 {
     private readonly Random _rand = new Random();
 
@@ -63,6 +63,7 @@ public class HostPoll
                 .Votes = op.Votes;
 
         PollOptions = new ObservableCollection<PollOption>(PollOptions.OrderByDescending(o => o.Votes));
+        OnPropertyChanged(nameof(PollOptions));
     }
 
     public async Task RemovePollAsync()
