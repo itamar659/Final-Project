@@ -8,7 +8,6 @@ public partial class AppShell : Shell
 
         Routing.RegisterRoute(nameof(FindHostPage), typeof(FindHostPage));
         Routing.RegisterRoute(nameof(HostHomePage), typeof(HostHomePage));
-        Routing.RegisterRoute(nameof(HostLastPage), typeof(HostLastPage));
         Routing.RegisterRoute(nameof(HostNotFoundPage), typeof(HostNotFoundPage));
         Routing.RegisterRoute(nameof(HostFrontPage), typeof(HostFrontPage));
     }

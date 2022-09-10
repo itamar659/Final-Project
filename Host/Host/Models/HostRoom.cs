@@ -98,16 +98,6 @@ public class HostRoom : BaseViewModel
 
     public async Task UpdateRoom()
     {
-        //TODO: update and display:
-        //var profile = await _serverAPI.FetchHostProfileAsync(Configuration.Token);
-        //if (profile == null)
-        //    return;
-
-        //Summary = profile.Summary
-        //Description = profile.Desc...
-        //BannerUrl
-        //AvatarUrl
-
         var room = await _serverAPI.FetchRoomUpdateAsync();
         if (room == null)
             return;
@@ -116,6 +106,10 @@ public class HostRoom : BaseViewModel
         PinCode = room.PinCode;
         OnlineUsers = room.OnlineUsers;
 
+        var Summary = room.Summary;
+        //Description = profile.Desc...
+        //BannerUrl
+        //AvatarUrl
 
     }
 }

@@ -76,7 +76,7 @@
             <CollectionView HorizontalScrollBarVisibility="Never" 
                             HorizontalOptions="FillAndExpand"
                             VerticalScrollBarVisibility="Never"
-                            ItemsSource="{Binding AvailableHosts}">
+                            ItemsSource="{Binding AvailableRooms}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Border StrokeThickness="0"

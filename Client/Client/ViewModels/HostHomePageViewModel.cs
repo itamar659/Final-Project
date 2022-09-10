@@ -1,5 +1,4 @@
 ﻿using Client.Models;
-using Client.Models.ServerMessages;
 using Client.Services;
 using System.Windows.Input;
 

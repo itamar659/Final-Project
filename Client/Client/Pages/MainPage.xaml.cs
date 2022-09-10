@@ -35,33 +35,29 @@ public partial class MainPage : ContentPage
 
     private async void SocialSignIn_Clicked(object sender, EventArgs e)
     {
-        // breakpoint - check what information you can gather from login result.
-        var loginResult = await auth0Client.LoginAsync();
-        int x = 0;
+        try
+        {
+            var loginResult = await auth0Client.LoginAsync();
 
-        //    try
-        //    {
-        //        var loginResult = await auth0Client.LoginAsync();
-
-        //        if (!loginResult.IsError)
-        //        {
-        //            if (!await _vm.LoginAsync(loginResult.User.Identity.Name))
-        //            {
-        //                await DisplayAlert("We couldn't connect. try again later.", loginResult.ErrorDescription, "OK");
-        //            }
-        //            else
-        //            {
-        //                _user.fillUser(loginResult);
-        //            }
-        //        }
-        //        else
-        //        {
-        //            await DisplayAlert("We couldn't connect. try again later.", loginResult.ErrorDescription, "OK");
-        //        }
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //    }
+            if (!loginResult.IsError)
+            {
+                if (!await _vm.LoginAsync(loginResult.User.Identity.Name))
+                {
+                    await DisplayAlert("We couldn't connect. try again later.", loginResult.ErrorDescription, "OK");
+                }
+                else
+                {
+                    _user.fillUser(loginResult);
+                }
+            }
+            else
+            {
+                await DisplayAlert("We couldn't connect. try again later.", loginResult.ErrorDescription, "OK");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }

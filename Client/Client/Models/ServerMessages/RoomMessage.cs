@@ -4,8 +4,13 @@ public class RoomMessage
 {
     public RoomMessage()
     {
-        RoomId = string.Empty;
         Hostname = string.Empty;
+        Summary = string.Empty;
+        Description = string.Empty;
+        BannerUrl = string.Empty;
+        AvatarUrl = string.Empty;
+
+        RoomId = string.Empty;
         OnlineUsers = 0;
         OpeningTime = DateTime.MinValue;
 
@@ -15,13 +20,27 @@ public class RoomMessage
         IsPlaying = false;
     }
 
-    public string RoomId { get; set; }
+    // host details
 
     public string Hostname { get; set; }
+
+    public string Summary { get; set; }
+
+    public string Description { get; set; }
+
+    public string BannerUrl { get; set; }
+
+    public string AvatarUrl { get; set; }
+
+    // room details
+
+    public string RoomId { get; set; }
 
     public int OnlineUsers { get; set; }
 
     public DateTime OpeningTime { get; set; }
+
+    // song details
 
     public string SongName { get; set; }
 

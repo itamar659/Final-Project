@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Client.Models
+﻿namespace Client.Models
 {
     public record Room
     {
@@ -15,6 +9,6 @@ namespace Client.Models
         public string SongName { get; set; }
         public string Picture { get; set; }
         public string StatusComment { get; set; }
-        public Boolean IsOnline { get; set; }
+        public bool IsOnline { get; set; }
     }
 }
