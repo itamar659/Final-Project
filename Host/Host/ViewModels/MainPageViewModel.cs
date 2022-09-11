@@ -49,9 +49,10 @@ public class MainPageViewModel : BaseViewModel
     public MainPageViewModel(IServerApi serverAPI, AudioPlayerActive audioPlayer)
     {
         // init private members
+        var dispatcher = Dispatcher.GetForCurrentThread();
         AudioPlayer = audioPlayer;
         AudioPlayer.SongStateChanged += updateStateChangesAsync;
-        AudioPlayer.SongEnded += changeSongAsync;
+        AudioPlayer.SongEnded += (s, e) => dispatcher?.Dispatch(() => changeSongAsync(s, e));
         AudioPlayer.BufferingEnded += updateStateChangesAsync;
 
         // init properties
