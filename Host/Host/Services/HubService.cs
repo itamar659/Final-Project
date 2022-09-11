@@ -23,7 +23,7 @@ public class HubService
     private const string PollCreatedMethod = "PollCreated";
     private const string SongUpdatedMethod = "SongUpdated";
 
-    private readonly string _apiBaseUrl = Configuration.DevelopServer;
+    private readonly string _apiBaseUrl = Configuration.ServerUrl;
 
     private readonly HubConnection _connection;
 

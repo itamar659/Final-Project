@@ -77,7 +77,7 @@ public class HostPoll : BaseViewModel
     {
         int IComparer<PollOption>.Compare(PollOption x, PollOption y)
         {
-            return y.Votes - x.Votes;
+            return x.Votes - y.Votes;
         }
     }
 }

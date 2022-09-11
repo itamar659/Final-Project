@@ -1,10 +1,12 @@
 ﻿namespace Host;
 public static class Configuration
 {
-    public static string DevelopServer => DeviceInfo.Platform == DevicePlatform.WinUI
-        ? "http://localhost:5038" : "http://10.0.2.2:5038";
+    private static string DevelopServer => DeviceInfo.Platform == DevicePlatform.WinUI
+        ? "http://localhost:5230" : "http://10.0.2.2:5230";
 
-    public static string ProductionServer => "https://csharp-project.azurewebsites.net/jukeboxhosts";
+    private static string ProductionServer => "https://csharp-project.azurewebsites.net";
+
+    public static string ServerUrl => ProductionServer;
 
     public static string Token
     {

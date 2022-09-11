@@ -9,7 +9,7 @@ namespace Client.Services;
 
 public class ServerlessApi : IServerApi
 {
-    private readonly string _apiBaseUrl = Configuration.DevelopServer;
+    private readonly string _apiBaseUrl = Configuration.ServerUrl;
 
     private readonly HttpClient _client;
     private string _token;

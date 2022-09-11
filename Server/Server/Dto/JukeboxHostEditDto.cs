@@ -1,16 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Server.Dto;
 
-namespace Server.Models;
-
-public record JukeboxHost
+public class JukeboxHostEditDto
 {
-    public JukeboxHost()
+    public JukeboxHostEditDto()
     {
-        Token = NumberGenerator.GenerateId();
-        Username = string.Empty;
-        RoomId = NumberGenerator.EmptyId;
+        Token = NumberGenerator.EmptyId;
         Hostname = string.Empty;
-
         Summary = string.Empty;
         Description = string.Empty;
         BannerUrl = string.Empty;
@@ -20,18 +15,7 @@ public record JukeboxHost
     /// <summary>
     /// a unique token to reference this host
     /// </summary>
-    [Key]
     public string Token { get; set; }
-
-    /// <summary>
-    /// the username to connect the server - credential
-    /// </summary>
-    public string Username { get; set; }
-
-    /// <summary>
-    /// this host room id
-    /// </summary>
-    public string RoomId { get; set; }
 
     /// <summary>
     /// friendly unique name for display

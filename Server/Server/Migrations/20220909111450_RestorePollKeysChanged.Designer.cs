@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Server.Data;
 
@@ -11,9 +12,10 @@ using Server.Data;
 namespace Server.Migrations
 {
     [DbContext(typeof(ServerContext))]
-    partial class ServerContextModelSnapshot : ModelSnapshot
+    [Migration("20220909111450_RestorePollKeysChanged")]
+    partial class RestorePollKeysChanged
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +23,55 @@ namespace Server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("WebApplication1.Models.InfoHostname", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Hostname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("JukeboxClientToken")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JukeboxClientToken");
+
+                    b.ToTable("InfoHostname");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.InfoSongName", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("JukeboxClientToken")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("JukeboxRoomRoomId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("SongName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("JukeboxClientToken");
+
+                    b.HasIndex("JukeboxRoomRoomId");
+
+                    b.ToTable("InfoSongName");
+                });
 
             modelBuilder.Entity("WebApplication1.Models.JukeboxClient", b =>
                 {
@@ -31,8 +82,9 @@ namespace Server.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsAnonymous")
-                        .HasColumnType("bit");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoomId")
                         .IsRequired()
@@ -44,7 +96,7 @@ namespace Server.Migrations
 
                     b.HasKey("Token");
 
-                    b.ToTable("Clients", (string)null);
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.JukeboxHost", b =>
@@ -85,7 +137,7 @@ namespace Server.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Hosts", (string)null);
+                    b.ToTable("Hosts");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.JukeboxRoom", b =>
@@ -95,6 +147,10 @@ namespace Server.Migrations
 
                     b.Property<TimeSpan>("Duration")
                         .HasColumnType("time");
+
+                    b.Property<string>("Hostname")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsPlaying")
                         .HasColumnType("bit");
@@ -118,7 +174,7 @@ namespace Server.Migrations
 
                     b.HasKey("RoomId");
 
-                    b.ToTable("Rooms", (string)null);
+                    b.ToTable("Rooms");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.PollOption", b =>
@@ -129,12 +185,11 @@ namespace Server.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("JukeboxRoomRoomId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("PollId")
                         .HasColumnType("int");
-
-                    b.Property<string>("RoomId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SongName")
                         .IsRequired()
@@ -145,7 +200,48 @@ namespace Server.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Polls", (string)null);
+                    b.HasIndex("JukeboxRoomRoomId");
+
+                    b.ToTable("Polls");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.InfoHostname", b =>
+                {
+                    b.HasOne("WebApplication1.Models.JukeboxClient", null)
+                        .WithMany("FavoriteHosts")
+                        .HasForeignKey("JukeboxClientToken");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.InfoSongName", b =>
+                {
+                    b.HasOne("WebApplication1.Models.JukeboxClient", null)
+                        .WithMany("FavoriteSongs")
+                        .HasForeignKey("JukeboxClientToken");
+
+                    b.HasOne("WebApplication1.Models.JukeboxRoom", null)
+                        .WithMany("SongHistory")
+                        .HasForeignKey("JukeboxRoomRoomId");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.PollOption", b =>
+                {
+                    b.HasOne("WebApplication1.Models.JukeboxRoom", null)
+                        .WithMany("Poll")
+                        .HasForeignKey("JukeboxRoomRoomId");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.JukeboxClient", b =>
+                {
+                    b.Navigation("FavoriteHosts");
+
+                    b.Navigation("FavoriteSongs");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.JukeboxRoom", b =>
+                {
+                    b.Navigation("Poll");
+
+                    b.Navigation("SongHistory");
                 });
 #pragma warning restore 612, 618
         }

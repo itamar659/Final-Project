@@ -1,9 +1,4 @@
-﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Server.Models;
 
 namespace Server.Data;
@@ -15,11 +10,21 @@ public class ServerContext : DbContext
     {
     }
 
-    public DbSet<Server.Models.JukeboxHost> JukeboxHost { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<JukeboxHost>(entity => {
+            entity.HasIndex(e => e.Username).IsUnique();
+        });
 
-    public DbSet<Server.Models.JukeboxSession> JukeboxSession { get; set; }
+        base.OnModelCreating(modelBuilder);
+    }
 
-    public DbSet<Server.Models.JukeboxClient> JukeboxClient { get; set; }
 
-    public DbSet<Server.Models.PollOption> PollOption { get; set; }
+    public DbSet<JukeboxHost> Hosts { get; set; } = default!;
+
+    public DbSet<JukeboxClient> Clients { get; set; } = default!;
+
+    public DbSet<JukeboxRoom> Rooms { get; set; } = default!;
+
+    public DbSet<PollOption> Polls{ get; set; } = default!;
 }
