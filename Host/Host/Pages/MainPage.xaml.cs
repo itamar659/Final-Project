@@ -1,21 +1,36 @@
-﻿namespace Host;
+﻿using Host.Services;
+using Microsoft.Maui.Storage;
+
+namespace Host;
 
 public partial class MainPage : ContentPage
 {
     private MainPageViewModel _vm;
+
     public MainPage(MainPageViewModel vm)
 	{
 		InitializeComponent();
 
         _vm = vm;
 		BindingContext = vm;
+
+        Task.Run(() =>
+            Dispatcher.Dispatch(async () =>
+                await vm.HubService.StartAsync()));
+    }
+
+    protected override async void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        await _vm.FetchProfile();
     }
 
     private async void AddSongsBtn_Clicked(object sender, EventArgs e)
     {
         try
         {
-            await Task.Run(pickFilesAsync);
+            // required dispatcher to change the poll in UI.
+            Dispatcher.Dispatch(async () =>
+                await pickFilesAsync());
         }
         catch
         {
@@ -28,13 +43,12 @@ public partial class MainPage : ContentPage
         await _vm.RemoveSongsAsync(songsList.SelectedItems);
     }
 
-
     private async void ClearSongsBtn_Clicked(object sender, EventArgs e)
     {
         await _vm.ClearSongsAsync();
     }
 
-    private async void pickFilesAsync()
+    private async Task pickFilesAsync()
     {
         var files = await FilePicker.PickMultipleAsync(getFilePickerOptions());
 

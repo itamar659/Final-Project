@@ -15,6 +15,8 @@ public class AudioService : IAudioService
 
     public event EventHandler SongEnded;
 
+    public event EventHandler BufferingEnded;
+
     public Task PauseAsync()
     {
         mediaPlayer.Pause();
@@ -37,7 +39,8 @@ public class AudioService : IAudioService
         if (mediaPlayer == null)
         {
             mediaPlayer = new MediaPlayer();
-            mediaPlayer.SeekComplete += (s, e) => { SongEnded?.Invoke(this, EventArgs.Empty); };
+            mediaPlayer.SeekComplete += OnSeekComplete;
+            mediaPlayer.BufferingUpdate += OnBufferingEnded;
         }
         else
         {
@@ -57,5 +60,15 @@ public class AudioService : IAudioService
         mediaPlayer = null;
 
         return Task.CompletedTask;
+    }
+
+    protected virtual void OnBufferingEnded(object sender, MediaPlayer.BufferingUpdateEventArgs e)
+    {
+        if (e.Percent >= 100)
+            BufferingEnded?.Invoke(this, EventArgs.Empty);
+    }
+    protected virtual void OnSeekComplete(object sender, object e)
+    {
+        SongEnded?.Invoke(this, EventArgs.Empty);
     }
 }

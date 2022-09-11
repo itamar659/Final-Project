@@ -4,19 +4,38 @@ namespace Server.Models;
 
 public record JukeboxClient
 {
+    public JukeboxClient()
+    {
+        Token = NumberGenerator.GenerateId();
+        Username = string.Empty;
+        IsAnonymous = true;
+        AvatarUrl = string.Empty;
+        RoomId = NumberGenerator.EmptyId;
+    }
+
+    /// <summary>
+    /// a unique token to reference this client
+    /// </summary>
     [Key]
     public string Token { get; set; }
 
-    [Required]
-    public string Password { get; set; }
+    /// <summary>
+    /// the username to connect the server
+    /// </summary>
+    public string Username { get; set; }
 
-    public string SessionKey { get; set; }
+    /// <summary>
+    /// the room id the client connects to
+    /// </summary>
+    public string RoomId { get; set; }
 
-    public JukeboxClient(string password)
-    {
-        Password = password;
+    /// <summary>
+    /// is the client used an anonymous login or not.
+    /// </summary>
+    public bool IsAnonymous { get; set; }
 
-        Token = NumberGenerator.Generate();
-        SessionKey = NumberGenerator.Empty;
-    }
+    /// <summary>
+    /// an avatar image url
+    /// </summary>
+    public string AvatarUrl { get; set; }
 }

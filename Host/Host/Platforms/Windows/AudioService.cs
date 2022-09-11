@@ -15,6 +15,8 @@ public class AudioService : IAudioService
 
     public event EventHandler SongEnded;
 
+    public event EventHandler BufferingEnded;
+
     public Task PauseAsync()
     {
         if (mediaPlayer != null)
@@ -40,9 +42,8 @@ public class AudioService : IAudioService
                 AudioCategory = MediaPlayerAudioCategory.Media,
             };
 
-            mediaPlayer.MediaEnded += (s, e) => {
-                SongEnded?.Invoke(this, EventArgs.Empty);
-            };
+            mediaPlayer.MediaEnded += OnSongEnded;
+            mediaPlayer.MediaOpened += OnBufferingEnded;
         }
         else
         {
@@ -61,5 +62,15 @@ public class AudioService : IAudioService
         }
         
         return Task.CompletedTask;
+    }
+
+    protected virtual void OnSongEnded(object sender, object args)
+    {
+        SongEnded?.Invoke(this, EventArgs.Empty);
+    }
+
+    protected virtual void OnBufferingEnded(object sender, object args)
+    {
+        BufferingEnded?.Invoke(this, EventArgs.Empty);
     }
 }

@@ -13,17 +13,20 @@ public partial class HostHomePage : ContentPage
         BindingContext = vm;
     }
 
-    private async void VoteBtn_Clicked(object sender, EventArgs e)
+    protected override async void OnNavigatedTo(NavigatedToEventArgs args)
     {
-        await Shell.Current.GoToAsync(nameof(HostLastPage));
+        base.OnNavigatedTo(args);
+
+        await _vm.FetchUpdates();
     }
 
     private async void Left_Button_Clicked(object sender, EventArgs e)
     {
-        bool answer = await DisplayAlert("Leaving already?", "Are you sure wanna leave ?", "Yes", "No");
-        if (answer)
+        if (await DisplayAlert("Leaving already?",
+                               "Are you sure wanna leave ?",
+                               "Yes", "No"))
         {
-            await _vm.LeaveSessionAsync();
+            await _vm.LeaveRoomAsync();
         }
     }
 }

@@ -49,6 +49,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.8" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Pages\ProfilePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

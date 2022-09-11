@@ -32,7 +32,7 @@
 
             <!-- Host Name -->
             <Label Grid.Row="1"
-                   Text="{Binding Room.OwnerName}"
+                   Text="{Binding Room.Hostname}"
                    Style="{StaticResource HeaderLabel}"
                    HorizontalOptions="Center"
                    Margin="0, 0, 0, 60" />
@@ -100,7 +100,7 @@
                             Style="{StaticResource CardBorder}">
                         <HorizontalStackLayout Spacing="4">
                             <Label Text="Live:" />
-                            <Label Text="{Binding RoomUpdater.LiveTime}" />
+                            <Label Text="{Binding Room.LiveTime}" />
                         </HorizontalStackLayout>
                     </Border>
 
@@ -115,9 +115,9 @@
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="model:PollOption">
                                         <HorizontalStackLayout Spacing="16">
-                                            <Label Text="{Binding Id}" />
+                                            <Label Text="{Binding PollId}" />
                                             <Label Text="{Binding Votes}" />
-                                            <Label Text="{Binding Name}" />
+                                            <Label Text="{Binding SongName}" />
                                         </HorizontalStackLayout>
                                     </DataTemplate>
                                 </CollectionView.ItemTemplate>
@@ -141,7 +141,7 @@
                             <CollectionView Grid.Row="4"
                                             x:Name="songsList"
                                             SelectionMode="Multiple"
-                                            ItemsSource="{Binding Songs}"
+                                            ItemsSource="{Binding AudioPlayer.Songs}"
                                             HorizontalOptions="Center">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="model:Song">

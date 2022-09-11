@@ -11,9 +11,9 @@ public static class ServicesExtensions
 #elif ANDROID
         builder.Services.AddSingleton<IAudioService, Platforms.Android.AudioService>();
 #elif MACCATALYST
-        builder.Services.AddSingleton<IAudioService, Platforms.MacCatalyst.AudioService>();
+        throw new NotImplementedException();
 #elif IOS
-        builder.Services.AddSingleton<IAudioService, Platforms.iOS.AudioService>();
+        throw new NotImplementedException();
 #endif
         return builder;
     }

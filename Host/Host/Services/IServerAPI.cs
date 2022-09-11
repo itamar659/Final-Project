@@ -1,18 +1,19 @@
-﻿using Host.Models.Requests;
-using Host.Models.Responses;
+﻿using Host.Models.ServerMessages;
 
 namespace Host.Services;
+
 public interface IServerApi : IDisposable
 {
-    Task<bool> ConnectAsync(string password);
-    Task<bool> OpenSessionAsync();
-    Task CloseSessionAsync();
-    string GetSessionKey();
-    Task<JukeboxSessionResponse> FetchSessionUpdateAsync();
-    Task<PollResponse> FetchPollAsync();
-    Task<bool> CreatePollAsync(PollRequest pollRequest);
-    Task<bool> RemovePollAsync();
-    Task<bool> ChangeSessionPinCodeAsync(string pinCode);
-    Task<bool> ChangeOwnerNameAsync(string ownerName);
-    Task UpdateSongAsync(SongUpdateRequest song);
+    Task<string> ChangeRoomPinCodeAsync();
+    Task CloseRoomAsync();
+    Task<HostMessage> ConnectAsync(string username);
+    Task CreatePollAsync(PollMessage pollRequest);
+    Task EditProfileAsync(HostMessage profile);
+    Task<RoomMessage> FetchHostProfileAsync(string token);
+    Task<PollMessage> FetchPollAsync();
+    Task<RoomMessage> FetchRoomUpdateAsync();
+    string GetRoomId();
+    Task<string> OpenRoomAsync();
+    Task RemovePollAsync();
+    Task UpdateSongAsync(SongMessage song);
 }

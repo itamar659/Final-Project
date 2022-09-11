@@ -74,6 +74,7 @@
 
 	<ItemGroup>
 	  <PackageReference Include="IdentityModel.OidcClient" Version="5.0.0" />
+	  <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.8" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -90,9 +91,6 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Controls\HostPlayerControl.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Pages\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Pages\LogoutPage.xaml">

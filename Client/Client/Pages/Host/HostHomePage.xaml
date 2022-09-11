@@ -94,7 +94,7 @@
                    Margin="0,0,0,5"
                    HorizontalOptions="Center"
                    Grid.Row="0"
-                   Text="{Binding HostName}" />
+                   Text="{Binding Room.Hostname}" />
             
             <Frame Grid.Row="1"
                    VerticalOptions="FillAndExpand"
@@ -107,7 +107,7 @@
                     <Label Grid.Row="0"
                            HorizontalOptions="Center"
                            Style="{StaticResource ValueStyle}"
-                           Text="{Binding SongName}" />
+                           Text="{Binding Room.SongName}" />
 
                     <Slider x:Name="SliderAudioPlayer"
                             Grid.Row="1"
@@ -115,19 +115,19 @@
                             ThumbColor="#ff8000"
                             MinimumTrackColor="#ff8000"
                             MaximumTrackColor="#ff8000"
-                            Value="{Binding Position}"
-                            Maximum="{Binding Duration}" />
+                            Value="{Binding Room.Position}"
+                            Maximum="{Binding Room.Duration}" />
 
                     <Grid ColumnDefinitions="*,*,*,*"
                           Grid.Row="2">
 
                         <Label Grid.Column="0"
                                Style="{StaticResource ValueStyle}"
-                               Text="{Binding Position, Converter={StaticResource millisecondsToTimeConverter}}"/>
+                               Text="{Binding Room.Position, Converter={StaticResource millisecondsToTimeConverter}}"/>
 
                         <Label Grid.Column="4"
                                Style="{StaticResource ValueStyle}"
-                               Text="{Binding Duration, Converter={StaticResource millisecondsToTimeConverter}}" />
+                               Text="{Binding Room.Duration, Converter={StaticResource millisecondsToTimeConverter}}" />
                     </Grid>
                 </Grid>
             </Frame>
@@ -142,20 +142,18 @@
                     HorizontalOptions="Center"
                     HasShadow="True"
                     CornerRadius="40"
-                    IsVisible="{Binding CanVote}">
+                    IsVisible="{Binding Poll.CanVote}">
                 <CollectionView Grid.Row="3"
-                                    ItemsSource="{Binding SongsToPick}">
+                                    ItemsSource="{Binding Poll.Options}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:PollOption">
                             <Border>
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding BindingContext.ChooseSongCommand,
                                                                             Source={x:RelativeSource AncestorType={x:Type ContentPage}}}"
-                                                          CommandParameter="{Binding Option}"/>
-                                    <!--<TapGestureRecognizer Command="{Binding BindingContext.ChooseSongCommand,
-                                    Source={x:RelativeSource AncestorType={x:Type ContentPage}}}" />-->
+                                                          CommandParameter="{Binding PollId}"/>
                                 </Border.GestureRecognizers>
-                                <Label Text="{Binding Name}"
+                                <Label Text="{Binding SongName}"
                                        HorizontalOptions="Center"
                                        VerticalOptions="Center"
                                        FontAttributes="Bold"
@@ -163,7 +161,6 @@
                                        CharacterSpacing="1"
                                        Margin="0,5,0,5" />
                             </Border>
-
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
@@ -173,7 +170,7 @@
                     HorizontalOptions="Center"
                     HasShadow="True"
                     CornerRadius="40"
-                    IsVisible="{Binding CanVote, Converter={StaticResource inverseBooleanConverter}}">
+                    IsVisible="{Binding Poll.CanVote, Converter={StaticResource inverseBooleanConverter}}">
                 <Label Text="Thanks for voting!" />
             </Frame>
             

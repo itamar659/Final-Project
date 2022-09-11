@@ -1,48 +1,34 @@
-﻿using Host.Models;
-using Host.Models.Requests;
+﻿using Host.Models.ServerMessages;
 using Host.Services;
-using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Host.Models;
 
 namespace Host;
+
+// TODO: Update UI (pincode) after opening/closing room
 public class MainPageViewModel : BaseViewModel
 {
-    public static readonly double SERVER_UPDATE_DELAY = TimeSpan.FromSeconds(1).TotalMilliseconds;
-
-    #region Private Members
-
-    private IServerApi _serverAPI;
-    private AudioPlayer _audioPlayer;
-    private System.Timers.Timer _updateTimer;
-
-    #endregion
-
     #region Public Properties
 
     /// <summary>
-    /// Update the UI for everything that related to the audio player
+    /// the room hub
     /// </summary>
-    public AudioPlayerUpdater AudioPlayer { get; set; }
+    public HubService HubService { get; set; }
 
     /// <summary>
-    /// Update the UI for everything that related to the room this host created
+    /// Audio Player
     /// </summary>
-    public RoomUpdater RoomUpdater { get; set; }
-
-    /// <summary>
-    /// List available songs in the host
-    /// </summary>
-    public ObservableCollection<Song> Songs => _audioPlayer.Songs;
+    public AudioPlayerActive AudioPlayer { get; set; }
 
     /// <summary>
     /// A poll and saync poll methods to update the server
     /// </summary>
-    public Poll Poll { get; set; }
+    public HostPoll Poll { get; set; }
 
     /// <summary>
     /// A room and saync poll methods to update the server
     /// </summary>
-    public Room Room { get; set; }
+    public HostRoom Room { get; set; }
 
     #endregion
 
@@ -55,40 +41,58 @@ public class MainPageViewModel : BaseViewModel
     public ICommand PrevCommand { get; set; }
 
     public ICommand NextCommand { get; set; }
-    public ICommand SkipToEndCommand { get; set; }
 
     #endregion
 
     #region Constructor
 
-    public MainPageViewModel(IServerApi serverAPI, AudioPlayer audioPlayer)
+    public MainPageViewModel(IServerApi serverAPI, AudioPlayerActive audioPlayer)
     {
-        _serverAPI = serverAPI;
+        // init private members
+        var dispatcher = Dispatcher.GetForCurrentThread();
+        AudioPlayer = audioPlayer;
+        AudioPlayer.SongStateChanged += updateStateChangesAsync;
+        AudioPlayer.SongEnded += (s, e) => dispatcher?.Dispatch(() => changeSongAsync(s, e));
+        AudioPlayer.BufferingEnded += updateStateChangesAsync;
 
-        _audioPlayer = audioPlayer;
-        _audioPlayer.SongStateChanged += updateServerSongAsync;
-        _audioPlayer.SongEnded += changeSongAsync;
+        // init properties
+        Poll = new HostPoll(serverAPI);
+        Room = new HostRoom(serverAPI);
+        HubService = new HubService();
 
-        _updateTimer = new System.Timers.Timer(SERVER_UPDATE_DELAY);
-        _updateTimer.Elapsed += fetchViewUpdateAsync;
-        _updateTimer.Elapsed += updateServerAsync;
-
-        Poll = new Poll(serverAPI);
-        Room = new Room(serverAPI);
-        AudioPlayer = new AudioPlayerUpdater(_audioPlayer);
-        RoomUpdater = new RoomUpdater(Room);
-
+        // init commands
         OpenCloseRoomCommand = new Command(openCloseRoomAsync);
         StartPausePlayerCommand = new Command(startPausePlayerAsync);
         PrevCommand = new Command(prevAsync);
         NextCommand = new Command(nextAsync);
 
-        _updateTimer.Start();
+        // set hub handlers
+        HubService.PollVotesUpdatedHandler = (poll) =>
+        {
+            Poll.UpdateVotes(poll);
+        };
+
+        HubService.ClientJoinedHandler = () =>
+        {
+            Room.OnlineUsers++;
+            updateStateChangesAsync(this, EventArgs.Empty);
+
+        };
+
+        HubService.ClientLeavedHandler = () =>
+        {
+            Room.OnlineUsers--;
+        };
     }
 
     #endregion
 
     #region Public Methods
+
+    public async Task FetchProfile()
+    {
+        await Room.UpdateRoom();
+    }
 
     /// <summary>
     /// Add a list of song to the playlist asynchronous.
@@ -97,7 +101,7 @@ public class MainPageViewModel : BaseViewModel
     {
         if (files != null)
             foreach (var file in files)
-                _audioPlayer.AddToPlaylist(file.FullPath);
+                AudioPlayer.AddToPlaylist(file.FullPath);
 
         return Task.CompletedTask;
     }
@@ -109,7 +113,7 @@ public class MainPageViewModel : BaseViewModel
     {
         if (songs != null)
             foreach (var songName in songs.Select(s => ((Song)s).Name).ToList())
-                _audioPlayer.RemoveFromPlaylist(songName);
+                AudioPlayer.RemoveFromPlaylist(songName);
 
         return Task.CompletedTask;
     }
@@ -119,7 +123,7 @@ public class MainPageViewModel : BaseViewModel
     /// </summary>
     public Task ClearSongsAsync()
     {
-        _audioPlayer.ClearPlaylist();
+        AudioPlayer.ClearPlaylist();
 
         return Task.CompletedTask;
     }
@@ -128,6 +132,11 @@ public class MainPageViewModel : BaseViewModel
 
     #region Private Methods
 
+    private async void updateStateChangesAsync(object sender, EventArgs e)
+    {
+        await Room.updateServer(AudioPlayer.SongMessage);
+        await HubService.UpdateSong(Room.RoomId, AudioPlayer.SongMessage);
+    }
 
     /// <summary>
     /// Fetch the last results about the poll, change the song in the audio player.
@@ -136,38 +145,17 @@ public class MainPageViewModel : BaseViewModel
     {
         if (Room.IsOpen)
         {
-            await Poll.UpdateVotesAsync();
+            if (Poll.TopRated != null)
+                await AudioPlayer.ChangeSong(Poll.TopRated.SongName);
+            else
+                await AudioPlayer.NextAsync();
 
-            var choosenName = Poll.GetMostVotedName();
-
-            await _audioPlayer.ChangeSong(choosenName);
-
-            createPoll();
+            await Poll.RemovePollAsync();
+            await Poll.CreatePollAsync(AudioPlayer.Songs);
         }
         else
         {
-            await _audioPlayer.NextAsync();
-        }
-    }
-
-    /// <summary>
-    /// Update the server about the song state.
-    /// </summary>
-    private async void updateServerSongAsync(object sender, EventArgs e)
-    {
-        try
-        {
-            var tries = 5;
-            while (_audioPlayer.Duration == double.Epsilon && tries > 0)
-            {
-                tries--;
-                Thread.Sleep(50);
-            }
-
-            await _serverAPI.UpdateSongAsync(new SongUpdateRequest { IsPaused = !AudioPlayer.IsPlaying, SongName = _audioPlayer.SongName, Duration = _audioPlayer.Duration, Position = _audioPlayer.Position });
-        }
-        catch { 
-
+            await AudioPlayer.NextAsync();
         }
     }
 
@@ -179,18 +167,17 @@ public class MainPageViewModel : BaseViewModel
         if (!Room.IsOpen)
         {
             await Room.OpenRoomAsync();
-            await Poll.UpdateVotesAsync();
+            await HubService.JoinRoom(Room.RoomId);
 
-            if (Poll.PollOptions != null && Poll.PollOptions[0].Name == "None")
-            {
-                await Poll.RemovePollAsync();
-                createPoll();
-            }
+            await HubService.UpdateSong(Room.RoomId, AudioPlayer.SongMessage);
 
+            await Poll.RemovePollAsync();
+            await Poll.CreatePollAsync(AudioPlayer.Songs);
         }
         else
         {
             await Poll.RemovePollAsync();
+            await HubService.LeaveRoom(Room.RoomId);
             await Room.CloseRoomAsync();
         }
     }
@@ -200,7 +187,7 @@ public class MainPageViewModel : BaseViewModel
     /// </summary>
     private async void prevAsync(object obj)
     {
-        await _audioPlayer.PrevAsync();
+        await AudioPlayer.PrevAsync();
     }
 
     /// <summary>
@@ -208,7 +195,7 @@ public class MainPageViewModel : BaseViewModel
     /// </summary>
     private async void nextAsync(object obj)
     {
-        await _audioPlayer.NextAsync();
+        await AudioPlayer.NextAsync();
     }
 
     /// <summary>
@@ -216,47 +203,11 @@ public class MainPageViewModel : BaseViewModel
     /// </summary>
     private async void startPausePlayerAsync(object obj)
     {
-        if (_audioPlayer.IsPlaying)
-            await _audioPlayer.PauseAsync();
+        if (AudioPlayer.IsPlaying)
+            await AudioPlayer.PauseAsync();
         else
-            await _audioPlayer.PlayAsync();
-    }
-
-    /// <summary>
-    /// update the UI every known period of time
-    /// </summary>
-    private async void fetchViewUpdateAsync(object sender, System.Timers.ElapsedEventArgs e)
-    {
-        await Room.UpdateRoomAsync();
-
-        await Poll.UpdateVotesAsync();
-
-    }
-
-    /// <summary>
-    /// Plaster
-    /// </summary>
-    private async void updateServerAsync(object sender, System.Timers.ElapsedEventArgs e)
-    {
-        await _serverAPI.UpdateSongAsync(new SongUpdateRequest { IsPaused = !AudioPlayer.IsPlaying, SongName = _audioPlayer.SongName, Duration = _audioPlayer.Duration, Position = _audioPlayer.Position });
-    }
-
-    /// <summary>
-    /// Creating new poll and send it to the server
-    /// </summary>
-    private async void createPoll()
-    {
-        Poll.GeneratePoll(_audioPlayer.Songs);
-
-        var request = new PollRequest() { Options = Poll.PollOptions.ToList() };
-        foreach (var option in Poll.PollOptions)
-            option.Timestamp = PollRequest.Timestamp;
-
-        // TODO: Check the poll in server, the changes in the model can make problems.
-        await _serverAPI.RemovePollAsync();
-        await _serverAPI.CreatePollAsync(request);
+            await AudioPlayer.PlayAsync();
     }
 
     #endregion
-
 }
