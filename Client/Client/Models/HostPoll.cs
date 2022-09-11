@@ -40,6 +40,7 @@ public class HostPoll : BaseViewModel
     public async Task VoteAsync(int option)
     {
         await _serverAPI.VoteAsync(Options[option].PollId);
+        CanVote = false;
     }
 
     internal void SetPollProperties(ICollection<PollOption> poll)
