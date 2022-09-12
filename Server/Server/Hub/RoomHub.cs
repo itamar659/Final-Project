@@ -23,23 +23,23 @@ public class RoomHub : Hub
     public async Task JoinRoom(string roomId)
     {
         await Groups.AddToGroupAsync(Context.ConnectionId, roomId);
-        await Clients.Group(roomId).SendAsync(ClientJoinedMethod);
+        await Clients.OthersInGroup(roomId).SendAsync(ClientJoinedMethod);
     }
 
     public async Task LeaveRoom(string roomId)
     {
         await Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId);
-        await Clients.Group(roomId).SendAsync(ClientLeavedMethod);
+        await Clients.OthersInGroup(roomId).SendAsync(ClientLeavedMethod);
     }
 
     public async Task CloseRoom(string roomId)
     {
-        await Clients.Group(roomId).SendAsync(RoomClosedMethod);
+        await Clients.OthersInGroup(roomId).SendAsync(RoomClosedMethod);
     }
 
     public async Task UpdateHostProfile(string roomId, JukeboxHostProfileDto host)
     {
-        await Clients.Group(roomId).SendAsync(HostProfileUpdatedMethod, host);
+        await Clients.OthersInGroup(roomId).SendAsync(HostProfileUpdatedMethod, host);
     }
 
     public async Task UpdatePollVotes(string roomId, ICollection<PollOption> poll)
@@ -49,11 +49,11 @@ public class RoomHub : Hub
 
     public async Task CreatePoll(string roomId, ICollection<PollOption> poll)
     {
-        await Clients.Group(roomId).SendAsync(PollCreatedMethod, poll);
+        await Clients.OthersInGroup(roomId).SendAsync(PollCreatedMethod, poll);
     }
 
     public async Task UpdateSong(string roomId, Song song)
     {
-        await Clients.Group(roomId).SendAsync(SongUpdatedMethod, song);
+        await Clients.OthersInGroup(roomId).SendAsync(SongUpdatedMethod, song);
     }
 }
