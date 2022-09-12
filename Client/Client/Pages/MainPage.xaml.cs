@@ -1,6 +1,4 @@
-﻿using Android.OS;
-using Client.Auth0;
-using IdentityModel;
+﻿using Client.Auth0;
 using System.Security.Claims;
 
 namespace Client;
