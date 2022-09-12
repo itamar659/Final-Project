@@ -34,7 +34,7 @@ public sealed class UserProfile
 
     public string Username { get; set; }
 
-    public string RoomId { get; set; }
+    public string RoomId { get; set; } = null;
 
     public string AvatarUrl { get; set; }
 }

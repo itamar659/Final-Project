@@ -59,8 +59,10 @@ public class HostHomePageViewModel : BaseViewModel
 
     public async Task LeaveRoomAsync()
     {
+        _hub.ClearHandlers();
         await _hub.LeaveRoom(Room.RoomId);
         await _serverApi.LeaveRoomAsync();
+        UserProfile.Instance.RoomId = null;
         Room.Dispose();
         await Shell.Current.GoToAsync("..");
     }
