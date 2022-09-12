@@ -11,6 +11,11 @@ public partial class LogoutPage : ContentPage
         InitializeComponent();
 
         auth0Client = client;
+    }
+
+    protected override void OnNavigatedTo(NavigatedToEventArgs args)
+    {
+        base.OnNavigatedTo(args);
 
         logout();
     }
