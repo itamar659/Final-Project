@@ -12,7 +12,7 @@ builder.Services.AddDbContext<ServerContext>(options =>
 builder.Services
     .AddSignalR()
     .AddAzureSignalR(
-    "Endpoint=https://chat-test-chsarp-proj.service.signalr.net;AccessKey=w3A8h3bz4Q+1TcUrn8TFklTrhICn9jbEXunMUtOFHaA=;Version=1.0;"
+    "Endpoint=https://csharp-project-signalr.service.signalr.net;AccessKey=KA1nlK0H2RgoW7YxXtnGrDZ/hraBwp7KC4bxiCSlpyI=;Version=1.0;"
 );
 
 builder.AddCustomServices();
@@ -37,7 +37,6 @@ else
 }
 
 app.UseRouting();
-app.UseFileServer();
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
