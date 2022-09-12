@@ -1,16 +1,10 @@
 ﻿using Client.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Client.ViewModels
 {
     public class SongsViewModel
     {
-
         private string _name = "";
         public string name
         {
@@ -21,19 +15,11 @@ namespace Client.ViewModels
             }
         }
 
-
         public ObservableCollection<Song> Songs { get; set; }
 
-        public SongsViewModel(UserSingleton user)
+        public SongsViewModel()
         {
-            if (user != null)
-            {
-                name = user.username;
-            }
-            else
-            {
-                name = "";
-            }
+            name = UserProfile.Instance.Username;
 
             Songs = new ObservableCollection<Song>()
             {

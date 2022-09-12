@@ -40,10 +40,10 @@ public class Auth0Client
     public async Task<BrowserResult> LogoutAsync()
     {
         var logoutParameters = new Dictionary<string, string>
-    {
-      {"client_id", oidcClient.Options.ClientId },
-      {"returnTo", oidcClient.Options.RedirectUri }
-    };
+        {
+            {"client_id", oidcClient.Options.ClientId },
+            {"returnTo", oidcClient.Options.RedirectUri } 
+        };
 
         var logoutRequest = new LogoutRequest();
         var endSessionUrl = new RequestUrl($"{oidcClient.Options.Authority}/v2/logout")

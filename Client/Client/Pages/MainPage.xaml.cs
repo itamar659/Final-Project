@@ -6,15 +6,13 @@ public partial class MainPage : ContentPage
 {
     private readonly MainPageViewModel _vm;
     private readonly Auth0Client auth0Client;
-    private readonly UserSingleton _user;
 
-    public MainPage(MainPageViewModel vm, Auth0Client client, UserSingleton user)
+    public MainPage(MainPageViewModel vm, Auth0Client client)
     {
         InitializeComponent();
 
         _vm = vm;
         auth0Client = client;
-        _user = user;
         BindingContext = _vm;
 	}
 
@@ -39,21 +37,8 @@ public partial class MainPage : ContentPage
         {
             var loginResult = await auth0Client.LoginAsync();
 
-            if (!loginResult.IsError)
-            {
-                if (!await _vm.LoginAsync(loginResult.User.Identity.Name))
-                {
+            if (loginResult.IsError || !await _vm.LoginAsync(loginResult.User.Identity.Name))
                     await DisplayAlert("We couldn't connect. try again later.", loginResult.ErrorDescription, "OK");
-                }
-                else
-                {
-                    _user.fillUser(loginResult);
-                }
-            }
-            else
-            {
-                await DisplayAlert("We couldn't connect. try again later.", loginResult.ErrorDescription, "OK");
-            }
         }
         catch (Exception ex)
         {

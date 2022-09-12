@@ -28,7 +28,7 @@ public class MainPageViewModel : BaseViewModel
                 return false;
             }
         }
-        catch (NullReferenceException e)
+        catch (NullReferenceException)
         {
             return false;
         }
