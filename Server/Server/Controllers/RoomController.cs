@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Protocol;
-using Server;
 using Server.Dto;
 using System.ComponentModel;
 using Server.Data;
-using Server.Dto;
 using Server.Models;
 
 namespace Server.Controllers;
@@ -120,26 +117,6 @@ public class RoomController : Controller
 
         return Ok();
     }
-
-    // ----- Change song from the hub, using hub invoke method from the host itself
-    //[HttpPost("[action]")]
-    //public async Task<IActionResult> ChangeSong([Bind("Token,SongName,Position,Duration,IsPlaying")] RoomSongUpdateDto roomSong)
-    //{
-    //    var host = await _context.Hosts.FindAsync(roomSong.Token);
-    //    if (host is null)
-    //        return Unauthorized();
-
-    //    if (host.RoomId == NumberGenerator.EmptyId)
-    //        return NotFound();
-
-    //    var room = await _context.Rooms.FindAsync(host.RoomId);
-    //    if (room is null)
-    //        return Unauthorized();
-
-
-
-    //    return Ok();
-    //}
 
     [HttpPost("[action]")]
     public async Task<ActionResult> CreatePoll([Bind("Token,Options")] PollCreationDto poll)

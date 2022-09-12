@@ -9,7 +9,7 @@ public record JukeboxRoom
     {
         RoomId = NumberGenerator.EmptyId;
         PinCode = NumberGenerator.EmptyPinCode;
-        OnlineUsers = 0;
+        OnlineUsers = 1;
         OpeningTime = DateTime.Now;
 
         SongName = string.Empty;
