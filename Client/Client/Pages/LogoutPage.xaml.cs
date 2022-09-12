@@ -22,6 +22,7 @@ public partial class LogoutPage : ContentPage
 
         if (!logoutResult.IsError)
         {
+            Configuration.Token = string.Empty;
             await Shell.Current.GoToAsync($"//{nameof(MainPage)}");
         }
         else
