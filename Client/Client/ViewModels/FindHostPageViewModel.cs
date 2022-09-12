@@ -9,22 +9,35 @@ namespace Client;
 public class FindHostPageViewModel : BaseViewModel
 {
     private readonly IServerApi _serverApi;
-    private string _name;
+    private string _welcomeMessage;
+    private bool _isRefreshing;
 
     public ObservableCollection<Room> FavoriteHosts { get; set; }
     public ObservableCollection<Room> AvailableRooms { get; set; }
 
     public string WelcomeMessage
     {
-        get => _name;
+        get => _welcomeMessage;
         set
         {
-            _name = "Welcome " + value;
+            _welcomeMessage = "Welcome " + value;
             OnPropertyChanged(nameof(UserProfile.Username));
         }
     }
 
+    public bool IsRefreshing
+    {
+        get { return _isRefreshing; }
+        set
+        {
+            _isRefreshing = value;
+            OnPropertyChanged(nameof(IsRefreshing));
+        }
+    }
+
     public ICommand ViewHostPageCommand { get; set; }
+
+    public ICommand updateAvailableRoomsCommand { get; set; }
 
     public FindHostPageViewModel(IServerApi serverApi)
     {
@@ -32,7 +45,7 @@ public class FindHostPageViewModel : BaseViewModel
         FavoriteHosts = new ObservableCollection<Room>();
         AvailableRooms = new ObservableCollection<Room>();
 
-        _name = "Welcome " + UserProfile.Instance.Username;
+        _welcomeMessage = "Welcome " + UserProfile.Instance.Username;
 
         InitFavoriteHosts();
 
@@ -44,22 +57,27 @@ public class FindHostPageViewModel : BaseViewModel
             }
         });
 
-        updateAvailableSessionsAsync();
+        updateAvailableRoomsCommand = new Command(async () =>
+        {
+            await updateAvailableSessionsAsync();
+        });
+
+        Task.Run(async () => await updateAvailableSessionsAsync());
     }
 
-    private async void updateAvailableSessionsAsync()
+    private async Task updateAvailableSessionsAsync()
     {
         List<RoomMessage> availableRooms = null;
 
         try
         {
-             availableRooms = await _serverApi.FetchOpenedRoomsAsync();
+            availableRooms = await _serverApi.FetchOpenedRoomsAsync();
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Console.WriteLine("Couldn't fetch Available Hosts");
         }
-       
+
         AvailableRooms.Clear();
 
         if (availableRooms != null)
@@ -77,7 +95,7 @@ public class FindHostPageViewModel : BaseViewModel
                     StatusComment = "Online"
                 });
             }
-            if(availableRooms.Count == 0)
+            if (availableRooms.Count == 0)
             {
                 addNotAvailableHost();
             }
@@ -87,6 +105,7 @@ public class FindHostPageViewModel : BaseViewModel
             addNotAvailableHost();
         }
 
+        IsRefreshing = false;
     }
 
     private void addNotAvailableHost()

@@ -73,24 +73,28 @@
                HasShadow="True"
                CornerRadius="40"
                BackgroundColor="White">
-            <CollectionView HorizontalScrollBarVisibility="Never" 
-                            HorizontalOptions="FillAndExpand"
-                            VerticalScrollBarVisibility="Never"
-                            ItemsSource="{Binding AvailableRooms}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Border StrokeThickness="0"
-                                BackgroundColor="AliceBlue">
-                            <Border.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding BindingContext.ViewHostPageCommand,
-                                    Source={x:RelativeSource AncestorType={x:Type ContentPage}}}"
-                                                      CommandParameter="{Binding .}"/>
-                            </Border.GestureRecognizers>
-                            <local:FindHostItemControl />
-                        </Border>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+            <RefreshView HorizontalOptions="FillAndExpand"
+                         Command="{Binding updateAvailableRoomsCommand}"
+                         IsRefreshing="{Binding IsRefreshing}">
+                <CollectionView HorizontalScrollBarVisibility="Never" 
+                                HorizontalOptions="FillAndExpand"
+                                VerticalScrollBarVisibility="Never"
+                                ItemsSource="{Binding AvailableRooms}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border StrokeThickness="0"
+                                    BackgroundColor="AliceBlue">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding BindingContext.ViewHostPageCommand,
+                                        Source={x:RelativeSource AncestorType={x:Type ContentPage}}}"
+                                                          CommandParameter="{Binding .}"/>
+                                </Border.GestureRecognizers>
+                                <local:FindHostItemControl />
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
         </Frame>
     </Grid>
 </ContentPage>

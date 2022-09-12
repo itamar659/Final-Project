@@ -17,6 +17,7 @@ public partial class LogoutPage : ContentPage
 
     private async void logout()
     {
+        // TODO: Check if the user logged in or an anonymous
         // Do logout logic
         var logoutResult = await auth0Client.LogoutAsync();
 
