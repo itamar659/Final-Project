@@ -3,7 +3,6 @@ using Client.Models.ServerMessages;
 using Client.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using static Android.App.DownloadManager;
 
 namespace Client;
 
