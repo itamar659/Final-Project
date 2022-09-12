@@ -21,16 +21,17 @@
                FontSize="27"/>
 
         <Border Grid.Row="1"
-                   Grid.Column="0"
+                Grid.Column="0"
                 IsVisible="true"
-                   Grid.ColumnSpan="2"
+                Grid.ColumnSpan="2"
             BackgroundColor="Black">
-            <SearchBar 
-                   TextColor="#818181"
-                   PlaceholderColor="#818181"
-                   Placeholder="Search"
-                   BackgroundColor="Transparent"
-                   Margin="0,10"/>
+            <SearchBar SearchCommand="{Binding SearchRoomCommand}"
+                       SearchCommandParameter="{Binding Text, Source={RelativeSource Mode=Self}}"
+                       TextColor="#818181"
+                       PlaceholderColor="#818181"
+                       Placeholder="Search rooms..."
+                       BackgroundColor="Transparent"
+                       Margin="0,10"/>
         </Border>
 
         <!-- Favorite list-->
@@ -79,7 +80,7 @@
                 <CollectionView HorizontalScrollBarVisibility="Never" 
                                 HorizontalOptions="FillAndExpand"
                                 VerticalScrollBarVisibility="Never"
-                                ItemsSource="{Binding AvailableRooms}">
+                                ItemsSource="{Binding FilterAvailableRooms}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Border StrokeThickness="0"

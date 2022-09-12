@@ -3,6 +3,7 @@ using Client.Models.ServerMessages;
 using Client.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using static Android.App.DownloadManager;
 
 namespace Client;
 
@@ -14,6 +15,7 @@ public class FindHostPageViewModel : BaseViewModel
 
     public ObservableCollection<Room> FavoriteHosts { get; set; }
     public ObservableCollection<Room> AvailableRooms { get; set; }
+    public ObservableCollection<Room> FilterAvailableRooms { get; set; }
 
     public string WelcomeMessage
     {
@@ -39,15 +41,18 @@ public class FindHostPageViewModel : BaseViewModel
 
     public ICommand updateAvailableRoomsCommand { get; set; }
 
+    public ICommand SearchRoomCommand { get; set; }
+
     public FindHostPageViewModel(IServerApi serverApi)
     {
         _serverApi = serverApi;
         FavoriteHosts = new ObservableCollection<Room>();
         AvailableRooms = new ObservableCollection<Room>();
+        FilterAvailableRooms = new ObservableCollection<Room>();
 
         _welcomeMessage = "Welcome " + UserProfile.Instance.Username;
 
-        InitFavoriteHosts();
+        initFavoriteHosts();
 
         ViewHostPageCommand = new Command(async (host) =>
         {
@@ -60,6 +65,11 @@ public class FindHostPageViewModel : BaseViewModel
         updateAvailableRoomsCommand = new Command(async () =>
         {
             await updateAvailableSessionsAsync();
+        });
+
+        SearchRoomCommand = new Command(query =>
+        {
+            filterRooms((string)query);
         });
 
         Task.Run(async () => await updateAvailableSessionsAsync());
@@ -97,20 +107,24 @@ public class FindHostPageViewModel : BaseViewModel
             }
             if (availableRooms.Count == 0)
             {
-                addNotAvailableHost();
+                addNotAvailableHost(AvailableRooms);
             }
         }
         else
         {
-            addNotAvailableHost();
+            addNotAvailableHost(AvailableRooms);
         }
+
+        FilterAvailableRooms.Clear();
+        foreach (var room in AvailableRooms)
+            FilterAvailableRooms.Add(room);
 
         IsRefreshing = false;
     }
 
-    private void addNotAvailableHost()
+    private void addNotAvailableHost(ICollection<Room> collection)
     {
-        AvailableRooms.Add(new Room
+        collection.Add(new Room
         {
             RoomId = "",
             OnlineUsers = 0,
@@ -120,7 +134,7 @@ public class FindHostPageViewModel : BaseViewModel
         });
     }
 
-    private void InitFavoriteHosts()
+    private void initFavoriteHosts()
     {
         FavoriteHosts.Clear();
         FavoriteHosts.Add(new Room
@@ -132,5 +146,29 @@ public class FindHostPageViewModel : BaseViewModel
             Picture = "default_favorite_host",
             StatusComment = "Add favorite host"
         });
+    }
+
+    private void filterRooms(string query)
+    {
+        if (query == string.Empty)
+        {
+            FilterAvailableRooms.Clear();
+            foreach (var room in AvailableRooms)
+                FilterAvailableRooms.Add(room);
+        }
+
+        query = query.ToLower();
+        var rooms = AvailableRooms.Where(room => room.Name.ToLower().Contains(query)).ToList();
+
+        FilterAvailableRooms.Clear();
+        if (rooms.Count != 0)
+        {
+            foreach (var room in rooms)
+                FilterAvailableRooms.Add(room);
+        }
+        else
+        {
+            addNotAvailableHost(FilterAvailableRooms);
+        }
     }
 }

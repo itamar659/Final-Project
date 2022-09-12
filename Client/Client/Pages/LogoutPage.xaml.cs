@@ -23,7 +23,8 @@ public partial class LogoutPage : ContentPage
     private async void logout()
     {
         // TODO: Check if the user logged in or an anonymous
-        // Do logout logic
+        // if anonymous, delete from the database, otherwise, use auth0 logout
+
         var logoutResult = await auth0Client.LogoutAsync();
 
         if (!logoutResult.IsError)
