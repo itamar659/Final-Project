@@ -5,23 +5,27 @@ namespace Client;
 public class MainPageViewModel : BaseViewModel
 {
     private readonly IServerApi _serverApi;
+    private string _profileUri;
 
     public MainPageViewModel(IServerApi serverAPI)
     {
+        _profileUri = "";
         _serverApi = serverAPI;
     }
 
     public string Username { get; set; }
 
-    public async Task<bool> LoginAsync(string username)
+    public async Task<bool> LoginAsync(string username, string profileUri)
     {
         try
         {
             var profile = await _serverApi.LoginAsync(username);
+            _profileUri = profileUri;
 
             if (profile is not null)
             {
                 await changePageAfterLogin(profile);
+                
             }
             else
             {
@@ -69,6 +73,7 @@ public class MainPageViewModel : BaseViewModel
         if (Configuration.HasToken)
         {
             var profile = await _serverApi.FetchClientProfileAsync(Configuration.Token);
+            _profileUri = profileUri;
             if (profile != null)
             {
                 await changePageAfterLogin(profile);
@@ -81,7 +86,7 @@ public class MainPageViewModel : BaseViewModel
         Configuration.Token = profile.Token;
         UserProfile.Instance.Username = profile.Username;
         UserProfile.Instance.Token = profile.Token;
-        UserProfile.Instance.AvatarUrl = profile.AvatarUrl;
+        UserProfile.Instance.AvatarUrl = !_profileUri.Equals("") ? _profileUri : profile.AvatarUrl;
         await Shell.Current.GoToAsync($"//{nameof(FindHostPage)}");
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Android.OS;
 using Client.Auth0;
 using IdentityModel;
+using IdentityModel.OidcClient;
 using System.Security.Claims;
 
 namespace Client;
@@ -39,19 +40,28 @@ public partial class MainPage : ContentPage
         try
         {
             var loginResult = await auth0Client.LoginAsync();
+            var uri = getUriFromResult(loginResult);
 
-
-            foreach (Claim claim in loginResult.User.Claims)
-            {
-                var str = "CLAIM TYPE: " + claim.Type + "; CLAIM VALUE: " + claim.Value;
-            }
-
-            if (loginResult.IsError || !await _vm.LoginAsync(loginResult.User.Identity.Name))
+            if (loginResult.IsError || !await _vm.LoginAsync(loginResult.User.Identity.Name, uri))
                     await DisplayAlert("We couldn't connect. try again later.", loginResult.ErrorDescription, "OK");
         }
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
         }
+    }
+
+    private string getUriFromResult(LoginResult result)
+    {
+        foreach (Claim claim in result.User.Claims)
+        {
+            if (claim.Type == "picture")
+            {
+                return claim.Value;
+            }
+            var str = "CLAIM TYPE: " + claim.Type + "; CLAIM VALUE: " + claim.Value;
+        }
+
+        return "";
     }
 }

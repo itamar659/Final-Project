@@ -7,7 +7,7 @@
     <ScrollView VerticalScrollBarVisibility="Never"
                 HorizontalScrollBarVisibility="Never">
         <!-- Main layout-->
-        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto"
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*"
               Padding="20,0">
             <!--Timeline -->
             <Frame Grid.Row="0"
@@ -33,7 +33,7 @@
                    CornerRadius="55"
                    Padding="0"
                    IsClippedToBounds="True">
-                <Image Source="modelprofile" Aspect="AspectFill"/>
+                <Image Source="{Binding profileUri}" Aspect="AspectFill"/>
             </Frame>
             <!-- Profile name & general description-->
             <Label Grid.Row="2"
@@ -49,19 +49,19 @@
                   VerticalOptions="Center"
                   HorizontalOptions="Center"
                   Margin="0,20,0,0">
-                
+
                 <Button Grid.Column="0"
                         ImageSource="location"
                         WidthRequest="18"
                         HeightRequest="18"
                         CornerRadius="9"
                         BackgroundColor="#9192b7"/>
-                
+
                 <Label Grid.Column="1"
                        Text=" Venecy, Italy"
                        FontSize="15"
                        TextColor="#9192b7"/>
-                
+
                 <Button Grid.Column="2"
                         ImageSource="age"
                         Margin="10,0,0,0"
@@ -69,12 +69,12 @@
                         HeightRequest="18"
                         CornerRadius="9"
                         BackgroundColor="#9192b7"/>
-                
+
                 <Label Grid.Column="3"
                        Text=" Age, 26"
                        FontSize="15"
                        TextColor="#9192b7"/>
-                
+
                 <Button Grid.Column="4"
                         Text="Regular"
                         TextColor="#e29389"
@@ -87,43 +87,36 @@
                         BackgroundColor="#fae6e4"/>
             </Grid>
 
-            <Label Grid.Row="4"
-                   Text="Angelica's Note"
-                   FontAttributes="Bold"
-                   TextColor="#383b67"
-                   HorizontalTextAlignment="Start"
-                   Margin="0,40,0,20"
-                   FontSize="20"/>
-            
             <!-- Songs-->
-            <Label Grid.Row="5"
+            <Label Grid.Row="4"
                    Text="Liked Songs"
                    FontAttributes="Bold"
                    TextColor="#383b67"
                    HorizontalTextAlignment="Start"
                    Margin="0,20,0,10" FontSize="20"/>
-            <CollectionView Grid.Row="6"
-                            HorizontalScrollBarVisibility="Never"
+            <CollectionView Grid.Row="5"
+                            VerticalScrollBarVisibility="Never"
                             ItemsSource="{Binding Songs}"
-                            Margin="0,0,-10,0"
-                            HeightRequest="140"
-                            ItemsLayout="HorizontalList">
+                            Margin="10,0,-10,10"
+                            ItemsLayout="VerticalList">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout WidthRequest="{OnPlatform iOS='135', Android='160'}" 
-                                     Padding="0,0,15,0">
+                        <StackLayout>
                             <Frame CornerRadius="13"
                                    HorizontalOptions="Start"
                                    BorderColor="#c6c1ea"
-                                   HeightRequest="80"
-                                   WidthRequest="80"
+                                   Margin="0,0,0,10"
+                                   HeightRequest="65"
+                                   WidthRequest="300"
                                    HasShadow="False">
-                                <Grid RowDefinitions="*,Auto">
+                                <Grid ColumnDefinitions="Auto,Auto">
                                     <Image Source="folder"
+                                           Grid.Column="0"
                                            HorizontalOptions="Center"
                                            HeightRequest="40"
                                            WidthRequest="40" />
-                                    <Label Grid.Row="1"
+                                    <Label Grid.Column="1"
+                                           VerticalOptions="Center"
                                            HorizontalOptions="Center"
                                            Text="{Binding Name}"
                                            FontSize="11"
