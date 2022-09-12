@@ -9,7 +9,8 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <local:DoubleMSToTimeStrConverter x:Key="millisecondsToTimeConverter" />
-            <local:BooleanToStringConverter x:Key="booleanToStringConverter" />
+            <local:BooleanToStringConverter x:Key="boolPlayerConveter" ValTrue="||" ValFalse="|>" />
+            <local:BooleanToStringConverter x:Key="boolStatusConverter" ValTrue="Live" ValFalse="Offline" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -25,7 +26,7 @@
                                         HorizontalOptions="End">
                     <Label Text="Status :"
                            Style="{StaticResource HeaderLabel}"/>
-                    <Label Text="{Binding Room.IsOpen}"
+                    <Label Text="{Binding Room.IsOpen, Converter={StaticResource boolStatusConverter}}"
                            Style="{StaticResource HeaderLabel}"/>
                 </HorizontalStackLayout>
             </Grid>
@@ -71,7 +72,7 @@
                         <Button Text="&lt;&lt;"
                                 Command="{Binding PrevCommand}"
                                 Style="{StaticResource MediaButton}" />
-                        <Button Text="{Binding AudioPlayer.IsPlaying, Converter={StaticResource booleanToStringConverter}}"
+                        <Button Text="{Binding AudioPlayer.IsPlaying, Converter={StaticResource boolPlayerConveter}}"
                                 Command="{Binding StartPausePlayerCommand}"
                                 Style="{StaticResource MediaButton}" />
                         <Button Text=">>"
