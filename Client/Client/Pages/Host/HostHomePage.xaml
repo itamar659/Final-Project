@@ -103,14 +103,16 @@
                    CornerRadius="40"
                    BackgroundColor="White">
 
-                <Grid RowDefinitions="Auto,Auto,Auto">
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto">
                     <Label Grid.Row="0"
+                           Text="Song playing:"/>
+                    <Label Grid.Row="1"
                            HorizontalOptions="Center"
                            Style="{StaticResource ValueStyle}"
                            Text="{Binding Room.SongName}" />
 
                     <Slider x:Name="SliderAudioPlayer"
-                            Grid.Row="1"
+                            Grid.Row="2"
                             IsEnabled="False"
                             ThumbColor="#ff8000"
                             MinimumTrackColor="#ff8000"
@@ -119,7 +121,7 @@
                             Maximum="{Binding Room.Duration}" />
 
                     <Grid ColumnDefinitions="*,*,*,*"
-                          Grid.Row="2">
+                          Grid.Row="3">
 
                         <Label Grid.Column="0"
                                Style="{StaticResource ValueStyle}"

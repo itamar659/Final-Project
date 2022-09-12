@@ -24,9 +24,7 @@ public partial class MainPage : ContentPage
     {
         try
         {
-            // required dispatcher to change the poll in UI.
-            Dispatcher.Dispatch(async () =>
-                await pickFilesAsync());
+            await pickFilesAsync();
         }
         catch
         {
@@ -48,7 +46,9 @@ public partial class MainPage : ContentPage
     {
         var files = await FilePicker.PickMultipleAsync(getFilePickerOptions());
 
-        await _vm.AddSongsAsync(files);
+        // required dispatcher to change the poll in UI.
+        Dispatcher.Dispatch(async () =>
+            await _vm.AddSongsAsync(files));
 
         Dispatcher.Dispatch(async () => await App.Current.MainPage.DisplayAlert("Message", "Update Songs Completed.", "OK"));
     }
