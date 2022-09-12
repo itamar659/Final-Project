@@ -149,6 +149,9 @@ public class MainPageViewModel : BaseViewModel
 
     private async void updateStateChangesAsync(object sender, EventArgs e)
     {
+        if (Room.RoomId == null)
+            return;
+
         await Room.updateServer(AudioPlayer.SongMessage);
         await HubService.UpdateSong(Room.RoomId, AudioPlayer.SongMessage);
     }
