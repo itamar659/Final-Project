@@ -1,4 +1,5 @@
 ﻿using Client.Services;
+using Microsoft.Maui.Dispatching;
 
 namespace Client;
 public sealed class UserProfile
