@@ -7,7 +7,8 @@ public partial class App : Application
 		InitializeComponent();
 
 		MainPage = new AppShell();
-	}
+        Application.Current.UserAppTheme = AppTheme.Light;
+    }
 
 	//protected override Window CreateWindow(IActivationState activationState)
 	//{

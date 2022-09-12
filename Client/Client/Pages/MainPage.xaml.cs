@@ -1,6 +1,4 @@
-﻿using Android.OS;
 using Client.Auth0;
-using IdentityModel;
 using IdentityModel.OidcClient;
 using System.Security.Claims;
 

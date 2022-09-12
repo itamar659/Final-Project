@@ -149,7 +149,7 @@
                                     ItemsSource="{Binding Poll.Options}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:PollOption">
-                            <Border>
+                            <Border Background="white" StrokeThickness="1">
                                 <Border.GestureRecognizers>
                                     <TapGestureRecognizer Command="{Binding BindingContext.ChooseSongCommand,
                                                                             Source={x:RelativeSource AncestorType={x:Type ContentPage}}}"
