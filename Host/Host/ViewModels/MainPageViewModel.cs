@@ -2,6 +2,7 @@
 using Host.Services;
 using System.Windows.Input;
 using Host.Models;
+using System.Text.Json;
 
 namespace Host;
 
@@ -95,6 +96,15 @@ public class MainPageViewModel : BaseViewModel
         await Room.UpdateRoom();
     }
 
+    public Task LoadLocalSavedSongsAsync()
+    {
+        var songs = loadSongs();
+        foreach (var file in songs)
+            AudioPlayer.AddToPlaylist(file.Path);
+
+        return Task.CompletedTask;
+    }
+
     /// <summary>
     /// Add a list of song to the playlist asynchronous.
     /// </summary>
@@ -104,6 +114,7 @@ public class MainPageViewModel : BaseViewModel
             foreach (var file in files)
                 AudioPlayer.AddToPlaylist(file.FullPath);
 
+        saveSongs(AudioPlayer.Songs);
         return Task.CompletedTask;
     }
 
@@ -116,6 +127,7 @@ public class MainPageViewModel : BaseViewModel
             foreach (var songName in songs.Select(s => ((Song)s).Name).ToList())
                 AudioPlayer.RemoveFromPlaylist(songName);
 
+        saveSongs(AudioPlayer.Songs);
         return Task.CompletedTask;
     }
 
@@ -126,6 +138,7 @@ public class MainPageViewModel : BaseViewModel
     {
         AudioPlayer.ClearPlaylist();
 
+        saveSongs(AudioPlayer.Songs);
         return Task.CompletedTask;
     }
 
@@ -208,6 +221,19 @@ public class MainPageViewModel : BaseViewModel
             await AudioPlayer.PauseAsync();
         else
             await AudioPlayer.PlayAsync();
+    }
+
+    private void saveSongs(ICollection<Song> songs)
+    {
+        Configuration.SavedSong = JsonSerializer.Serialize(songs);
+    }
+
+    private ICollection<Song> loadSongs()
+    {
+        if (Configuration.SavedSong == default(string))
+            return new List<Song>();
+
+        return JsonSerializer.Deserialize<ICollection<Song>>(Configuration.SavedSong);
     }
 
     #endregion

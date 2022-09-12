@@ -18,6 +18,7 @@ public partial class MainPage : ContentPage
     protected override async void OnNavigatedTo(NavigatedToEventArgs args)
     {
         await _vm.FetchProfile();
+        await _vm.LoadLocalSavedSongsAsync();
     }
 
     private async void AddSongsBtn_Clicked(object sender, EventArgs e)

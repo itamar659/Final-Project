@@ -15,4 +15,10 @@ public static class Configuration
     }
 
     public static bool HasToken => Preferences.ContainsKey("Token");
+
+    public static string SavedSong
+    {
+        get => Preferences.Get("SavedSong", default(string));
+        set { Preferences.Set("SavedSong", value); }
+    }
 }
