@@ -10,10 +10,10 @@ builder.Services.AddDbContext<ServerContext>(options =>
         ?? throw new InvalidOperationException("Connection string 'ServerContext' not found.")));
 
 builder.Services
-    .AddSignalR()
-    .AddAzureSignalR(
-    "Endpoint=https://csharp-project-signalr.service.signalr.net;AccessKey=KA1nlK0H2RgoW7YxXtnGrDZ/hraBwp7KC4bxiCSlpyI=;Version=1.0;"
-);
+    .AddSignalR();
+//    .AddAzureSignalR(
+//    "Endpoint=https://csharp-project-signalr.service.signalr.net;AccessKey=KA1nlK0H2RgoW7YxXtnGrDZ/hraBwp7KC4bxiCSlpyI=;Version=1.0;"
+//);
 
 builder.AddCustomServices();
 

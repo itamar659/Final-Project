@@ -11,6 +11,8 @@
             <local:DoubleMSToTimeStrConverter x:Key="millisecondsToTimeConverter" />
             <local:BooleanToStringConverter x:Key="boolPlayerConveter" ValTrue="||" ValFalse="|>" />
             <local:BooleanToStringConverter x:Key="boolStatusConverter" ValTrue="Live" ValFalse="Offline" />
+            <local:IntToBooleanConverter x:Key="intToBoolConverter"/>
+            <local:BooleanToColorConverter x:Key="converter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -20,14 +22,32 @@
 
             <!-- Header -->
             <Grid>
-                <Label Text="Session Dashboard"
+                <Label Text="Dashboard"
                        Style="{StaticResource HeaderLabel}"/>
                 <HorizontalStackLayout Spacing="10"
                                         HorizontalOptions="End">
-                    <Label Text="Status :"
-                           Style="{StaticResource HeaderLabel}"/>
-                    <Label Text="{Binding Room.IsOpen, Converter={StaticResource boolStatusConverter}}"
-                           Style="{StaticResource HeaderLabel}"/>
+                    <Button Text="{Binding Room.IsOpen, Converter={StaticResource boolStatusConverter}}"
+                                Command="{Binding OpenCloseRoomCommand}"
+                                TextColor="{Binding Room.IsOpen, Converter={StaticResource converter}}"
+                                IsEnabled="{Binding AudioPlayer.Songs.Count, Converter={StaticResource intToBoolConverter}}"
+                                Padding="50, 15">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="1" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="0.8" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+
+                    </Button>
+
                 </HorizontalStackLayout>
             </Grid>
 
@@ -36,10 +56,19 @@
                    Text="{Binding Room.Hostname}"
                    Style="{StaticResource HeaderLabel}"
                    HorizontalOptions="Center"
-                   Margin="0, 0, 0, 60" />
+                   Margin="0, 0, 0, 5" />
+            
+            <HorizontalStackLayout Grid.Row="2" Spacing="4"
+                                       HorizontalOptions="Center"
+                                   Margin="0, 0, 0, 20">
+                <Label Text="Pin Code:"
+                           TextColor="Gray" />
+                <Label Text="{Binding Room.PinCode}"
+                           TextColor="Gray" />
+            </HorizontalStackLayout>
 
             <!-- Audio Player -->
-            <Border Grid.Row="2"
+            <Border Grid.Row="3"
                     Style="{StaticResource CardBorder}">
                 <VerticalStackLayout HorizontalOptions="Center"
                                      Spacing="20">
@@ -83,7 +112,7 @@
             </Border>
 
             <!-- Body -->
-            <Grid Grid.Row="3"
+            <Grid Grid.Row="4"
                   Margin="0, 20"
                   ColumnDefinitions="*, 2*"
                   ColumnSpacing="60">
@@ -170,30 +199,12 @@
 
             </Grid>
 
-            <Line Grid.Row="4"
+            <Line Grid.Row="5"
                   Stroke="{StaticResource LightLime}"
                   StrokeThickness="2"
                   X1="0"
                   X2="{Binding Width, Source={x:RelativeSource AncestorType={x:Type Grid}}}">
             </Line>
-
-            <VerticalStackLayout Grid.Row="5"
-                                 Margin="0, 30, 0, 0"
-                                 HorizontalOptions="Center"
-                                 Spacing="6">
-                <Button Text="Open/Close Room"
-                        Padding="80, 20"
-                        Command="{Binding OpenCloseRoomCommand}"/>
-
-                <HorizontalStackLayout Spacing="4"
-                                       HorizontalOptions="Center">
-                    <Label Text="Pin Code:"
-                           TextColor="Gray" />
-                    <Label Text="{Binding Room.PinCode}"
-                           TextColor="Gray" />
-                </HorizontalStackLayout>
-            </VerticalStackLayout>
-
         </Grid>
     </ScrollView>
 </ContentPage>

@@ -1,4 +1,5 @@
 ﻿using Host.Services;
+using Microsoft.Maui.Dispatching;
 
 namespace Host;
 public sealed class HostProfile
