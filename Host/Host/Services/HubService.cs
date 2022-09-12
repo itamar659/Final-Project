@@ -57,10 +57,25 @@ public class HubService
     public Action<SongMessage> SongUpdatedHandler { get; set; }
 
     // public methods
+    public void ClearHandlers()
+    {
+        ClientJoinedHandler = null;
+        ClientLeavedHandler = null;
+        RoomClosedHandler = null;
+        HostProfileUpdatedHandler = null;
+        PollVotesUpdatedHandler = null;
+        PollCreatedHandler = null;
+        SongUpdatedHandler = null;
+    }
 
     public async Task StartAsync()
     {
         await _connection.StartAsync();
+    }
+
+    public async Task StopAsync()
+    {
+        await _connection.StopAsync();
     }
 
     public async Task JoinRoom(string roomId)

@@ -13,10 +13,6 @@ public partial class MainPage : ContentPage
 
         _vm = vm;
 		BindingContext = vm;
-
-        Task.Run(() =>
-            Dispatcher.Dispatch(async () =>
-                await vm.HubService.StartAsync()));
     }
 
     protected override async void OnNavigatedTo(NavigatedToEventArgs args)

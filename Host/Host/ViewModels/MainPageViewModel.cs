@@ -58,7 +58,7 @@ public class MainPageViewModel : BaseViewModel
         // init properties
         Poll = new HostPoll(serverAPI);
         Room = new HostRoom(serverAPI);
-        HubService = new HubService();
+        HubService = HostProfile.Instance.Hub;
 
         // init commands
         OpenCloseRoomCommand = new Command(openCloseRoomAsync);
@@ -67,6 +67,7 @@ public class MainPageViewModel : BaseViewModel
         NextCommand = new Command(nextAsync);
 
         // set hub handlers
+        HubService.ClearHandlers();
         HubService.PollVotesUpdatedHandler = (poll) =>
         {
             Poll.UpdateVotes(poll);

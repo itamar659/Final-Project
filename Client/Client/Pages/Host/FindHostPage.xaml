@@ -11,7 +11,7 @@
     <Grid RowDefinitions="Auto,Auto,Auto,Auto,*"
           ColumnDefinitions="*,Auto"
           Padding="30,60,30,-50">
-        
+
         <!-- 1. Search block-->
         <Label Grid.Row="0"
                Grid.Column="0"
@@ -25,7 +25,7 @@
                 IsVisible="true"
                    Grid.ColumnSpan="2"
             BackgroundColor="Black">
-        <SearchBar 
+            <SearchBar 
                    TextColor="#818181"
                    PlaceholderColor="#818181"
                    Placeholder="Search"
@@ -58,12 +58,12 @@
                             <TapGestureRecognizer Command="{Binding BindingContext.ViewHostPageCommand,
                                     Source={x:RelativeSource AncestorType={x:Type ContentPage}}}" />
                         </Border.GestureRecognizers>
-                            <local:FindHostFavItemControl />
+                        <local:FindHostFavItemControl />
                     </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-        
+
         <!-- Active Hosts Frames-->
         <Frame Grid.Row="4"
                Grid.Column="0"
@@ -94,45 +94,3 @@
         </Frame>
     </Grid>
 </ContentPage>
-
-
-
-<!--<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d"
-             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-             ios:Page.PrefersStatusBarHidden="True"
-             ios:Page.PreferredStatusBarUpdateAnimation="Fade"
-             xmlns:PanCake="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
-             x:Class="EventAppSample.MainPage">
-
-    <StackLayout Spacing="20">
-        <Label Text="{Binding WelcomeMessage}"
-                       FontFamily="RobotoBold"
-                       FontSize="22"
-                       HorizontalOptions="Center"
-                       Margin="0, 0, 20, 0" />
-
-        <Label Text="Find a Host:" />
-        <Entry Placeholder="Host Name"
-                       x:Name="entry" />
-
-        <CollectionView ItemsSource="{Binding AvailableSessions}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Label Text="{Binding .}" />
-                    </Grid>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-
-        <Grid ColumnDefinitions="*, *">
-            <Button Grid.Column="1"
-                            Text="Join"
-                            Style="{StaticResource RedButton}"
-                            Command="{Binding ViewHostPageCommand}" />
-        </Grid>
-    </StackLayout>-->

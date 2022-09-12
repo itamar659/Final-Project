@@ -75,6 +75,11 @@ public class HubService
         await _connection.StartAsync();
     }
 
+    public async Task StopAsync()
+    {
+        await _connection.StopAsync();
+    }
+
     public async Task JoinRoom(string roomId)
     {
         try
